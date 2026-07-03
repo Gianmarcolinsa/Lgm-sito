@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGM Elevator - Servoscala e Ascensori</title>
+    <!-- Usiamo Tailwind CSS per la grafica moderna -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font: Sora per i titoli, Inter per il testo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy-950: #0B1F3A;   /* blu profondo, quasi navy - testo e sfondi scuri */
+            --navy-800: #14315C;  /* blu scuro - hero, header */
+            --blue-700: #1E4E8C;  /* blu principale del brand */
+            --blue-600: #2563A8;  /* blu leggermente piu chiaro per hover/accenti */
+            --sky-500: #3E8FD9;   /* azzurro vivo per dettagli, icone, link */
+            --sky-100: #E4EEFB;   /* azzurro chiarissimo per sfondi card */
+            --amber-500: #F2A93B; /* accento caldo per la call to action */
+            --slate-50: #F7F9FC;  /* sfondo generale della pagina */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--slate-50);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Sora', sans-serif;
+        }
+
+        /* Focus visibile per accessibilita da tastiera */
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+            outline: 3px solid var(--sky-500);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Barra di navigazione -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-display font-extrabold" style="color: var(--blue-700);">LGM Elevator</div>
+            <div class="space-x-6 font-medium">
+                <a href="#home" class="transition" style="color: var(--blue-700);">Home</a>
+                <a href="#chi-siamo" class="text-gray-600 hover:text-[var(--blue-700)] transition">Chi siamo</a>
+                <a href="#servoscala" class="text-gray-600 hover:text-[var(--blue-700)] transition">Servoscala</a>
+                <a href="#contatti" class="text-gray-600 hover:text-[var(--blue-700)] transition">Contatti</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sezione Principale (Hero) -->
+    <header id="home" class="text-white py-20 px-4 text-center" style="background: linear-gradient(120deg, var(--navy-800), var(--blue-700));">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">Libertà di movimento nella tua casa</h1>
+            <p class="text-xl mb-8" style="color: var(--sky-100);">Installazione e manutenzione di servoscala e impianti di sollevamento su misura. Sicuri, eleganti, garantiti.</p>
+            <a href="#contatti" class="inline-block font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300" style="background-color: var(--amber-500); color: var(--navy-950);">
+                Richiedi un Preventivo Gratuito
+            </a>
+        </div>
+    </header>
+
+    <!-- Sezione Chi Siamo -->
+    <section id="chi-siamo" class="py-20 px-4" style="background-color: #F4F6F9;">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-display font-bold mb-6 leading-snug" style="color: var(--navy-950);">
+                Cerchi solo un impianto, o la tranquillità di sapere esattamente a chi stai stringendo la mano?
+            </h2>
+            <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                In LGM Elevator non ci nascondiamo dietro a infiniti passaggi burocratici. Siamo un'azienda fatta di tecnici reali che mettono le mani in prima persona sui tuoi impianti. Dalla stretta di mano iniziale per il sopralluogo fino all'ultimo collaudo, sai sempre esattamente chi sta entrando in casa tua. Risposte immediate, preventivi trasparenti fin dal primo giorno e interventi di assistenza veri, eseguiti da chi conosce il tuo impianto pezzo per pezzo.
+            </p>
+
+            <!-- Le 4 fasi -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14">
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 text-xl font-display font-bold text-white" style="background-color: var(--blue-700);">1</div>
+                    <h3 class="font-display font-bold text-sm md:text-base" style="color: var(--navy-950);">Progettazione</h3>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 text-xl font-display font-bold text-white" style="background-color: var(--blue-700);">2</div>
+                    <h3 class="font-display font-bold text-sm md:text-base" style="color: var(--navy-950);">Installazione</h3>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 text-xl font-display font-bold text-white" style="background-color: var(--blue-700);">3</div>
+                    <h3 class="font-display font-bold text-sm md:text-base" style="color: var(--navy-950);">Manutenzione</h3>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3 text-xl font-display font-bold text-white" style="background-color: var(--blue-700);">4</div>
+                    <h3 class="font-display font-bold text-sm md:text-base" style="color: var(--navy-950);">Assistenza</h3>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-400 mt-10 italic">Dal 1988 al fianco di famiglie e amministratori, un impianto alla volta.</p>
+        </div>
+    </section>
+
+    <!-- Sezione Punti di Forza -->
+    <section class="bg-white py-16 px-4 border-b border-slate-100">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-display font-bold text-center mb-4" style="color: var(--navy-950);">Perché scegliere LGM Elevator</h2>
+            <p class="text-center text-gray-500 max-w-xl mx-auto mb-12">Esperienza, sicurezza e supporto continuo per garantirti la massima serenità.</p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="p-6 rounded-2xl border hover:shadow-xl transition duration-300" style="background-color: var(--slate-50); border-color: var(--sky-100);">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 font-bold text-xl" style="background-color: var(--sky-100); color: var(--blue-700);">📋</div>
+                    <h3 class="text-xl font-display font-bold mb-2" style="color: var(--navy-950);">Sopralluogo Gratuito</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Veniamo direttamente a casa tua per analizzare la conformità della scala e consigliarti la soluzione ideale, senza alcun impegno.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-6 rounded-2xl border hover:shadow-xl transition duration-300" style="background-color: var(--slate-50); border-color: var(--sky-100);">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 font-bold text-xl" style="background-color: var(--sky-100); color: var(--blue-700);">💰</div>
+                    <h3 class="text-xl font-display font-bold mb-2" style="color: var(--navy-950);">Detrazioni Fiscali 75%</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Ti guidiamo passo dopo passo per usufruire del Bonus Barriere Architettoniche, abbattendo drasticamente il costo dell'impianto.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="p-6 rounded-2xl border hover:shadow-xl transition duration-300" style="background-color: var(--slate-50); border-color: var(--sky-100);">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 font-bold text-xl" style="background-color: var(--sky-100); color: var(--blue-700);">🛠️</div>
+                    <h3 class="text-xl font-display font-bold mb-2" style="color: var(--navy-950);">Assistenza H24</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Garantiamo interventi rapidi di manutenzione e un servizio di emergenza sempre attivo, perché la tua libertà di movimento non può aspettare.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sezione Presentazione Prodotto -->
+    <main id="servoscala" class="max-w-5xl mx-auto px-4 py-16">
+        <h2 class="text-3xl font-display font-bold text-center mb-12" style="color: var(--navy-950);">I Nostri Servoscala</h2>
+
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h3 class="text-2xl font-display font-bold mb-4" style="color: var(--navy-950);">Servoscala a Poltroncina</h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    La soluzione ideale per superare le scale in totale autonomia e sicurezza. I nostri servoscala si adattano a qualsiasi tipo di scala (dritta o curva) occupando il minimo spazio grazie alla struttura pieghevole.
+                </p>
+                <ul class="space-y-2 text-gray-700 mb-6">
+                    <li class="flex items-start gap-2"><span style="color: var(--blue-700);">✓</span> Installazione rapida senza opere murarie</li>
+                    <li class="flex items-start gap-2"><span style="color: var(--blue-700);">✓</span> Seduta confortevole e comandi intuitivi</li>
+                    <li class="flex items-start gap-2"><span style="color: var(--blue-700);">✓</span> Sensori di sicurezza anti-ostacolo</li>
+                </ul>
+            </div>
+            <div class="h-64 rounded-xl flex items-center justify-center italic" style="background-color: var(--sky-100); color: var(--blue-700);">
+                [Qui inseriremo una bella foto del giammone nazionale]
+            </div>
+        </div>
+    </main>
+
+    <!-- Sezione Modulo di Contatto -->
+    <section id="contatti" class="py-16 px-4" style="background-color: var(--navy-950);">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-start">
+
+            <!-- Colonna informativa -->
+            <div class="text-white md:pt-4">
+                <h2 class="text-3xl font-display font-bold mb-4">Richiedi il tuo Sopralluogo</h2>
+                <p class="mb-8" style="color: var(--sky-100);">Compila il modulo e un nostro tecnico ti ricontatterà entro 24 ore per fissare un appuntamento gratuito e senza impegno.</p>
+
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: var(--blue-700);">📞</div>
+                        <span>0835 381904</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: var(--blue-700);">✉️</div>
+                        <span>info@lgmelevator.com</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: var(--blue-700);">📍</div>
+                        <span>Via dell'Agricoltura, 20 — 75100 Matera (MT)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonna form -->
+            <form class="bg-white rounded-2xl shadow-xl p-8 space-y-5" onsubmit="return false;">
+                <div>
+                    <label for="nome" class="block text-sm font-semibold mb-1" style="color: var(--navy-950);">Nome e Cognome</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Il tuo nome"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 focus:ring-2 focus:border-transparent transition"
+                        style="--tw-ring-color: var(--sky-500);">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-semibold mb-1" style="color: var(--navy-950);">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="latua@email.it"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 focus:ring-2 focus:border-transparent transition"
+                        style="--tw-ring-color: var(--sky-500);">
+                </div>
+
+                <div>
+                    <label for="telefono" class="block text-sm font-semibold mb-1" style="color: var(--navy-950);">Telefono</label>
+                    <input type="tel" id="telefono" name="telefono" required placeholder="Il tuo numero di telefono"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 focus:ring-2 focus:border-transparent transition"
+                        style="--tw-ring-color: var(--sky-500);">
+                </div>
+
+                <div>
+                    <label for="messaggio" class="block text-sm font-semibold mb-1" style="color: var(--navy-950);">Messaggio</label>
+                    <textarea id="messaggio" name="messaggio" rows="4" placeholder="Descrivi brevemente la tua esigenza (es. tipo di scala, piano, ecc.)"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 focus:ring-2 focus:border-transparent transition resize-none"
+                        style="--tw-ring-color: var(--sky-500);"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full font-bold py-3 rounded-lg shadow-md hover:opacity-90 transition duration-300"
+                    style="background-color: var(--amber-500); color: var(--navy-950);">
+                    Richiedi Sopralluogo Gratuito
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 px-4 text-center text-sm" style="background-color: var(--navy-950); color: var(--sky-100); border-top: 1px solid rgba(255,255,255,0.1);">
+        &copy; 2026 LGM Elevator. Tutti i diritti riservati.
+    </footer>
+
+</body>
+</html>
