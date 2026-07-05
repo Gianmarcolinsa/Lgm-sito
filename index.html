@@ -61,16 +61,28 @@
     animation: logoPulseBlue 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseBlue {
-    0%, 100% { filter: drop-shadow(0 0 2px rgba(70,150,255,.35)); }
-    50%      { filter: drop-shadow(0 0 8px rgba(110,185,255,.85)) drop-shadow(0 0 3px rgba(255,255,255,.4)); }
+    0%, 100% {
+      opacity: 0.82;
+      filter: drop-shadow(0 0 3px rgba(70,150,255,.5));
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 14px rgba(110,185,255,1)) drop-shadow(0 0 6px rgba(255,255,255,.6));
+    }
   }
   .logo-pulse-el {
     transform-origin: center;
     animation: logoPulseEl 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseEl {
-    0%, 100% { filter: drop-shadow(0 0 2px rgba(120,150,200,.30)); }
-    50%      { filter: drop-shadow(0 0 7px rgba(150,190,255,.75)) drop-shadow(0 0 3px rgba(255,255,255,.35)); }
+    0%, 100% {
+      opacity: 0.82;
+      filter: drop-shadow(0 0 3px rgba(120,150,200,.45));
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 12px rgba(150,190,255,.95)) drop-shadow(0 0 5px rgba(255,255,255,.55));
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .logo-pulse-blue, .logo-pulse-el { animation: none; }
