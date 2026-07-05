@@ -104,6 +104,15 @@ gestibile su GitHub Pages senza bisogno di un CMS.
    `CONTESTO_PROGETTO.md` e `ROADMAP.md`, altrimenti Claude riparte da zero
    senza sapere cosa è stato fatto in precedenza. È responsabilità
    dell'utente ricaricare sempre i file più recenti a inizio conversazione.
+7. **L'aggiornamento di `ROADMAP.md` e `CONTESTO_PROGETTO.md` non è
+   automatico.** Claude non deve modificarli né riscriverli di sua
+   iniziativa dopo una modifica applicata: lo fa solo se l'utente lo chiede
+   esplicitamente in quella sessione. Unica eccezione: se durante la
+   conversazione questo aggiornamento non è mai stato richiesto e Claude
+   nota che l'utente sta per chiudere la chat (es. saluti, "per ora è
+   tutto", ecc.), può proporre di aggiornare i due file prima di chiudere —
+   ma resta una proposta, non un'azione automatica, e va fatta comunque solo
+   dopo conferma.
 
 ## Struttura attuale del sito (sezioni in index.html) — aggiornata 05/07/2026
 Nuovo stile: tema scuro elegante con accenti **blu metallizzato** (aggiornato
@@ -111,6 +120,18 @@ il 05/07/2026, prima era arancio bruciato + verde salvia), font Sora (titoli)
 + Inter (corpo). Animazioni scroll-reveal su tutte le sezioni, hover
 raffinati sulle card, timeline storia cliccabile/esplorabile,
 mini-configuratore "trova la soluzione giusta per te" nella sezione prodotti.
+
+**Animazioni avanzate (nuovo, 05/07/2026)**: dopo una serie di prototipi
+mostrati dal vivo e approvati dall'utente, sono state aggiunte: un filo
+dell'ascensore fisso a sinistra dello schermo che segue lo scroll con una
+freccia che punta su/giù a seconda della direzione; testi che entrano in
+scena parola per parola (hero e tutti i titoli di sezione); la timeline
+"Chi siamo" che si disegna da sola con le voci a cascata; i numeri della
+sezione Fiducia che contano da zero al valore finale; le card prodotto con
+un riflettore che segue il mouse combinato allo zoom sull'immagine
+placeholder; la nav con un indicatore animato della sezione attiva. Tutte
+le animazioni rispettano `prefers-reduced-motion` e il filo dell'ascensore
+è nascosto sotto gli 800px.
 
 **Logo aziendale (nuovo, 05/07/2026)**: SVG vettoriale nella nav, ricreato
 fedele alla targa reale dell'azienda — lettere "LGM" tracciate a partire
@@ -172,4 +193,8 @@ sezione "Come pubblicare" di ROADMAP.md).
   la fotografia stabile di chi siamo, cosa stiamo facendo e con quali regole.
 
 ---
-*Ultimo aggiornamento: 05/07/2026 (nuovo logo LGM Elevator blu metallizzato animato + palette blu su tutto il sito, anti-cache browser aggiunto, risolta confusione tra cartella locale e cartella collegata a git tramite collegamento simbolico)*
+*Ultimo aggiornamento: 05/07/2026 (aggiunte animazioni avanzate: filo
+dell'ascensore, testi cinematici, timeline che si disegna, contatori,
+card con riflettore, nav con indicatore di sezione attiva — oltre a
+nuovo logo blu metallizzato animato, palette blu, anti-cache browser,
+collegamento simbolico cartella locale/git)*

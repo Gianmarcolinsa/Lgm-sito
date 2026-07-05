@@ -36,6 +36,12 @@
   foto reale) in blu metallizzato pulsante + ELEVATOR nero metallico
   riflettente pulsante, inserito nella nav. Palette sito aggiornata a blu
   coerente col logo (era arancio/verde).
+- ✅ Animazioni avanzate: filo dell'ascensore (indicatore di scroll con
+  freccia direzionale), testi cinematici a comparsa (hero + titoli di
+  sezione), timeline "Chi siamo" che si disegna da sola, numeri Fiducia
+  che contano da zero, card prodotto con riflettore + zoom immagine, nav
+  con indicatore di sezione attiva. Scelte dopo prototipi dal vivo
+  approvati dall'utente. Tutte rispettano `prefers-reduced-motion`.
 - ⬜ Se in futuro disponibile, sostituire la scritta "ELEVATOR" (oggi
   ricostruita con font geometrico) con il font/vettoriale originale del
   grafico, per fedeltà 100% alla targa
@@ -75,6 +81,7 @@ Le card nella homepage già puntano a questi file, ma non esistono ancora.
 | 05/07/2026 | Nuovo logo LGM Elevator: ricreato in SVG vettoriale (lettere LGM tracciate fedelmente dalla foto della targa aziendale, scritta ELEVATOR ricostruita nitida in font geometrico coerente) con colorazione blu metallizzato pulsante per LGM e nero metallico riflettente pulsante per ELEVATOR, entrambi con bagliore animato (rispetta `prefers-reduced-motion`). Inserito nella nav al posto della scritta testuale. Palette del sito aggiornata da arancio/verde a blu metallizzato (`--accent`, `--accent-2`, nuova `--accent-deep` in `:root`), applicata coerentemente a bottoni, hover, timeline, numeri Fiducia, tag prodotti. | Sonnet | Medio | ✅ |
 | 05/07/2026 | Aggiunta disabilitazione cache browser (meta tag `Cache-Control`, `Pragma`, `Expires` in `<head>`): la pagina viene sempre ricaricata fresca da GitHub Pages, niente più necessità di finestra in incognito per vedere gli aggiornamenti (resta valida la normale attesa di 1-2 minuti dopo il push per la propagazione lato GitHub). | Sonnet | Minimo | ✅ |
 | 05/07/2026 | Risolto rischio di errore ricorrente "salvo nella cartella sbagliata": la vecchia cartella locale `Desktop/Sito LGM` (non collegata a git) è stata rinominata in backup (`Sito LGM VECCHIA (backup)`) e sostituita da un collegamento simbolico con lo stesso nome che punta direttamente a `Documents/GitHub/Lgm sito`. Da ora salvare in `Desktop/Sito LGM` equivale a salvare nella cartella vera collegata a GitHub — nessuna copia manuale necessaria prima del push. | Sonnet | Minimo | ✅ |
+| 05/07/2026 | Aggiunte animazioni avanzate a `index.html`, decise dopo prototipi dal vivo mostrati e approvati dall'utente: filo dell'ascensore (indicatore di scroll fisso a sinistra con freccia che punta su/giù a seconda della direzione), testi cinematici a comparsa parola per parola (hero + tutti i titoli di sezione), timeline "Chi siamo" che si disegna da sola con le tre voci a cascata, numeri della sezione Fiducia che contano da zero al valore finale, card prodotto con riflettore che segue il mouse combinato a zoom sull'immagine placeholder. Nav aggiornata con indicatore di sezione attiva (sottolineatura animata che segue lo scroll). Tutte le nuove animazioni rispettano `prefers-reduced-motion` e il filo dell'ascensore resta nascosto sotto 800px. Pubblicato online. | Sonnet | Medio-Alto | ✅ |
 
 ---
 
