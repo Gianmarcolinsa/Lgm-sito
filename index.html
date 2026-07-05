@@ -94,6 +94,87 @@
     .logo svg { width: 108px; }
   }
 
+  /* NAV COMPATTA VERTICALE — appare a destra dopo lo scroll (desktop),
+     sempre presente sotto gli 800px (sostituisce il menu mancante su mobile) */
+  .nav-condensed {
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    z-index: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 10px;
+    border-radius: 999px;
+    background: rgba(23,26,33,0.92);
+    border: 1px solid var(--border);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  .nav-condensed.visible { opacity: 1; pointer-events: auto; }
+  .nav-condensed .cond-logo {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    color: #0f1115;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border: none;
+  }
+  .nav-condensed a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+  .nav-condensed a::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    display: block;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .nav-condensed a.active::before {
+    background: var(--accent);
+    transform: scale(1.6);
+    box-shadow: 0 0 6px rgba(47,125,224,0.5);
+  }
+  .nav-condensed a::after {
+    content: attr(data-lbl);
+    position: absolute;
+    right: 26px;
+    top: 50%;
+    transform: translateY(-50%) translateX(6px);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .nav-condensed a:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+  @media (max-width: 800px) {
+    .nav-condensed { opacity: 1; pointer-events: auto; right: 14px; }
+    .nav-condensed a.active::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+
   /* HERO */
   .hero {
     max-width: 1120px;
@@ -586,6 +667,7 @@
     .tl-line { transition: none; }
     .tl-item { transition: none; opacity: 1; transform: none; }
     .prodotto-card::before, .img-placeholder::after { transition: none; }
+    .nav-condensed, .nav-condensed a::before, .nav-condensed a::after { transition: none; }
   }
 </style>
 </head>
@@ -650,6 +732,13 @@
       </ul>
       <span class="nav-underline" id="navUnderline"></span>
     </div>
+  </nav>
+
+  <nav class="nav-condensed" id="navCondensed" aria-label="Navigazione rapida">
+    <button type="button" class="cond-logo" id="condLogo" aria-label="Torna all'inizio della pagina">L</button>
+    <a href="#storia" data-target="storia" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
+    <a href="#prodotti" data-target="prodotti" data-lbl="Prodotti" aria-label="Prodotti"></a>
+    <a href="#contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
   </nav>
 
   <!-- HERO -->
@@ -817,11 +906,14 @@
 
   function updateNavActive() {
     if (!navSections.length || !navLinksWrap) return;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const atBottom = docHeight > 0 && window.scrollY >= docHeight - 4;
     let currentId = navSections[0].id;
     const scrollPos = window.scrollY + 140;
     navSections.forEach(sec => {
       if (sec.offsetTop <= scrollPos) currentId = sec.id;
     });
+    if (atBottom) currentId = navSections[navSections.length - 1].id;
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
     const activeLinks = navLinkGroups[currentId] || [];
     activeLinks.forEach(a => a.classList.add('active'));
@@ -833,9 +925,31 @@
       navUnderline.style.width = (lastRect.right - firstRect.left) + 'px';
       navUnderline.style.opacity = '1';
     }
+    document.querySelectorAll('.nav-condensed a[data-target]').forEach(a => {
+      a.classList.toggle('active', a.dataset.target === currentId);
+    });
   }
   window.addEventListener('scroll', updateNavActive, { passive: true });
   updateNavActive();
+
+  // Nav compatta verticale — compare in dissolvenza a destra dopo la Hero (desktop);
+  // sotto gli 800px resta sempre visibile via CSS (vedi media query).
+  const navCondensed = document.getElementById('navCondensed');
+  const heroEl = document.querySelector('.hero');
+  function updateCondensedNav() {
+    if (!navCondensed || !heroEl) return;
+    const threshold = heroEl.offsetTop + heroEl.offsetHeight - 80;
+    navCondensed.classList.toggle('visible', window.scrollY > threshold);
+  }
+  window.addEventListener('scroll', updateCondensedNav, { passive: true });
+  window.addEventListener('resize', updateCondensedNav);
+  updateCondensedNav();
+  const condLogo = document.getElementById('condLogo');
+  if (condLogo) {
+    condLogo.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
 
   // Testi che entrano in scena, parola per parola
   function wrapWords(el) {
