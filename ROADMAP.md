@@ -13,6 +13,84 @@
 
 ---
 
+## 🗺️ Scaletta operativa — ordine di lavoro consigliato
+
+> Per ogni task è indicato: modello da usare, se attivare il ragionamento
+> esteso, e il livello di impegno stimato. Claude dichiarerà sempre queste
+> tre informazioni prima di iniziare qualsiasi modifica, e non procederà
+> senza consenso esplicito dell'utente (regola 1 di CONTESTO_PROGETTO.md).
+>
+> **Legenda modelli**
+> - **Sonnet** — operativo, veloce, efficiente con i token: tutto il lavoro
+>   su CSS/JS/HTML, fix, ritocchi, aggiornamenti file, task con struttura
+>   già chiara.
+> - **Opus** — ragionamento profondo: scrittura testi definitivi ad alto
+>   impatto (hero, chi siamo), architettura di nuove pagine, decisioni
+>   strategiche sui contenuti.
+>
+> **Legenda ragionamento**
+> - **Sì** — attivare il ragionamento esteso (extended thinking): task in
+>   cui la qualità del risultato dipende da scelte non ovvie (struttura
+>   narrativa, SEO, architettura pagina).
+> - **No** — ragionamento standard: task tecnici con obiettivo chiaro,
+>   modifiche CSS/JS, aggiornamenti file.
+
+---
+
+### STEP 1 — Testi definitivi homepage (priorità massima)
+> Senza testi reali tutto il resto è bozza. Va fatto prima di qualsiasi
+> altra cosa destinata al pubblico.
+
+| # | Task | Modello | Ragionamento | Impegno |
+|---|------|---------|--------------|---------|
+| 1a | Scrivere testo Hero definitivo (partendo dal messaggio-gancio concordato) | Opus | Sì | Medio |
+| 1b | Scrivere testo sezione Storia definitivo (partendo dai dati raccolti in Fase 0) | Opus | Sì | Medio |
+| 1c | Decidere e scrivere titolo sezione Fiducia (oggi è ancora [PLACEHOLDER]) | Sonnet | No | Minimo |
+| 1d | Confermare dicitura ~14 persone + decidere terzo dato Fiducia (oggi H24) | — | — | Decisione dell'utente, poi Sonnet aggiorna il codice |
+| 1e | Decidere se/come aggiungere menzione Puglia nei contatti | — | — | Decisione dell'utente, poi Sonnet aggiorna il codice |
+
+### STEP 2 — Immagini reali
+> Inserire le foto vere al posto dei placeholder grigi nelle card prodotto.
+
+| # | Task | Modello | Ragionamento | Impegno |
+|---|------|---------|--------------|---------|
+| 2a | Inserire foto servoscala reale nella card (fornita dall'utente o trovata online) | Sonnet | No | Minimo |
+| 2b | Inserire foto ascensore reale nella card | Sonnet | No | Minimo |
+
+### STEP 3 — Pagine prodotto dedicate
+> Le card nella homepage puntano già a questi file, ma non esistono ancora.
+
+| # | Task | Modello | Ragionamento | Impegno |
+|---|------|---------|--------------|---------|
+| 3a | Definire struttura e contenuti di `servoscala.html` (come funziona, modelli, FAQ, preventivo) | Opus | Sì | Alto |
+| 3b | Costruire `servoscala.html` in HTML/CSS coerente col design system esistente | Sonnet | No | Alto |
+| 3c | Definire struttura e contenuti di `ascensori.html` | Opus | Sì | Alto |
+| 3d | Costruire `ascensori.html` | Sonnet | No | Alto |
+| 3e | Verificare coerenza stilistica tra i 3 file (tema, colori, font, animazioni) | Sonnet | No | Minimo |
+
+### STEP 4 — Rifinitura grafica e UX
+> Da fare dopo che i contenuti sono definitivi, per non rifinire cose
+> che potrebbero ancora cambiare.
+
+| # | Task | Modello | Ragionamento | Impegno |
+|---|------|---------|--------------|---------|
+| 4a | Eventuali micro-aggiustamenti dopo primo test su dispositivi reali | Sonnet | No | Variabile |
+| 4b | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) | Sonnet | No | Medio |
+
+### STEP 5 — Pre-lancio
+> Ultima fase prima della pubblicazione definitiva.
+
+| # | Task | Modello | Ragionamento | Impegno |
+|---|------|---------|--------------|---------|
+| 5a | SEO base: `<title>`, meta description, Open Graph per tutte e 3 le pagine | Sonnet | Sì | Medio |
+| 5b | Favicon (progettare o usare variante del logo LGM) | Sonnet | No | Medio |
+| 5c | Alt text per tutte le immagini reali inserite | Sonnet | No | Minimo |
+| 5d | Controllo accessibilità: contrasto colori, focus keyboard, screen reader | Sonnet | No | Medio |
+| 5e | Test finale completo su GitHub Pages (desktop + mobile) | — | — | Manuale dell'utente |
+| 5f | Rimozione nota "BOZZA" dal footer e aggiornamento copyright se necessario | Sonnet | No | Minimo |
+
+---
+
 ## Fase 1 — Contenuti definitivi (priorità attuale)
 > La struttura e l'interattività della homepage sono ora IN PRODUZIONE
 > (vedi Log modifiche). Restano da scrivere i testi veri al posto dei
@@ -28,8 +106,8 @@
   copiato dal sito attuale, da confermare
 
 ## Fase 2 — Rifinitura grafica/UX
-- ⬜ Aggiungere menu hamburger mobile: sotto 800px il menu di navigazione
-  attualmente sparisce senza alcuna alternativa per navigare
+- ✅ Menu mobile: risolto con la nav verticale compatta (pillola a destra,
+  sempre visibile sotto 800px, con etichetta sezione attiva visibile)
 - ⬜ Rivedere eventuali altri micro-hover/dettagli minori dopo il primo test
   su dispositivi reali
 - ✅ Logo aziendale: ricreato fedele alla targa (lettere LGM tracciate dalla
@@ -81,6 +159,8 @@ Le card nella homepage già puntano a questi file, ma non esistono ancora.
 | 05/07/2026 | Nuovo logo LGM Elevator: ricreato in SVG vettoriale (lettere LGM tracciate fedelmente dalla foto della targa aziendale, scritta ELEVATOR ricostruita nitida in font geometrico coerente) con colorazione blu metallizzato pulsante per LGM e nero metallico riflettente pulsante per ELEVATOR, entrambi con bagliore animato (rispetta `prefers-reduced-motion`). Inserito nella nav al posto della scritta testuale. Palette del sito aggiornata da arancio/verde a blu metallizzato (`--accent`, `--accent-2`, nuova `--accent-deep` in `:root`), applicata coerentemente a bottoni, hover, timeline, numeri Fiducia, tag prodotti. | Sonnet | Medio | ✅ |
 | 05/07/2026 | Aggiunta disabilitazione cache browser (meta tag `Cache-Control`, `Pragma`, `Expires` in `<head>`): la pagina viene sempre ricaricata fresca da GitHub Pages, niente più necessità di finestra in incognito per vedere gli aggiornamenti (resta valida la normale attesa di 1-2 minuti dopo il push per la propagazione lato GitHub). | Sonnet | Minimo | ✅ |
 | 05/07/2026 | Risolto rischio di errore ricorrente "salvo nella cartella sbagliata": la vecchia cartella locale `Desktop/Sito LGM` (non collegata a git) è stata rinominata in backup (`Sito LGM VECCHIA (backup)`) e sostituita da un collegamento simbolico con lo stesso nome che punta direttamente a `Documents/GitHub/Lgm sito`. Da ora salvare in `Desktop/Sito LGM` equivale a salvare nella cartella vera collegata a GitHub — nessuna copia manuale necessaria prima del push. | Sonnet | Minimo | ✅ |
+| 05/07/2026 | Aggiunta nav verticale compatta a `index.html`: su desktop la barra orizzontale sfuma dolcemente dopo la Hero e compare una pillola verticale fissa a destra con puntini-sezione (etichetta al passaggio del mouse, ultimo puntino si illumina quando si è in fondo alla pagina, logo "L" per tornare su); su mobile (<800px) la pillola è sempre presente con etichetta della sezione attiva sempre visibile — risolve contemporaneamente il task aperto del menu mobile. Fix noto: il deploy precedente aveva fallito per problema temporaneo lato GitHub (non del codice); il nuovo push è andato a buon fine. | Sonnet | Medio | ✅ |
+| 05/07/2026 | Aggiornata ROADMAP con scaletta operativa completa (Step 1→5) con modelli (Sonnet/Opus), flag ragionamento esteso (Sì/No) e livello di impegno per ogni task. Aggiornato CONTESTO_PROGETTO con regola su dichiarazione modello/impegno/ragionamento prima di ogni modifica. | Sonnet | Minimo | ✅ |
 | 05/07/2026 | Aggiunte animazioni avanzate a `index.html`, decise dopo prototipi dal vivo mostrati e approvati dall'utente: filo dell'ascensore (indicatore di scroll fisso a sinistra con freccia che punta su/giù a seconda della direzione), testi cinematici a comparsa parola per parola (hero + tutti i titoli di sezione), timeline "Chi siamo" che si disegna da sola con le tre voci a cascata, numeri della sezione Fiducia che contano da zero al valore finale, card prodotto con riflettore che segue il mouse combinato a zoom sull'immagine placeholder. Nav aggiornata con indicatore di sezione attiva (sottolineatura animata che segue lo scroll). Tutte le nuove animazioni rispettano `prefers-reduced-motion` e il filo dell'ascensore resta nascosto sotto 800px. Pubblicato online. | Sonnet | Medio-Alto | ✅ |
 
 ---

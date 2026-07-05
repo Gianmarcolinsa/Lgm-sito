@@ -77,9 +77,15 @@ gestibile su GitHub Pages senza bisogno di un CMS.
 1. **Nessuna modifica viene applicata senza consenso esplicito dell'utente.**
    Claude propone, l'utente approva, solo dopo si modifica `index.html`.
 2. Prima di iniziare qualunque modifica o miglioria, Claude deve dichiarare:
-   - il **modello** consigliato/usato per il task
-   - il **livello di impegno/effort** stimato (es. rapido/ritocco vs
-     ristrutturazione ampia)
+   - il **modello** consigliato per il task (**Sonnet** per lavoro tecnico/
+     operativo; **Opus** per testi definitivi ad alto impatto e architettura
+     di nuove pagine)
+   - se attivare il **ragionamento esteso** (Sì = task in cui la qualità
+     dipende da scelte non ovvie come struttura narrativa, SEO, architettura;
+     No = task tecnici con obiettivo chiaro come CSS/JS/HTML)
+   - il **livello di impegno/effort** stimato (Minimo / Medio / Alto)
+   La scaletta completa con modello, ragionamento e impegno per ogni task
+   è documentata in ROADMAP.md nella sezione "🗺️ Scaletta operativa".
 3. `index.html` va tenuto sempre aggiornato e coerente con GitHub: ogni
    modifica approvata deve essere riflessa nel file in modo che l'utente possa
    fare il push/commit e vedere il riscontro online.
@@ -193,8 +199,8 @@ sezione "Come pubblicare" di ROADMAP.md).
   la fotografia stabile di chi siamo, cosa stiamo facendo e con quali regole.
 
 ---
-*Ultimo aggiornamento: 05/07/2026 (aggiunte animazioni avanzate: filo
-dell'ascensore, testi cinematici, timeline che si disegna, contatori,
-card con riflettore, nav con indicatore di sezione attiva — oltre a
-nuovo logo blu metallizzato animato, palette blu, anti-cache browser,
-collegamento simbolico cartella locale/git)*
+*Ultimo aggiornamento: 05/07/2026 (aggiunta nav verticale compatta —
+desktop on-scroll + mobile sempre attiva, risolve task menu mobile aperto;
+aggiornata regola 2 con dichiarazione obbligatoria di modello/ragionamento/
+impegno prima di ogni modifica; scaletta operativa Step 1→5 aggiunta in
+ROADMAP.md con modelli e impegni per ogni task)*
