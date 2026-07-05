@@ -75,6 +75,9 @@
   @media (prefers-reduced-motion: reduce) {
     .logo-pulse-blue, .logo-pulse-el { animation: none; }
   }
+  .nav-links-wrap {
+    position: relative;
+  }
   .nav-links {
     list-style: none;
     display: flex;
@@ -394,9 +397,209 @@
     font-size: 13px;
     text-align: center;
   }
+
+  /* ============================================
+     ANIMAZIONI AVANZATE
+     Filo dell'ascensore, testi cinematici, timeline
+     che si disegna, contatori, card con riflettore
+     ============================================ */
+
+  /* Filo dell'ascensore — indicatore di scroll fisso */
+  .elevator-rail {
+    position: fixed;
+    left: 18px;
+    top: 110px;
+    bottom: 28px;
+    width: 20px;
+    z-index: 500;
+    pointer-events: none;
+  }
+  .elevator-track {
+    position: absolute;
+    left: 9px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(244,243,239,0.08);
+    border-radius: 2px;
+  }
+  .elevator-fill {
+    position: absolute;
+    left: 9px;
+    top: 0;
+    width: 2px;
+    height: 0%;
+    background: linear-gradient(180deg, #a8d4ff, var(--accent), var(--accent-deep));
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(90,150,255,0.55);
+  }
+  .elevator-cabin {
+    position: absolute;
+    left: 2px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: #eaf4ff;
+    box-shadow: 0 0 12px rgba(140,190,255,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-deep);
+  }
+  .elevator-cabin svg {
+    transition: transform 0.3s ease;
+  }
+  @media (max-width: 800px) {
+    .elevator-rail { display: none; }
+  }
+
+  /* Nav — indicatore di sezione attiva */
+  .nav-links a.active { color: var(--text); }
+  .nav-underline {
+    position: absolute;
+    bottom: -6px;
+    height: 2px;
+    left: 0;
+    width: 0;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(47,125,224,0.6);
+    opacity: 0;
+    transition: left 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Testi che entrano in scena (titoli, parola per parola) */
+  .text-reveal .word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  .text-reveal .word-inner {
+    display: inline-block;
+    transform: translateY(110%);
+    filter: blur(6px);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(.16,1,.3,1), filter 0.8s ease, opacity 0.8s ease;
+  }
+  .text-reveal.in-view .word-inner {
+    transform: translateY(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+  .hero-fade {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .hero-fade.in-view { opacity: 1; transform: none; }
+
+  /* Timeline che si disegna da sola */
+  .storia-timeline {
+    position: relative;
+    padding-left: 26px;
+  }
+  .tl-line {
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1s ease;
+  }
+  .storia-timeline.in-view .tl-line { transform: scaleY(1); }
+  .tl-item {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease;
+  }
+  .storia-timeline.in-view .tl-item {
+    opacity: 1;
+    transform: none;
+  }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -26px;
+    top: 28px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(47,125,224,0.18);
+  }
+
+  /* Card prodotto — riflettore che segue il mouse + zoom immagine */
+  .prodotto-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .prodotto-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(47,125,224,0.16), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .prodotto-card:hover::before { opacity: 1; }
+  .prodotto-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .img-placeholder {
+    position: relative;
+    overflow: hidden;
+  }
+  .img-placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 45% 35%, rgba(91,143,201,0.35), transparent 60%);
+    transform: scale(1);
+    transition: transform 0.5s ease;
+  }
+  .prodotto-card:hover .img-placeholder::after { transform: scale(1.6); }
+  .prodotto-card a {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+  .prodotto-card:hover a { transform: translateX(4px); }
+
+  /* Rispetto delle preferenze di riduzione movimento */
+  @media (prefers-reduced-motion: reduce) {
+    .elevator-fill, .elevator-cabin, .elevator-cabin svg { transition: none; }
+    .text-reveal .word-inner {
+      transition: none;
+      transform: none;
+      filter: none;
+      opacity: 1;
+    }
+    .hero-fade { transition: none; opacity: 1; transform: none; }
+    .tl-line { transition: none; }
+    .tl-item { transition: none; opacity: 1; transform: none; }
+    .prodotto-card::before, .img-placeholder::after { transition: none; }
+  }
 </style>
 </head>
 <body>
+
+<div class="elevator-rail" aria-hidden="true">
+  <div class="elevator-track"></div>
+  <div class="elevator-fill" id="elevatorFill"></div>
+  <div class="elevator-cabin" id="elevatorCabin">
+    <svg id="elevatorArrow" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </div>
+</div>
 
 <div class="wrap">
   <nav>
@@ -438,32 +641,36 @@
         </g>
       </svg>
     </div>
-    <ul class="nav-links">
-      <li><a href="#storia">Chi siamo</a></li>
-      <li><a href="#prodotti">Servoscala</a></li>
-      <li><a href="#prodotti">Ascensori</a></li>
-      <li><a href="#contatti">Contatti</a></li>
-    </ul>
+    <div class="nav-links-wrap">
+      <ul class="nav-links">
+        <li><a href="#storia">Chi siamo</a></li>
+        <li><a href="#prodotti">Servoscala</a></li>
+        <li><a href="#prodotti">Ascensori</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+      </ul>
+      <span class="nav-underline" id="navUnderline"></span>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero" style="border-top:none;">
-    <div class="hero-eyebrow">LGM Elevator — Matera</div>
-    <h1>[PLACEHOLDER] Non tutti sanno chi installa l'ascensore di casa loro. Noi sì.</h1>
-    <p>[PLACEHOLDER] Una famiglia, tre generazioni di lavoro, un'azienda che cammina con le proprie gambe dal 1988. Servoscala e impianti di sollevamento, installati e seguiti da chi li conosce pezzo per pezzo.</p>
-    <a href="#contatti" class="btn-primary">Richiedi un sopralluogo gratuito</a>
+    <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
+    <h1 class="text-reveal">[PLACEHOLDER] Non tutti sanno chi installa l'ascensore di casa loro. Noi sì.</h1>
+    <p class="hero-fade" style="transition-delay:.9s;">[PLACEHOLDER] Una famiglia, tre generazioni di lavoro, un'azienda che cammina con le proprie gambe dal 1988. Servoscala e impianti di sollevamento, installati e seguiti da chi li conosce pezzo per pezzo.</p>
+    <a href="#contatti" class="btn-primary hero-fade" style="transition-delay:1.05s;">Richiedi un sopralluogo gratuito</a>
   </section>
 
   <!-- STORIA -->
   <section id="storia" class="reveal">
     <div class="section-label">Chi siamo</div>
-    <h2 class="section-title">[PLACEHOLDER] Una storia che parte da un tecnico in viaggio per l'Italia</h2>
+    <h2 class="section-title text-reveal">[PLACEHOLDER] Una storia che parte da un tecnico in viaggio per l'Italia</h2>
     <div class="storia-grid">
       <div class="storia-testo">
         <p>[PLACEHOLDER] Franco lavorava come tecnico di ascensori, spostandosi di città in città — da Bitonto a Torino, Roma, Bari — prima di stabilirsi a Matera per costruire una famiglia e, anni dopo, un'azienda tutta sua.</p>
         <p>[PLACEHOLDER] Oggi LGM Elevator è guidata dai figli Marco e Giovanni, che portano avanti lo stesso lavoro con la stessa cura, affiancati da un team di quasi 15 persone tra ufficio e tecnici sul campo.</p>
       </div>
       <div class="storia-timeline">
+        <div class="tl-line"></div>
         <div class="tl-item" onclick="this.classList.toggle('open')">
           <div class="tl-header">
             <div class="tl-year">1988</div>
@@ -495,7 +702,7 @@
   <!-- PANORAMICA PRODOTTI -->
   <section id="prodotti" class="reveal">
     <div class="section-label">Cosa facciamo</div>
-    <h2 class="section-title">Due modi per restituirti libertà di movimento in casa</h2>
+    <h2 class="section-title text-reveal">Due modi per restituirti libertà di movimento in casa</h2>
     <div class="prodotti-grid">
       <div class="prodotto-card">
         <div class="img-placeholder">[foto servoscala — da inserire]</div>
@@ -532,18 +739,18 @@
   <!-- FIDUCIA -->
   <section id="fiducia" class="reveal">
     <div class="section-label">Perché scegliere LGM Elevator</div>
-    <h2 class="section-title">[PLACEHOLDER — da confermare i numeri esatti]</h2>
+    <h2 class="section-title text-reveal">[PLACEHOLDER — da confermare i numeri esatti]</h2>
     <div class="fiducia-grid">
       <div class="fiducia-card">
-        <div class="num">1988</div>
+        <div class="num" data-target="1988" data-prefix="">0</div>
         <div class="label">L'anno in cui tutto è cominciato</div>
       </div>
       <div class="fiducia-card">
-        <div class="num">~14</div>
+        <div class="num" data-target="14" data-prefix="~">0</div>
         <div class="label">Persone nel team, tra ufficio e tecnici</div>
       </div>
       <div class="fiducia-card">
-        <div class="num">H24</div>
+        <div class="num" data-target="24" data-prefix="H">0</div>
         <div class="label">Assistenza per le emergenze</div>
       </div>
     </div>
@@ -552,7 +759,7 @@
   <!-- CONTATTI -->
   <section id="contatti" class="reveal">
     <div class="section-label">Contatti</div>
-    <h2 class="section-title">Richiedi il tuo sopralluogo gratuito</h2>
+    <h2 class="section-title text-reveal">Richiedi il tuo sopralluogo gratuito</h2>
     <div class="contatti-grid">
       <div>
         <div class="contatto-riga">📞 0835 381904</div>
@@ -570,16 +777,139 @@
 </div>
 
 <script>
-  // Scroll reveal
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Filo dell'ascensore — indicatore di scroll con freccia direzionale
+  const elevatorFill = document.getElementById('elevatorFill');
+  const elevatorCabin = document.getElementById('elevatorCabin');
+  const elevatorArrow = document.getElementById('elevatorArrow');
+  const elevatorRailEl = document.querySelector('.elevator-rail');
+  let lastScrollY = window.scrollY;
+
+  function updateElevator() {
+    if (!elevatorFill || !elevatorCabin || !elevatorRailEl) return;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const frac = docHeight > 0 ? Math.min(Math.max(window.scrollY / docHeight, 0), 1) : 0;
+    elevatorFill.style.height = (frac * 100) + '%';
+    const railTravel = elevatorRailEl.clientHeight - 16;
+    elevatorCabin.style.transform = `translateY(${frac * railTravel}px)`;
+    const delta = window.scrollY - lastScrollY;
+    if (Math.abs(delta) > 1 && elevatorArrow) {
+      elevatorArrow.style.transform = delta > 0 ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    lastScrollY = window.scrollY;
+  }
+  window.addEventListener('scroll', updateElevator, { passive: true });
+  window.addEventListener('resize', updateElevator);
+  updateElevator();
+
+  // Nav — evidenzia la sezione attiva durante lo scroll
+  const navLinksWrap = document.querySelector('.nav-links-wrap');
+  const navUnderline = document.getElementById('navUnderline');
+  const navSections = ['storia', 'prodotti', 'contatti']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  const navLinkGroups = {};
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const id = a.getAttribute('href').replace('#', '');
+    (navLinkGroups[id] = navLinkGroups[id] || []).push(a);
+  });
+
+  function updateNavActive() {
+    if (!navSections.length || !navLinksWrap) return;
+    let currentId = navSections[0].id;
+    const scrollPos = window.scrollY + 140;
+    navSections.forEach(sec => {
+      if (sec.offsetTop <= scrollPos) currentId = sec.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const activeLinks = navLinkGroups[currentId] || [];
+    activeLinks.forEach(a => a.classList.add('active'));
+    if (activeLinks.length) {
+      const wrapRect = navLinksWrap.getBoundingClientRect();
+      const firstRect = activeLinks[0].getBoundingClientRect();
+      const lastRect = activeLinks[activeLinks.length - 1].getBoundingClientRect();
+      navUnderline.style.left = (firstRect.left - wrapRect.left) + 'px';
+      navUnderline.style.width = (lastRect.right - firstRect.left) + 'px';
+      navUnderline.style.opacity = '1';
+    }
+  }
+  window.addEventListener('scroll', updateNavActive, { passive: true });
+  updateNavActive();
+
+  // Testi che entrano in scena, parola per parola
+  function wrapWords(el) {
+    const text = el.textContent;
+    el.innerHTML = text
+      .split(' ')
+      .map(w => `<span class="word-wrap"><span class="word-inner">${w}</span></span>`)
+      .join(' ');
+    el.querySelectorAll('.word-inner').forEach((span, i) => {
+      span.style.transitionDelay = (i * 0.045) + 's';
+    });
+  }
+  document.querySelectorAll('.text-reveal').forEach(el => {
+    if (!reduceMotion) wrapWords(el);
+  });
+
+  // Hero: entra in scena subito al caricamento della pagina
+  const heroTitle = document.querySelector('.hero .text-reveal');
+  const heroFadeEls = document.querySelectorAll('.hero .hero-fade');
+  setTimeout(() => {
+    if (heroTitle) heroTitle.classList.add('in-view');
+    heroFadeEls.forEach(el => el.classList.add('in-view'));
+  }, 150);
+
+  // Scroll reveal sezioni (attiva anche titoli cinematici e timeline collegati)
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        entry.target.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
+        const timeline = entry.target.querySelector('.storia-timeline');
+        if (timeline) timeline.classList.add('in-view');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Contatori numeri sezione Fiducia
+  function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'), 10);
+    const prefix = el.getAttribute('data-prefix') || '';
+    if (reduceMotion || isNaN(target)) {
+      el.textContent = prefix + (isNaN(target) ? '' : target);
+      return;
+    }
+    const duration = 1100;
+    const start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = prefix + Math.round(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => counterObserver.observe(el));
+
+  // Card prodotto — riflettore che segue il mouse
+  document.querySelectorAll('.prodotto-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+    });
+  });
 
   // Mini configuratore
   const risultati = {

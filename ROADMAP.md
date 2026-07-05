@@ -13,28 +13,42 @@
 
 ---
 
-## Fase 1 — Contenuti e credibilità (priorità attuale)
-- ⬜ Sostituire il placeholder immagine nella sezione Servoscala
-  (`[Qui inseriremo una bella foto del giammone nazionale]`)
-- ⬜ Verificare/confermare claim "Dal 1988" con dati reali
-- ⬜ Verificare correttezza contatti (telefono, email, indirizzo)
-- ⬜ Valutare aggiunta foto team/sede reale in "Chi siamo"
+## Fase 1 — Contenuti definitivi (priorità attuale)
+> La struttura e l'interattività della homepage sono ora IN PRODUZIONE
+> (vedi Log modifiche). Restano da scrivere i testi veri al posto dei
+> placeholder e aggiungere le immagini reali.
+- ⬜ Testo Hero definitivo (partire dal messaggio-gancio già concordato)
+- ⬜ Testo Storia definitivo (partire dai dati raccolti in "Fase 0" più sotto)
+- ⬜ Confermare/scrivere i 3 numeri della sezione Fiducia (1988 confermato,
+  ~14 persone da confermare come dicitura, terzo dato da scegliere)
+- ⬜ Decidere se/come menzionare l'area operativa Puglia nei contatti
+- ⬜ Sostituire le due immagini placeholder (Servoscala, Ascensori) nella
+  sezione Panoramica prodotti
+- ⬜ Verificare correttezza contatti (telefono, email, indirizzo) — dato
+  copiato dal sito attuale, da confermare
 
 ## Fase 2 — Rifinitura grafica/UX
-- ⬜ Uniformare spaziature e gerarchia visiva tra sezioni
-- ⬜ Verificare responsive mobile (nav senza menu hamburger da controllare)
-- ⬜ Coerenza hover/micro-animazioni tra tutte le sezioni
+- ⬜ Aggiungere menu hamburger mobile: sotto 800px il menu di navigazione
+  attualmente sparisce senza alcuna alternativa per navigare
+- ⬜ Rivedere eventuali altri micro-hover/dettagli minori dopo il primo test
+  su dispositivi reali
+- ✅ Logo aziendale: ricreato fedele alla targa (lettere LGM tracciate dalla
+  foto reale) in blu metallizzato pulsante + ELEVATOR nero metallico
+  riflettente pulsante, inserito nella nav. Palette sito aggiornata a blu
+  coerente col logo (era arancio/verde).
+- ⬜ Se in futuro disponibile, sostituire la scritta "ELEVATOR" (oggi
+  ricostruita con font geometrico) con il font/vettoriale originale del
+  grafico, per fedeltà 100% alla targa
 
-## Fase 3 — Struttura ibrida (decisione confermata 04/07/2026)
+## Fase 3 — Pagine prodotto dedicate
 Modello scelto: homepage a scroll singolo + 2 pagine prodotto dedicate.
 Vedi dettagli in CONTESTO_PROGETTO.md, sezione "Struttura del sito".
-- ⬜ Ridisegnare `index.html` come homepage più snella: Hero, Storia,
-  Panoramica prodotti (card verso le pagine dedicate), Fiducia, Contatti
+Le card nella homepage già puntano a questi file, ma non esistono ancora.
 - ⬜ Creare `servoscala.html` (come funziona, modelli, FAQ, preventivo)
 - ⬜ Creare `ascensori.html` (tipologie impianto, installazione,
   manutenzione, preventivo)
-- ⬜ Aggiornare il menu di navigazione per collegare le 3 pagine
-- ⬜ Mantenere coerenza di stile/design system (colori, font) tra i 3 file
+- ⬜ Mantenere coerenza di stile/design system (tema scuro, colori, font,
+  animazioni) tra i 3 file
 - ⬜ Eventuali altre categorie (montascale, mini ascensori, piattaforme
   elevatrici) — ancora da valutare, resta scalabile con questo modello
 
@@ -42,7 +56,10 @@ Vedi dettagli in CONTESTO_PROGETTO.md, sezione "Struttura del sito".
 - ⬜ SEO base: title, meta description, Open Graph, favicon
 - ⬜ Alt text per tutte le immagini
 - ⬜ Controllo accessibilità e contrasto colori
-- ⬜ Test finale su GitHub Pages prima del lancio
+- ✅ Sito pubblicato e visibile su GitHub Pages (tema scuro live su
+  https://gianmarcolinsa.github.io/Lgm-sito/) — flusso di pubblicazione
+  git configurato e funzionante (vedi sezione "Come pubblicare" più sotto)
+- ⬜ Test finale su GitHub Pages prima del lancio (contenuti definitivi)
 
 ---
 
@@ -52,6 +69,50 @@ Vedi dettagli in CONTESTO_PROGETTO.md, sezione "Struttura del sito".
 | Data | Modifica | Modello usato | Effort | Stato |
 |------|----------|----------------|--------|-------|
 | 04/07/2026 | Creazione file CONTESTO_PROGETTO.md e ROADMAP.md | Sonnet | Basso | ✅ |
+| 04/07/2026 | Nuova homepage `index.html`: struttura ibrida (Hero, Storia, Panoramica prodotti, Fiducia, Contatti), tema scuro elegante, animazioni scroll-reveal, hover raffinati, timeline storia cliccabile, mini-configuratore interattivo. Testi ancora placeholder. | Sonnet | Medio | ✅ |
+| 04/07/2026 | Ricostruito il blocco CSS di `index.html`, che risultava troncato (mancavano `</style>`, `</head>`, `<body>` e lo stile di quasi tutti i componenti: nav, hero, storia/timeline, card prodotti, configuratore, fiducia, contatti, footer). Nessun contenuto testuale modificato, solo stile ripristinato in coerenza col tema scuro già scelto (accento arancio bruciato + verde salvia). | Sonnet | Medio | ✅ |
+| 04/07/2026 | Prima pubblicazione riuscita del sito (tema scuro) su GitHub Pages. Configurata l'autenticazione git via Personal Access Token (classic, scope `repo`) salvato nel remote. Risolto un blocco lato GitHub (deploy fermo in "Queued" + errore "Deployment failed, try again later", problema temporaneo dell'infrastruttura GitHub, non del codice) rilanciando con un commit vuoto. Nessuna modifica ai contenuti. | Sonnet | Medio | ✅ |
+| 05/07/2026 | Nuovo logo LGM Elevator: ricreato in SVG vettoriale (lettere LGM tracciate fedelmente dalla foto della targa aziendale, scritta ELEVATOR ricostruita nitida in font geometrico coerente) con colorazione blu metallizzato pulsante per LGM e nero metallico riflettente pulsante per ELEVATOR, entrambi con bagliore animato (rispetta `prefers-reduced-motion`). Inserito nella nav al posto della scritta testuale. Palette del sito aggiornata da arancio/verde a blu metallizzato (`--accent`, `--accent-2`, nuova `--accent-deep` in `:root`), applicata coerentemente a bottoni, hover, timeline, numeri Fiducia, tag prodotti. | Sonnet | Medio | ✅ |
+| 05/07/2026 | Aggiunta disabilitazione cache browser (meta tag `Cache-Control`, `Pragma`, `Expires` in `<head>`): la pagina viene sempre ricaricata fresca da GitHub Pages, niente più necessità di finestra in incognito per vedere gli aggiornamenti (resta valida la normale attesa di 1-2 minuti dopo il push per la propagazione lato GitHub). | Sonnet | Minimo | ✅ |
+| 05/07/2026 | Risolto rischio di errore ricorrente "salvo nella cartella sbagliata": la vecchia cartella locale `Desktop/Sito LGM` (non collegata a git) è stata rinominata in backup (`Sito LGM VECCHIA (backup)`) e sostituita da un collegamento simbolico con lo stesso nome che punta direttamente a `Documents/GitHub/Lgm sito`. Da ora salvare in `Desktop/Sito LGM` equivale a salvare nella cartella vera collegata a GitHub — nessuna copia manuale necessaria prima del push. | Sonnet | Minimo | ✅ |
+
+---
+
+## 🚀 Come pubblicare il sito (procedura confermata e funzionante)
+> Dopo aver modificato e salvato i file sul Mac, per rendere le modifiche
+> visibili online basta UN solo comando incollato nel Terminale + Invio.
+> L'autenticazione è già configurata (token salvato): non chiede più
+> username/password.
+
+**Comando unico standard** (fa tutto: entra in cartella, prepara, salva, pubblica):
+```
+cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && git add -A && git commit -m "Aggiorna sito" && git push
+```
+Poi attendere 1-2 minuti → il sito si aggiorna da solo su
+https://gianmarcolinsa.github.io/Lgm-sito/ (controllare in finestra
+incognito per evitare la cache del browser).
+
+**Se il deploy si blocca** (raro, problema temporaneo lato GitHub) — rilancio
+con commit vuoto:
+```
+cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && git commit --allow-empty -m "Riprova pubblicazione" && git push
+```
+Verifica esito su https://github.com/Gianmarcolinsa/Lgm-sito/actions
+(pallino verde ✅ = pubblicato).
+
+**Nota per Claude**: l'utente è agli inizi con git/Terminale e preferisce
+comandi già completi, in un unico blocco con `&&`, pronti da un solo
+copia-incolla — evitare di spezzarli in più passaggi salvo necessità.
+Ad ogni consegna di file versionati, allegare sempre il comando pronto
+(regola 5 di CONTESTO_PROGETTO.md), con dentro un messaggio di commit
+descrittivo della modifica effettiva.
+
+**Cartella di lavoro locale (aggiornato 05/07/2026)**: `Desktop/Sito LGM` è
+ora un collegamento simbolico che punta direttamente a
+`Documents/GitHub/Lgm sito` — salvare i file scaricati/modificati dentro
+`Desktop/Sito LGM` equivale a salvarli nella cartella vera collegata a git,
+senza bisogno di copie manuali. La vecchia cartella reale (non collegata)
+è stata rinominata in `Desktop/Sito LGM VECCHIA (backup)` per sicurezza.
 
 ---
 
