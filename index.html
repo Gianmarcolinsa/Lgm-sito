@@ -1138,33 +1138,85 @@
   const navUnderline = document.getElementById('navUnderline');
   const navLinksWrap = document.querySelector('.nav-links-wrap');
 
+  // Observer attivo sulla vista corrente — ricreato ad ogni cambio vista
+  let currentObserver = null;
+
   function activateAnimations(viewEl) {
-    // Scroll-reveal: mostra le sezioni della vista
-    viewEl.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-    // Testi cinematici parola per parola
-    viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
-    // Hero fade
-    viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.add('in-view'));
-    // Timeline che si disegna
-    const timeline = viewEl.querySelector('.storia-timeline');
-    if (timeline) {
-      timeline.classList.remove('in-view');
-      void timeline.offsetWidth;
-      timeline.classList.add('in-view');
+    // Cancella l'observer della vista precedente
+    if (currentObserver) { currentObserver.disconnect(); currentObserver = null; }
+
+    if (reduceMotion) {
+      // Nessuna animazione: mostra tutto subito
+      viewEl.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+      viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
+      viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.add('in-view'));
+      const tl = viewEl.querySelector('.storia-timeline');
+      if (tl) tl.classList.add('in-view');
+      viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
+        el.textContent = (el.getAttribute('data-prefix') || '') + el.getAttribute('data-target');
+      });
+      return;
     }
-    // Contatori Fiducia
-    viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
-      el.textContent = (el.getAttribute('data-prefix') || '') + '0';
-      animateCounter(el);
+
+    // Raccoglie tutti gli elementi animabili della vista
+    const targets = [
+      ...viewEl.querySelectorAll('.reveal'),
+      ...viewEl.querySelectorAll('.text-reveal'),
+      ...viewEl.querySelectorAll('.hero-fade'),
+      ...viewEl.querySelectorAll('.storia-timeline'),
+      ...viewEl.querySelectorAll('.fiducia-card'),
+    ];
+
+    currentObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+
+        if (el.classList.contains('reveal')) {
+          el.classList.add('visible');
+        }
+        if (el.classList.contains('text-reveal')) {
+          el.classList.add('in-view');
+        }
+        if (el.classList.contains('hero-fade')) {
+          el.classList.add('in-view');
+        }
+        if (el.classList.contains('storia-timeline')) {
+          el.classList.remove('in-view');
+          void el.offsetWidth;
+          el.classList.add('in-view');
+        }
+        if (el.classList.contains('fiducia-card')) {
+          const num = el.querySelector('.num[data-target]');
+          if (num) {
+            num.textContent = (num.getAttribute('data-prefix') || '') + '0';
+            animateCounter(num);
+          }
+        }
+
+        // Smette di osservare dopo la prima attivazione —
+        // il reset avviene in resetAnimations al cambio vista
+        currentObserver.unobserve(el);
+      });
+    }, {
+      root: null,         // viewport del browser
+      threshold: 0.15,    // parte quando il 15% dell'elemento è visibile
+      rootMargin: '0px'
     });
+
+    targets.forEach(el => currentObserver.observe(el));
   }
 
   function resetAnimations(viewEl) {
-    // Reset dei testi cinematici così ripartono alla prossima apertura
     viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.remove('in-view'));
     viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.remove('in-view'));
-    const timeline = viewEl.querySelector('.storia-timeline');
-    if (timeline) timeline.classList.remove('in-view');
+    viewEl.querySelectorAll('.reveal').forEach(el => el.classList.remove('visible'));
+    const tl = viewEl.querySelector('.storia-timeline');
+    if (tl) tl.classList.remove('in-view');
+    // Reset contatori
+    viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
+      el.textContent = (el.getAttribute('data-prefix') || '') + '0';
+    });
   }
 
   function showView(name, updateHash = true) {
