@@ -61,28 +61,16 @@
     animation: logoPulseBlue 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseBlue {
-    0%, 100% {
-      opacity: 0.75;
-      filter: drop-shadow(0 0 3px rgba(70,150,255,.5)) brightness(0.88);
-    }
-    50% {
-      opacity: 1;
-      filter: drop-shadow(0 0 16px rgba(110,185,255,1)) drop-shadow(0 0 8px rgba(255,255,255,.7)) brightness(1.18);
-    }
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1;   }
   }
   .logo-pulse-el {
     transform-origin: center;
     animation: logoPulseEl 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseEl {
-    0%, 100% {
-      opacity: 0.75;
-      filter: drop-shadow(0 0 3px rgba(120,150,200,.45)) brightness(0.88);
-    }
-    50% {
-      opacity: 1;
-      filter: drop-shadow(0 0 14px rgba(150,190,255,.95)) drop-shadow(0 0 6px rgba(255,255,255,.6)) brightness(1.12);
-    }
+    0%, 100% { opacity: 0.6; }
+    50%       { opacity: 1;   }
   }
   @media (prefers-reduced-motion: reduce) {
     .logo-pulse-blue, .logo-pulse-el { animation: none; }
@@ -710,11 +698,11 @@
             <stop offset="100%" stop-color="#000a20"/>
           </linearGradient>
           <linearGradient id="navElMetal" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#6d6d72"/>
-            <stop offset="42%" stop-color="#1a1a1d"/>
-            <stop offset="52%" stop-color="#050506"/>
-            <stop offset="70%" stop-color="#101012"/>
-            <stop offset="100%" stop-color="#3a3a3e"/>
+            <stop offset="0%"   stop-color="#c8c8ce"/>
+            <stop offset="38%"  stop-color="#6a6a70"/>
+            <stop offset="50%"  stop-color="#3a3a3f"/>
+            <stop offset="68%"  stop-color="#545459"/>
+            <stop offset="100%" stop-color="#9a9a9e"/>
           </linearGradient>
           <linearGradient id="navShine" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
@@ -725,12 +713,18 @@
             <animate attributeName="x1" values="-1;1" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="x2" values="0;2" dur="3s" repeatCount="indefinite"/>
           </linearGradient>
+          <filter id="lgmPulseGlow" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#4a96ff" flood-opacity="0.3">
+              <animate attributeName="stdDeviation" values="2;12;2" dur="4.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+              <animate attributeName="flood-opacity" values="0.25;0.95;0.25" dur="4.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+            </feDropShadow>
+          </filter>
         </defs>
-        <g class="logo-pulse-blue">
+        <g class="logo-pulse-blue" filter="url(#lgmPulseGlow)">
           <path d="M 469.5,87.4 L 468.7,88.1 L 468.0,87.4 L 467.2,88.1 L 447.7,88.1 L 446.9,88.9 L 432.1,88.9 L 430.5,89.7 L 430.5,153.6 L 431.3,154.4 L 431.3,173.1 L 432.1,173.9 L 432.1,182.5 L 433.6,183.3 L 435.2,183.3 L 438.3,184.8 L 442.2,184.8 L 443.0,184.1 L 454.7,184.1 L 455.5,183.3 L 472.6,183.3 L 474.2,182.5 L 474.2,180.9 L 475.0,180.2 L 475.0,159.1 L 474.2,158.3 L 474.2,134.2 L 473.4,133.4 L 473.4,109.2 L 472.6,108.4 L 472.6,94.4 L 473.4,93.6 L 473.4,92.0 L 472.6,91.3 L 472.6,89.7 Z M 216.0,81.9 L 216.0,112.3 L 218.4,116.2 L 230.1,117.0 L 230.9,116.2 L 280.0,116.2 L 281.6,115.4 L 285.5,118.6 L 286.2,184.8 L 287.8,188.0 L 289.4,188.7 L 318.2,188.7 L 319.0,188.0 L 327.6,188.0 L 329.9,186.4 L 329.9,134.2 L 328.4,120.9 L 328.4,99.1 L 327.6,98.3 L 327.6,78.8 L 322.9,76.4 L 322.1,77.2 L 305.7,77.2 L 305.0,78.0 L 223.1,79.6 Z M 326.0,6.2 L 322.9,3.1 L 205.9,6.2 L 173.9,14.8 L 148.2,29.6 L 123.2,59.3 L 114.7,86.6 L 118.6,127.9 L 133.4,153.6 L 124.0,157.5 L 88.1,156.0 L 59.3,135.7 L 47.6,108.4 L 43.7,10.1 L 2.3,10.9 L 0.0,33.5 L 3.1,108.4 L 8.6,133.4 L 16.4,149.0 L 34.3,170.0 L 49.1,180.2 L 78.0,191.9 L 117.8,195.0 L 269.1,190.3 L 272.2,187.2 L 270.6,153.6 L 214.5,153.6 L 188.0,145.8 L 171.6,132.6 L 163.0,119.3 L 158.3,102.2 L 160.7,84.2 L 177.8,59.3 L 202.0,46.0 L 323.7,40.6 L 326.8,38.2 Z M 364.2,38.2 L 352.5,56.9 L 345.5,78.0 L 346.3,170.8 L 348.6,186.4 L 379.1,187.2 L 390.8,184.8 L 389.2,93.6 L 392.3,72.5 L 401.7,59.3 L 417.3,46.8 L 443.0,37.4 L 475.0,41.3 L 492.1,51.5 L 505.4,64.7 L 510.9,79.6 L 513.2,96.7 L 515.5,180.9 L 543.6,182.5 L 557.7,180.2 L 554.5,71.8 L 537.4,37.4 L 517.1,18.7 L 500.7,9.4 L 481.2,3.1 L 440.7,0.0 L 403.2,9.4 L 381.4,21.8 Z" fill="url(#navUltraBlue)" fill-rule="evenodd" stroke="#8fc4ff" stroke-width="0.6" stroke-opacity="0.5"/>
         </g>
         <g class="logo-pulse-el">
-          <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navElMetal)" stroke="#57575c" stroke-width="0.5" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
+          <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navElMetal)" stroke="#8a8a90" stroke-width="0.4" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
           <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navShine)" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
         </g>
       </svg>
