@@ -1130,6 +1130,11 @@
   const views = document.querySelectorAll('.view');
   const navLinks = document.querySelectorAll('.nav-links a[data-view]');
   const condLinks = document.querySelectorAll('.nav-condensed a[data-view]');
+  const elevatorFill = document.getElementById('elevatorFill');
+  const elevatorCabin = document.getElementById('elevatorCabin');
+  const elevatorArrow = document.getElementById('elevatorArrow');
+  const elevatorRailEl = document.querySelector('.elevator-rail');
+  let lastScrollY = window.scrollY;
   const navUnderline = document.getElementById('navUnderline');
   const navLinksWrap = document.querySelector('.nav-links-wrap');
 
@@ -1226,12 +1231,6 @@
   // FILO DELL'ASCENSORE — indicatore di scroll con freccia direzionale
   // (misura lo scroll della vista attualmente aperta)
   // ============================================
-  const elevatorFill = document.getElementById('elevatorFill');
-  const elevatorCabin = document.getElementById('elevatorCabin');
-  const elevatorArrow = document.getElementById('elevatorArrow');
-  const elevatorRailEl = document.querySelector('.elevator-rail');
-  let lastScrollY = window.scrollY;
-
   function updateElevator() {
     if (!elevatorFill || !elevatorCabin || !elevatorRailEl) return;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
