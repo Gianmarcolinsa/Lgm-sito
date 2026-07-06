@@ -792,6 +792,51 @@
     .prodotto-card::before, .img-placeholder::after { transition: none; }
     .nav-condensed, .nav-condensed a::before, .nav-condensed a::after { transition: none; }
   }
+
+  /* ============================================
+     SISTEMA A VISTE (SPA)
+     Ogni voce nav apre una vista dedicata; niente
+     più scroll continuo tra sezioni. Le animazioni
+     scroll-based si riattivano all'apertura di ogni vista.
+     ============================================ */
+  .view { display: none; }
+  .view.active {
+    display: block;
+    animation: viewEnter 0.5s ease;
+  }
+  @keyframes viewEnter {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .view.active { animation: none; }
+  }
+
+  /* Placeholder viste prodotto ancora da costruire */
+  .vista-costruzione {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 48px 40px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .vista-costruzione .vc-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .vista-costruzione h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .vista-costruzione p {
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto 8px;
+  }
 </style>
 </head>
 <body>
@@ -848,192 +893,228 @@
     </div>
     <div class="nav-links-wrap">
       <ul class="nav-links">
-        <li><a href="#storia">Chi siamo</a></li>
-        <li><a href="#prodotti">Servoscala</a></li>
-        <li><a href="#prodotti">Ascensori</a></li>
-        <li><a href="#configuratore">Configuratore</a></li>
-        <li><a href="#contatti">Contatti</a></li>
+        <li><a data-view="home">LGM</a></li>
+        <li><a data-view="chisiamo">Chi siamo</a></li>
+        <li><a data-view="servoscala">Servoscala</a></li>
+        <li><a data-view="ascensori">Ascensori</a></li>
+        <li><a data-view="configuratore">Configuratore</a></li>
+        <li><a data-view="contatti">Contatti</a></li>
       </ul>
       <span class="nav-underline" id="navUnderline"></span>
     </div>
   </nav>
 
   <nav class="nav-condensed" id="navCondensed" aria-label="Navigazione rapida">
-    <button type="button" class="cond-logo" id="condLogo" aria-label="Torna all'inizio della pagina">L</button>
-    <a href="#storia" data-target="storia" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
-    <a href="#prodotti" data-target="prodotti" data-lbl="Prodotti" aria-label="Prodotti"></a>
-    <a href="#configuratore" data-target="configuratore" data-lbl="Configuratore" aria-label="Configuratore"></a>
-    <a href="#contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
+    <a data-view="home" data-target="home" data-lbl="LGM" aria-label="LGM — Home"></a>
+    <a data-view="chisiamo" data-target="chisiamo" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
+    <a data-view="servoscala" data-target="servoscala" data-lbl="Servoscala" aria-label="Servoscala"></a>
+    <a data-view="ascensori" data-target="ascensori" data-lbl="Ascensori" aria-label="Ascensori"></a>
+    <a data-view="configuratore" data-target="configuratore" data-lbl="Configuratore" aria-label="Configuratore"></a>
+    <a data-view="contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" style="border-top:none;">
-    <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
-    <h1 class="text-reveal">[PLACEHOLDER] Non tutti sanno chi installa l'ascensore di casa loro. Noi sì.</h1>
-    <p class="hero-fade" style="transition-delay:.9s;">[PLACEHOLDER] Una famiglia, tre generazioni di lavoro, un'azienda che cammina con le proprie gambe dal 1988. Servoscala e impianti di sollevamento, installati e seguiti da chi li conosce pezzo per pezzo.</p>
-    <a href="#contatti" class="btn-primary hero-fade" style="transition-delay:1.05s;">Richiedi un sopralluogo gratuito</a>
-  </section>
+  <!-- ============ VISTA HOME ============ -->
+  <div class="view active" id="view-home">
+    <section class="hero" style="border-top:none;">
+      <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
+      <h1 class="text-reveal">[PLACEHOLDER] Non tutti sanno chi installa l'ascensore di casa loro. Noi sì.</h1>
+      <p class="hero-fade" style="transition-delay:.9s;">[PLACEHOLDER] Una famiglia, tre generazioni di lavoro, un'azienda che cammina con le proprie gambe dal 1988. Servoscala e impianti di sollevamento, installati e seguiti da chi li conosce pezzo per pezzo.</p>
+      <a data-view="contatti" class="btn-primary hero-fade" style="transition-delay:1.05s; cursor:pointer;">Richiedi un sopralluogo gratuito</a>
+    </section>
 
-  <!-- STORIA -->
-  <section id="storia" class="reveal">
-    <div class="section-label">Chi siamo</div>
-    <h2 class="section-title text-reveal">[PLACEHOLDER] Una storia che parte da un tecnico in viaggio per l'Italia</h2>
-    <div class="storia-grid">
-      <div class="storia-testo">
-        <p>[PLACEHOLDER] Franco lavorava come tecnico di ascensori, spostandosi di città in città — da Bitonto a Torino, Roma, Bari — prima di stabilirsi a Matera per costruire una famiglia e, anni dopo, un'azienda tutta sua.</p>
-        <p>[PLACEHOLDER] Oggi LGM Elevator è guidata dai figli Marco e Giovanni, che portano avanti lo stesso lavoro con la stessa cura, affiancati da un team di quasi 15 persone tra ufficio e tecnici sul campo.</p>
+    <!-- Anteprima prodotti nella home -->
+    <section class="reveal">
+      <div class="section-label">Cosa facciamo</div>
+      <h2 class="section-title text-reveal">Due modi per restituirti libertà di movimento in casa</h2>
+      <div class="prodotti-grid">
+        <div class="prodotto-card">
+          <div class="img-placeholder">[foto servoscala — da inserire]</div>
+          <div class="tag">Servoscala</div>
+          <h3>Servoscala a poltroncina</h3>
+          <p>[PLACEHOLDER] La soluzione più rapida per superare le scale in autonomia, senza opere murarie, adatta a scale dritte o curve.</p>
+          <a data-view="servoscala" style="cursor:pointer;">Scopri i modelli →</a>
+        </div>
+        <div class="prodotto-card">
+          <div class="img-placeholder">[foto ascensore — da inserire]</div>
+          <div class="tag">Ascensori</div>
+          <h3>Ascensori e impianti di sollevamento</h3>
+          <p>[PLACEHOLDER] Installazione e manutenzione di ascensori per abitazioni private e condomini, in Basilicata e Puglia.</p>
+          <a data-view="ascensori" style="cursor:pointer;">Scopri gli impianti →</a>
+        </div>
       </div>
-      <div class="storia-timeline">
-        <div class="tl-line"></div>
-        <div class="tl-item" onclick="this.classList.toggle('open')">
-          <div class="tl-header">
-            <div class="tl-year">1988</div>
-            <div class="tl-text"><strong>Le origini.</strong></div>
-            <span class="tl-chevron">▾</span>
+    </section>
+
+    <!-- Fiducia nella home -->
+    <section class="reveal">
+      <div class="section-label">Perché scegliere LGM Elevator</div>
+      <h2 class="section-title text-reveal">[PLACEHOLDER — da confermare i numeri esatti]</h2>
+      <div class="fiducia-grid">
+        <div class="fiducia-card">
+          <div class="num" data-target="1988" data-prefix="">0</div>
+          <div class="label">L'anno in cui tutto è cominciato</div>
+        </div>
+        <div class="fiducia-card">
+          <div class="num" data-target="14" data-prefix="~">0</div>
+          <div class="label">Persone nel team, tra ufficio e tecnici</div>
+        </div>
+        <div class="fiducia-card">
+          <div class="num" data-target="24" data-prefix="H">0</div>
+          <div class="label">Assistenza per le emergenze</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ VISTA CHI SIAMO ============ -->
+  <div class="view" id="view-chisiamo">
+    <section class="reveal">
+      <div class="section-label">Chi siamo</div>
+      <h2 class="section-title text-reveal">[PLACEHOLDER] Una storia che parte da un tecnico in viaggio per l'Italia</h2>
+      <div class="storia-grid">
+        <div class="storia-testo">
+          <p>[PLACEHOLDER] Franco lavorava come tecnico di ascensori, spostandosi di città in città — da Bitonto a Torino, Roma, Bari — prima di stabilirsi a Matera per costruire una famiglia e, anni dopo, un'azienda tutta sua.</p>
+          <p>[PLACEHOLDER] Oggi LGM Elevator è guidata dai figli Marco e Giovanni, che portano avanti lo stesso lavoro con la stessa cura, affiancati da un team di quasi 15 persone tra ufficio e tecnici sul campo.</p>
+        </div>
+        <div class="storia-timeline">
+          <div class="tl-line"></div>
+          <div class="tl-item" onclick="this.classList.toggle('open')">
+            <div class="tl-header">
+              <div class="tl-year">1988</div>
+              <div class="tl-text"><strong>Le origini.</strong></div>
+              <span class="tl-chevron">▾</span>
+            </div>
+            <div class="tl-detail">[PLACEHOLDER] Franco, tecnico di ascensori girato per l'Italia — Bitonto, Torino, Roma, Bari — decide di mettersi in proprio a Matera, dopo anni di gavetta come dipendente. Parte con un solo aiutante.</div>
           </div>
-          <div class="tl-detail">[PLACEHOLDER] Franco, tecnico di ascensori girato per l'Italia — Bitonto, Torino, Roma, Bari — decide di mettersi in proprio a Matera, dopo anni di gavetta come dipendente. Parte con un solo aiutante.</div>
-        </div>
-        <div class="tl-item" onclick="this.classList.toggle('open')">
-          <div class="tl-header">
-            <div class="tl-year">Anni dopo</div>
-            <div class="tl-text"><strong>Il passaggio.</strong></div>
-            <span class="tl-chevron">▾</span>
+          <div class="tl-item" onclick="this.classList.toggle('open')">
+            <div class="tl-header">
+              <div class="tl-year">Anni dopo</div>
+              <div class="tl-text"><strong>Il passaggio.</strong></div>
+              <span class="tl-chevron">▾</span>
+            </div>
+            <div class="tl-detail">[PLACEHOLDER] Marco e Giovanni entrano in azienda: Marco sul lato tecnico e operativo, Giovanni sulla gestione e la parte finanziaria. Due ruoli complementari, un'unica direzione.</div>
           </div>
-          <div class="tl-detail">[PLACEHOLDER] Marco e Giovanni entrano in azienda: Marco sul lato tecnico e operativo, Giovanni sulla gestione e la parte finanziaria. Due ruoli complementari, un'unica direzione.</div>
-        </div>
-        <div class="tl-item" onclick="this.classList.toggle('open')">
-          <div class="tl-header">
-            <div class="tl-year">Oggi</div>
-            <div class="tl-text"><strong>LGM Elevator.</strong></div>
-            <span class="tl-chevron">▾</span>
+          <div class="tl-item" onclick="this.classList.toggle('open')">
+            <div class="tl-header">
+              <div class="tl-year">Oggi</div>
+              <div class="tl-text"><strong>LGM Elevator.</strong></div>
+              <span class="tl-chevron">▾</span>
+            </div>
+            <div class="tl-detail">[PLACEHOLDER] ~14 persone tra ufficio e tecnici, due titolari, un'azienda che cammina con le proprie gambe — e continua a crescere.</div>
           </div>
-          <div class="tl-detail">[PLACEHOLDER] ~14 persone tra ufficio e tecnici, due titolari, un'azienda che cammina con le proprie gambe — e continua a crescere.</div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- PANORAMICA PRODOTTI -->
-  <section id="prodotti" class="reveal">
-    <div class="section-label">Cosa facciamo</div>
-    <h2 class="section-title text-reveal">Due modi per restituirti libertà di movimento in casa</h2>
-    <div class="prodotti-grid">
-      <div class="prodotto-card">
-        <div class="img-placeholder">[foto servoscala — da inserire]</div>
-        <div class="tag">Servoscala</div>
-        <h3>Servoscala a poltroncina</h3>
-        <p>[PLACEHOLDER] La soluzione più rapida per superare le scale in autonomia, senza opere murarie, adatta a scale dritte o curve.</p>
-        <a href="servoscala.html">Scopri i modelli →</a>
+  <!-- ============ VISTA SERVOSCALA (in costruzione) ============ -->
+  <div class="view" id="view-servoscala">
+    <section class="reveal">
+      <div class="section-label">Servoscala</div>
+      <h2 class="section-title text-reveal">Servoscala a poltroncina e piattaforma</h2>
+      <div class="vista-costruzione">
+        <span class="vc-icon">🪑</span>
+        <h3>Sezione in costruzione</h3>
+        <p>[PLACEHOLDER] Qui costruiremo la pagina dedicata ai servoscala: come funzionano, modelli disponibili, FAQ e richiesta preventivo.</p>
+        <p>Nel frattempo puoi usare il configuratore o contattarci direttamente.</p>
       </div>
-      <div class="prodotto-card">
-        <div class="img-placeholder">[foto ascensore — da inserire]</div>
-        <div class="tag">Ascensori</div>
-        <h3>Ascensori e impianti di sollevamento</h3>
-        <p>[PLACEHOLDER] Installazione e manutenzione di ascensori per abitazioni private e condomini, in Basilicata e Puglia.</p>
-        <a href="ascensori.html">Scopri gli impianti →</a>
+    </section>
+  </div>
+
+  <!-- ============ VISTA ASCENSORI (in costruzione) ============ -->
+  <div class="view" id="view-ascensori">
+    <section class="reveal">
+      <div class="section-label">Ascensori</div>
+      <h2 class="section-title text-reveal">Ascensori e impianti di sollevamento</h2>
+      <div class="vista-costruzione">
+        <span class="vc-icon">🛗</span>
+        <h3>Sezione in costruzione</h3>
+        <p>[PLACEHOLDER] Qui costruiremo la pagina dedicata agli ascensori: tipologie di impianto, nuova installazione, manutenzione e richiesta preventivo.</p>
+        <p>Nel frattempo puoi usare il configuratore o contattarci direttamente.</p>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- CONFIGURATORE DI SOLUZIONI (sezione autonoma — posizione provvisoria,
-       da confermare; qui in attesa di decidere anche il futuro configuratore
-       ascensori più avanzato) -->
-  <section id="configuratore" class="reveal">
-    <div class="section-label">Trova la tua soluzione</div>
-    <h2 class="section-title text-reveal">[PLACEHOLDER — titolo sezione configuratore da definire]</h2>
-    <div class="wizard" id="wizard" aria-live="polite">
-      <div class="wizard-progress" id="wizardProgress">
-        <div class="dot" data-step="1"></div>
-        <div class="dot" data-step="2"></div>
-        <div class="dot" data-step="3"></div>
-        <span class="wizard-progress-pct" id="wizardPct">0%</span>
-      </div>
+  <!-- ============ VISTA CONFIGURATORE ============ -->
+  <div class="view" id="view-configuratore">
+    <section class="reveal">
+      <div class="section-label">Trova la tua soluzione</div>
+      <h2 class="section-title text-reveal">[PLACEHOLDER — titolo sezione configuratore da definire]</h2>
+      <div class="wizard" id="wizard" aria-live="polite">
+        <div class="wizard-progress" id="wizardProgress">
+          <div class="dot" data-step="1"></div>
+          <div class="dot" data-step="2"></div>
+          <div class="dot" data-step="3"></div>
+          <span class="wizard-progress-pct" id="wizardPct">0%</span>
+        </div>
 
-      <button type="button" class="wizard-back" id="wizardBack" style="visibility:hidden;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        Indietro
-      </button>
+        <button type="button" class="wizard-back" id="wizardBack" style="visibility:hidden;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Indietro
+        </button>
 
-      <!-- STEP 1 -->
-      <div class="wizard-step active" data-step="1">
-        <div class="wizard-question">Chi sei?</div>
-        <div class="wizard-subtext">Iniziamo capendo la tua situazione.</div>
-        <div class="wizard-options">
-          <button class="wizard-opt" data-key="profilo" data-val="privato"><span class="opt-icon">🏠</span> Privato (casa singola / villa)</button>
-          <button class="wizard-opt" data-key="profilo" data-val="condominio"><span class="opt-icon">🏢</span> Condominio / Amministratore</button>
-          <button class="wizard-opt" data-key="profilo" data-val="azienda"><span class="opt-icon">🏭</span> Azienda / Attività commerciale</button>
+        <!-- STEP 1 -->
+        <div class="wizard-step active" data-step="1">
+          <div class="wizard-question">Chi sei?</div>
+          <div class="wizard-subtext">Iniziamo capendo la tua situazione.</div>
+          <div class="wizard-options">
+            <button class="wizard-opt" data-key="profilo" data-val="privato"><span class="opt-icon">🏠</span> Privato (casa singola / villa)</button>
+            <button class="wizard-opt" data-key="profilo" data-val="condominio"><span class="opt-icon">🏢</span> Condominio / Amministratore</button>
+            <button class="wizard-opt" data-key="profilo" data-val="azienda"><span class="opt-icon">🏭</span> Azienda / Attività commerciale</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 (dinamico) -->
+        <div class="wizard-step" data-step="2">
+          <div class="wizard-question" id="step2Question">Qual è la tua esigenza principale?</div>
+          <div class="wizard-subtext">Scegli quella più vicina a ciò che ti serve.</div>
+          <div class="wizard-options" id="step2Options"></div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="wizard-step" data-step="3">
+          <div class="wizard-question">Dove si trova l'immobile?</div>
+          <div class="wizard-subtext">Ci aiuta a indicarti il referente più vicino a te.</div>
+          <div class="wizard-options">
+            <button class="wizard-opt" data-key="zona" data-val="Matera e provincia">Matera e provincia</button>
+            <button class="wizard-opt" data-key="zona" data-val="Bari e provincia">Bari e provincia</button>
+            <button class="wizard-opt" data-key="zona" data-val="Potenza e provincia">Potenza e provincia</button>
+            <button class="wizard-opt" data-key="zona" data-val="Taranto e provincia">Taranto e provincia</button>
+            <button class="wizard-opt" data-key="zona" data-val="Altra zona (Puglia/Basilicata)">Altra zona (Puglia/Basilicata)</button>
+          </div>
+        </div>
+
+        <!-- RISULTATO -->
+        <div class="wizard-result" id="wizardResult">
+          <div class="result-tag">Ti consigliamo</div>
+          <h4 id="resultTitle"></h4>
+          <p id="resultText"></p>
+          <div class="wizard-result-actions">
+            <a href="#" class="btn-primary" id="resultCta" style="padding:10px 22px; font-size:14px;">CTA</a>
+            <button type="button" class="wizard-restart" id="wizardRestart">Ricomincia</button>
+          </div>
         </div>
       </div>
+    </section>
+  </div>
 
-      <!-- STEP 2 (dinamico) -->
-      <div class="wizard-step" data-step="2">
-        <div class="wizard-question" id="step2Question">Qual è la tua esigenza principale?</div>
-        <div class="wizard-subtext">Scegli quella più vicina a ciò che ti serve.</div>
-        <div class="wizard-options" id="step2Options"></div>
-      </div>
-
-      <!-- STEP 3 -->
-      <div class="wizard-step" data-step="3">
-        <div class="wizard-question">Dove si trova l'immobile?</div>
-        <div class="wizard-subtext">Ci aiuta a indicarti il referente più vicino a te.</div>
-        <div class="wizard-options">
-          <button class="wizard-opt" data-key="zona" data-val="Matera e provincia">Matera e provincia</button>
-          <button class="wizard-opt" data-key="zona" data-val="Bari e provincia">Bari e provincia</button>
-          <button class="wizard-opt" data-key="zona" data-val="Potenza e provincia">Potenza e provincia</button>
-          <button class="wizard-opt" data-key="zona" data-val="Taranto e provincia">Taranto e provincia</button>
-          <button class="wizard-opt" data-key="zona" data-val="Altra zona (Puglia/Basilicata)">Altra zona (Puglia/Basilicata)</button>
+  <!-- ============ VISTA CONTATTI ============ -->
+  <div class="view" id="view-contatti">
+    <section class="reveal">
+      <div class="section-label">Contatti</div>
+      <h2 class="section-title text-reveal">Richiedi il tuo sopralluogo gratuito</h2>
+      <div class="contatti-grid">
+        <div>
+          <div class="contatto-riga">📞 0835 381904</div>
+          <div class="contatto-riga">✉️ info@lgmelevator.com</div>
+          <div class="contatto-riga">📍 Via dell'Agricoltura, 20 — 75100 Matera (MT)</div>
+          <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
+        </div>
+        <div class="form-box">
+          [Form statico — invariato rispetto alla versione attuale: Nome, Email, Telefono, Messaggio]
         </div>
       </div>
-
-      <!-- RISULTATO -->
-      <div class="wizard-result" id="wizardResult">
-        <div class="result-tag">Ti consigliamo</div>
-        <h4 id="resultTitle"></h4>
-        <p id="resultText"></p>
-        <div class="wizard-result-actions">
-          <a href="#" class="btn-primary" id="resultCta" style="padding:10px 22px; font-size:14px;">CTA</a>
-          <button type="button" class="wizard-restart" id="wizardRestart">Ricomincia</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FIDUCIA -->
-  <section id="fiducia" class="reveal">
-    <div class="section-label">Perché scegliere LGM Elevator</div>
-    <h2 class="section-title text-reveal">[PLACEHOLDER — da confermare i numeri esatti]</h2>
-    <div class="fiducia-grid">
-      <div class="fiducia-card">
-        <div class="num" data-target="1988" data-prefix="">0</div>
-        <div class="label">L'anno in cui tutto è cominciato</div>
-      </div>
-      <div class="fiducia-card">
-        <div class="num" data-target="14" data-prefix="~">0</div>
-        <div class="label">Persone nel team, tra ufficio e tecnici</div>
-      </div>
-      <div class="fiducia-card">
-        <div class="num" data-target="24" data-prefix="H">0</div>
-        <div class="label">Assistenza per le emergenze</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTATTI -->
-  <section id="contatti" class="reveal">
-    <div class="section-label">Contatti</div>
-    <h2 class="section-title text-reveal">Richiedi il tuo sopralluogo gratuito</h2>
-    <div class="contatti-grid">
-      <div>
-        <div class="contatto-riga">📞 0835 381904</div>
-        <div class="contatto-riga">✉️ info@lgmelevator.com</div>
-        <div class="contatto-riga">📍 Via dell'Agricoltura, 20 — 75100 Matera (MT)</div>
-        <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
-      </div>
-      <div class="form-box">
-        [Form statico — invariato rispetto alla versione attuale: Nome, Email, Telefono, Messaggio]
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <footer>© 2026 LGM Elevator. Tutti i diritti riservati. — BOZZA, non versione finale.</footer>
 </div>
@@ -1041,7 +1122,110 @@
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Filo dell'ascensore — indicatore di scroll con freccia direzionale
+  // ============================================
+  // ROUTER DELLE VISTE (SPA)
+  // La nav non scrolla più: mostra/nasconde le viste.
+  // Ad ogni cambio vista si riattivano le animazioni interne.
+  // ============================================
+  const views = document.querySelectorAll('.view');
+  const navLinks = document.querySelectorAll('.nav-links a[data-view]');
+  const condLinks = document.querySelectorAll('.nav-condensed a[data-view]');
+  const navUnderline = document.getElementById('navUnderline');
+  const navLinksWrap = document.querySelector('.nav-links-wrap');
+
+  function activateAnimations(viewEl) {
+    // Scroll-reveal: mostra le sezioni della vista
+    viewEl.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    // Testi cinematici parola per parola
+    viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
+    // Hero fade
+    viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.add('in-view'));
+    // Timeline che si disegna
+    const timeline = viewEl.querySelector('.storia-timeline');
+    if (timeline) {
+      timeline.classList.remove('in-view');
+      void timeline.offsetWidth;
+      timeline.classList.add('in-view');
+    }
+    // Contatori Fiducia
+    viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
+      el.textContent = (el.getAttribute('data-prefix') || '') + '0';
+      animateCounter(el);
+    });
+  }
+
+  function resetAnimations(viewEl) {
+    // Reset dei testi cinematici così ripartono alla prossima apertura
+    viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.remove('in-view'));
+    viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.remove('in-view'));
+    const timeline = viewEl.querySelector('.storia-timeline');
+    if (timeline) timeline.classList.remove('in-view');
+  }
+
+  function showView(name, updateHash = true) {
+    const target = document.getElementById('view-' + name);
+    if (!target) return;
+
+    views.forEach(v => {
+      if (v !== target) resetAnimations(v);
+      v.classList.remove('active');
+    });
+    target.classList.add('active');
+
+    // Aggiorna stato attivo nella nav
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.view === name));
+    condLinks.forEach(a => a.classList.toggle('active', a.dataset.view === name));
+    updateUnderline(name);
+
+    // Riporta lo scroll in cima e riattiva le animazioni della vista
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    setTimeout(() => activateAnimations(target), reduceMotion ? 0 : 120);
+
+    if (updateHash) {
+      history.replaceState(null, '', name === 'home' ? '#' : '#' + name);
+    }
+    updateElevator();
+  }
+
+  function updateUnderline(name) {
+    if (!navLinksWrap || !navUnderline) return;
+    const activeLink = [...navLinks].find(a => a.dataset.view === name);
+    if (activeLink) {
+      const wrapRect = navLinksWrap.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
+      navUnderline.style.left = (linkRect.left - wrapRect.left) + 'px';
+      navUnderline.style.width = linkRect.width + 'px';
+      navUnderline.style.opacity = '1';
+    } else {
+      navUnderline.style.opacity = '0';
+    }
+  }
+
+  // Click su qualsiasi elemento con data-view (nav, card, bottoni, logo)
+  document.querySelectorAll('[data-view]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      showView(el.dataset.view);
+    });
+  });
+
+  // Logo principale nella nav torna alla Home
+  const mainLogo = document.querySelector('nav .logo');
+  if (mainLogo) {
+    mainLogo.style.cursor = 'pointer';
+    mainLogo.addEventListener('click', () => showView('home'));
+  }
+
+  // All'avvio: apri la vista da hash URL (se presente) o la Home
+  const initialHash = window.location.hash.replace('#', '');
+  const validViews = ['home', 'chisiamo', 'servoscala', 'ascensori', 'configuratore', 'contatti'];
+  const startView = validViews.includes(initialHash) ? initialHash : 'home';
+  showView(startView, false);
+
+  // ============================================
+  // FILO DELL'ASCENSORE — indicatore di scroll con freccia direzionale
+  // (misura lo scroll della vista attualmente aperta)
+  // ============================================
   const elevatorFill = document.getElementById('elevatorFill');
   const elevatorCabin = document.getElementById('elevatorCabin');
   const elevatorArrow = document.getElementById('elevatorArrow');
@@ -1062,69 +1246,24 @@
     lastScrollY = window.scrollY;
   }
   window.addEventListener('scroll', updateElevator, { passive: true });
-  window.addEventListener('resize', updateElevator);
+  window.addEventListener('resize', () => { updateElevator(); updateUnderline([...navLinks].find(a => a.classList.contains('active'))?.dataset.view || 'home'); });
   updateElevator();
 
-  // Nav — evidenzia la sezione attiva durante lo scroll
-  const navLinksWrap = document.querySelector('.nav-links-wrap');
-  const navUnderline = document.getElementById('navUnderline');
-  const navSections = ['storia', 'prodotti', 'configuratore', 'contatti']
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
-  const navLinkGroups = {};
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    const id = a.getAttribute('href').replace('#', '');
-    (navLinkGroups[id] = navLinkGroups[id] || []).push(a);
-  });
-
-  function updateNavActive() {
-    if (!navSections.length || !navLinksWrap) return;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const atBottom = docHeight > 0 && window.scrollY >= docHeight - 4;
-    let currentId = navSections[0].id;
-    const scrollPos = window.scrollY + 140;
-    navSections.forEach(sec => {
-      if (sec.offsetTop <= scrollPos) currentId = sec.id;
-    });
-    if (atBottom) currentId = navSections[navSections.length - 1].id;
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const activeLinks = navLinkGroups[currentId] || [];
-    activeLinks.forEach(a => a.classList.add('active'));
-    if (activeLinks.length) {
-      const wrapRect = navLinksWrap.getBoundingClientRect();
-      const firstRect = activeLinks[0].getBoundingClientRect();
-      const lastRect = activeLinks[activeLinks.length - 1].getBoundingClientRect();
-      navUnderline.style.left = (firstRect.left - wrapRect.left) + 'px';
-      navUnderline.style.width = (lastRect.right - firstRect.left) + 'px';
-      navUnderline.style.opacity = '1';
-    }
-    document.querySelectorAll('.nav-condensed a[data-target]').forEach(a => {
-      a.classList.toggle('active', a.dataset.target === currentId);
-    });
-  }
-  window.addEventListener('scroll', updateNavActive, { passive: true });
-  updateNavActive();
-
-  // Nav compatta verticale — compare in dissolvenza a destra dopo la Hero (desktop);
-  // sotto gli 800px resta sempre visibile via CSS (vedi media query).
+  // ============================================
+  // NAV CONDENSATA — compare dopo un po' di scroll (desktop),
+  // sempre visibile sotto 800px via CSS
+  // ============================================
   const navCondensed = document.getElementById('navCondensed');
-  const heroEl = document.querySelector('.hero');
   function updateCondensedNav() {
-    if (!navCondensed || !heroEl) return;
-    const threshold = heroEl.offsetTop + heroEl.offsetHeight - 80;
-    navCondensed.classList.toggle('visible', window.scrollY > threshold);
+    if (!navCondensed) return;
+    navCondensed.classList.toggle('visible', window.scrollY > 200);
   }
   window.addEventListener('scroll', updateCondensedNav, { passive: true });
-  window.addEventListener('resize', updateCondensedNav);
   updateCondensedNav();
-  const condLogo = document.getElementById('condLogo');
-  if (condLogo) {
-    condLogo.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-  }
 
-  // Testi che entrano in scena, parola per parola
+  // ============================================
+  // TESTI CINEMATICI — wrap parola per parola
+  // ============================================
   function wrapWords(el) {
     const text = el.textContent;
     el.innerHTML = text
@@ -1135,33 +1274,13 @@
       span.style.transitionDelay = (i * 0.045) + 's';
     });
   }
-  document.querySelectorAll('.text-reveal').forEach(el => {
-    if (!reduceMotion) wrapWords(el);
-  });
+  if (!reduceMotion) {
+    document.querySelectorAll('.text-reveal').forEach(el => wrapWords(el));
+  }
 
-  // Hero: entra in scena subito al caricamento della pagina
-  const heroTitle = document.querySelector('.hero .text-reveal');
-  const heroFadeEls = document.querySelectorAll('.hero .hero-fade');
-  setTimeout(() => {
-    if (heroTitle) heroTitle.classList.add('in-view');
-    heroFadeEls.forEach(el => el.classList.add('in-view'));
-  }, 150);
-
-  // Scroll reveal sezioni (attiva anche titoli cinematici e timeline collegati)
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        entry.target.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
-        const timeline = entry.target.querySelector('.storia-timeline');
-        if (timeline) timeline.classList.add('in-view');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Contatori numeri sezione Fiducia
+  // ============================================
+  // CONTATORI NUMERI (sezione Fiducia)
+  // ============================================
   function animateCounter(el) {
     const target = parseInt(el.getAttribute('data-target'), 10);
     const prefix = el.getAttribute('data-prefix') || '';
@@ -1179,17 +1298,10 @@
     }
     requestAnimationFrame(step);
   }
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCounter(entry.target);
-        counterObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => counterObserver.observe(el));
 
-  // Card prodotto — riflettore che segue il mouse
+  // ============================================
+  // CARD PRODOTTO — riflettore che segue il mouse
+  // ============================================
   document.querySelectorAll('.prodotto-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
