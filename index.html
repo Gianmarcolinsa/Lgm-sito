@@ -51,10 +51,6 @@
     align-items: center;
   }
   .logo svg {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     width: 132px;
     height: auto;
     display: block;
@@ -65,16 +61,28 @@
     animation: logoPulseBlue 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseBlue {
-    0%, 100% { opacity: 0.6; }
-    50%       { opacity: 1;   }
+    0%, 100% {
+      opacity: 0.82;
+      filter: drop-shadow(0 0 3px rgba(70,150,255,.5));
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 14px rgba(110,185,255,1)) drop-shadow(0 0 6px rgba(255,255,255,.6));
+    }
   }
   .logo-pulse-el {
     transform-origin: center;
     animation: logoPulseEl 4.2s ease-in-out infinite;
   }
   @keyframes logoPulseEl {
-    0%, 100% { opacity: 0.6; }
-    50%       { opacity: 1;   }
+    0%, 100% {
+      opacity: 0.82;
+      filter: drop-shadow(0 0 3px rgba(120,150,200,.45));
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 12px rgba(150,190,255,.95)) drop-shadow(0 0 5px rgba(255,255,255,.55));
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .logo-pulse-blue, .logo-pulse-el { animation: none; }
@@ -361,64 +369,175 @@
     .prodotti-grid { grid-template-columns: 1fr; }
   }
 
-  /* CONFIGURATORE */
-  .configuratore {
+  /* ============================================
+     WIZARD CONFIGURATORE — stili
+     ============================================ */
+  .wizard {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 32px;
+    position: relative;
+    overflow: hidden;
   }
-  .config-question {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .config-options {
+
+  .wizard-progress {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 4px;
+    gap: 8px;
+    margin-bottom: 24px;
+    align-items: center;
   }
-  .config-btn {
+  .wizard-progress .dot {
+    height: 4px;
+    flex: 1;
+    background: var(--surface-2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .wizard-progress .dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .wizard-progress .dot.filled::after { transform: scaleX(1); }
+  .wizard-progress-pct {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 34px;
+    text-align: right;
+  }
+
+  .wizard-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+    margin-bottom: 18px;
+    transition: color 0.2s ease;
+  }
+  .wizard-back:hover { color: var(--text); }
+  .wizard-back svg { transition: transform 0.2s ease; }
+  .wizard-back:hover svg { transform: translateX(-2px); }
+
+  .wizard-step { display: none; }
+  .wizard-step.active {
+    display: block;
+    animation: wizardFadeIn 0.55s ease;
+  }
+  @keyframes wizardFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .wizard-question {
+    font-family: 'Sora', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .wizard-subtext {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+  }
+
+  .wizard-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .wizard-opt {
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    padding: 12px 18px;
-    border-radius: 8px;
+    font-size: 15px;
+    text-align: left;
+    padding: 18px 20px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  .config-btn:hover { border-color: var(--accent-2); }
-  .config-btn.selected {
+  .wizard-opt:hover {
+    border-color: var(--accent-2);
+    transform: translateY(-2px);
+  }
+  .wizard-opt:active { transform: translateY(0); }
+  .wizard-opt.selected {
     border-color: var(--accent);
-    background: rgba(217,122,63,0.12);
+    background: rgba(47,125,224,0.14);
   }
-  .config-result {
-    display: none;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+  .wizard-opt .opt-icon {
+    font-size: 20px;
+    flex-shrink: 0;
   }
-  .config-result.show { display: block; }
-  .config-result .result-tag {
+
+  .wizard-result { display: none; }
+  .wizard-result.active {
+    display: block;
+    animation: wizardFadeIn 0.55s ease;
+  }
+  .wizard-result .result-tag {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent-2);
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
-  .config-result h4 {
+  .wizard-result h4 {
     font-family: 'Sora', sans-serif;
-    font-size: 19px;
-    margin-bottom: 8px;
+    font-size: 21px;
+    margin-bottom: 12px;
   }
-  .config-result p {
+  .wizard-result p {
     color: var(--text-muted);
     font-size: 15px;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
+    max-width: 560px;
+  }
+  .wizard-result-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .wizard-restart {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+  .wizard-restart:hover { color: var(--text); }
+
+  @media (max-width: 560px) {
+    .wizard-options { grid-template-columns: 1fr; }
+    .wizard { padding: 24px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wizard-step.active, .wizard-result.active { animation: none; }
+    .wizard-opt { transition: none; }
+    .wizard-progress .dot::after { transition: none; }
   }
 
   /* FIDUCIA */
@@ -690,7 +809,7 @@
 <div class="wrap">
   <nav>
     <div class="logo" role="img" aria-label="LGM Elevator">
-      <svg viewBox="-18 -18 596 300" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality">
+      <svg viewBox="-18 -18 596 300" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="navUltraBlue" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#eaf4ff"/>
@@ -702,11 +821,11 @@
             <stop offset="100%" stop-color="#000a20"/>
           </linearGradient>
           <linearGradient id="navElMetal" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%"   stop-color="#c8c8ce"/>
-            <stop offset="38%"  stop-color="#6a6a70"/>
-            <stop offset="50%"  stop-color="#3a3a3f"/>
-            <stop offset="68%"  stop-color="#545459"/>
-            <stop offset="100%" stop-color="#9a9a9e"/>
+            <stop offset="0%" stop-color="#6d6d72"/>
+            <stop offset="42%" stop-color="#1a1a1d"/>
+            <stop offset="52%" stop-color="#050506"/>
+            <stop offset="70%" stop-color="#101012"/>
+            <stop offset="100%" stop-color="#3a3a3e"/>
           </linearGradient>
           <linearGradient id="navShine" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
@@ -717,18 +836,12 @@
             <animate attributeName="x1" values="-1;1" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="x2" values="0;2" dur="3s" repeatCount="indefinite"/>
           </linearGradient>
-          <filter id="lgmPulseGlow" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
-            <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#4a96ff" flood-opacity="0.3">
-              <animate attributeName="stdDeviation" values="2;12;2" dur="4.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
-              <animate attributeName="flood-opacity" values="0.25;0.95;0.25" dur="4.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
-            </feDropShadow>
-          </filter>
         </defs>
-        <g class="logo-pulse-blue" filter="url(#lgmPulseGlow)">
+        <g class="logo-pulse-blue">
           <path d="M 469.5,87.4 L 468.7,88.1 L 468.0,87.4 L 467.2,88.1 L 447.7,88.1 L 446.9,88.9 L 432.1,88.9 L 430.5,89.7 L 430.5,153.6 L 431.3,154.4 L 431.3,173.1 L 432.1,173.9 L 432.1,182.5 L 433.6,183.3 L 435.2,183.3 L 438.3,184.8 L 442.2,184.8 L 443.0,184.1 L 454.7,184.1 L 455.5,183.3 L 472.6,183.3 L 474.2,182.5 L 474.2,180.9 L 475.0,180.2 L 475.0,159.1 L 474.2,158.3 L 474.2,134.2 L 473.4,133.4 L 473.4,109.2 L 472.6,108.4 L 472.6,94.4 L 473.4,93.6 L 473.4,92.0 L 472.6,91.3 L 472.6,89.7 Z M 216.0,81.9 L 216.0,112.3 L 218.4,116.2 L 230.1,117.0 L 230.9,116.2 L 280.0,116.2 L 281.6,115.4 L 285.5,118.6 L 286.2,184.8 L 287.8,188.0 L 289.4,188.7 L 318.2,188.7 L 319.0,188.0 L 327.6,188.0 L 329.9,186.4 L 329.9,134.2 L 328.4,120.9 L 328.4,99.1 L 327.6,98.3 L 327.6,78.8 L 322.9,76.4 L 322.1,77.2 L 305.7,77.2 L 305.0,78.0 L 223.1,79.6 Z M 326.0,6.2 L 322.9,3.1 L 205.9,6.2 L 173.9,14.8 L 148.2,29.6 L 123.2,59.3 L 114.7,86.6 L 118.6,127.9 L 133.4,153.6 L 124.0,157.5 L 88.1,156.0 L 59.3,135.7 L 47.6,108.4 L 43.7,10.1 L 2.3,10.9 L 0.0,33.5 L 3.1,108.4 L 8.6,133.4 L 16.4,149.0 L 34.3,170.0 L 49.1,180.2 L 78.0,191.9 L 117.8,195.0 L 269.1,190.3 L 272.2,187.2 L 270.6,153.6 L 214.5,153.6 L 188.0,145.8 L 171.6,132.6 L 163.0,119.3 L 158.3,102.2 L 160.7,84.2 L 177.8,59.3 L 202.0,46.0 L 323.7,40.6 L 326.8,38.2 Z M 364.2,38.2 L 352.5,56.9 L 345.5,78.0 L 346.3,170.8 L 348.6,186.4 L 379.1,187.2 L 390.8,184.8 L 389.2,93.6 L 392.3,72.5 L 401.7,59.3 L 417.3,46.8 L 443.0,37.4 L 475.0,41.3 L 492.1,51.5 L 505.4,64.7 L 510.9,79.6 L 513.2,96.7 L 515.5,180.9 L 543.6,182.5 L 557.7,180.2 L 554.5,71.8 L 537.4,37.4 L 517.1,18.7 L 500.7,9.4 L 481.2,3.1 L 440.7,0.0 L 403.2,9.4 L 381.4,21.8 Z" fill="url(#navUltraBlue)" fill-rule="evenodd" stroke="#8fc4ff" stroke-width="0.6" stroke-opacity="0.5"/>
         </g>
         <g class="logo-pulse-el">
-          <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navElMetal)" stroke="#8a8a90" stroke-width="0.4" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
+          <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navElMetal)" stroke="#57575c" stroke-width="0.5" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
           <text x="278" y="250" text-anchor="middle" font-size="56" font-weight="700" textLength="558" lengthAdjust="spacingAndGlyphs" fill="url(#navShine)" style="font-family:'Sora','Trebuchet MS',Arial,sans-serif;">ELEVATOR</text>
         </g>
       </svg>
@@ -738,6 +851,7 @@
         <li><a href="#storia">Chi siamo</a></li>
         <li><a href="#prodotti">Servoscala</a></li>
         <li><a href="#prodotti">Ascensori</a></li>
+        <li><a href="#configuratore">Configuratore</a></li>
         <li><a href="#contatti">Contatti</a></li>
       </ul>
       <span class="nav-underline" id="navUnderline"></span>
@@ -748,6 +862,7 @@
     <button type="button" class="cond-logo" id="condLogo" aria-label="Torna all'inizio della pagina">L</button>
     <a href="#storia" data-target="storia" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
     <a href="#prodotti" data-target="prodotti" data-lbl="Prodotti" aria-label="Prodotti"></a>
+    <a href="#configuratore" data-target="configuratore" data-lbl="Configuratore" aria-label="Configuratore"></a>
     <a href="#contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
   </nav>
 
@@ -818,19 +933,67 @@
         <a href="ascensori.html">Scopri gli impianti →</a>
       </div>
     </div>
+  </section>
 
-    <div class="configuratore">
-      <div class="config-question">Non sai da dove partire? Raccontaci la tua situazione.</div>
-      <div class="config-options" id="config-options">
-        <button class="config-btn" data-val="scale-strette">Ho scale strette in casa</button>
-        <button class="config-btn" data-val="condominio">Vivo in un condominio senza ascensore</button>
-        <button class="config-btn" data-val="genitore">Sto cercando una soluzione per un genitore anziano</button>
+  <!-- CONFIGURATORE DI SOLUZIONI (sezione autonoma — posizione provvisoria,
+       da confermare; qui in attesa di decidere anche il futuro configuratore
+       ascensori più avanzato) -->
+  <section id="configuratore" class="reveal">
+    <div class="section-label">Trova la tua soluzione</div>
+    <h2 class="section-title text-reveal">[PLACEHOLDER — titolo sezione configuratore da definire]</h2>
+    <div class="wizard" id="wizard" aria-live="polite">
+      <div class="wizard-progress" id="wizardProgress">
+        <div class="dot" data-step="1"></div>
+        <div class="dot" data-step="2"></div>
+        <div class="dot" data-step="3"></div>
+        <span class="wizard-progress-pct" id="wizardPct">0%</span>
       </div>
-      <div class="config-result" id="config-result">
+
+      <button type="button" class="wizard-back" id="wizardBack" style="visibility:hidden;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Indietro
+      </button>
+
+      <!-- STEP 1 -->
+      <div class="wizard-step active" data-step="1">
+        <div class="wizard-question">Chi sei?</div>
+        <div class="wizard-subtext">Iniziamo capendo la tua situazione.</div>
+        <div class="wizard-options">
+          <button class="wizard-opt" data-key="profilo" data-val="privato"><span class="opt-icon">🏠</span> Privato (casa singola / villa)</button>
+          <button class="wizard-opt" data-key="profilo" data-val="condominio"><span class="opt-icon">🏢</span> Condominio / Amministratore</button>
+          <button class="wizard-opt" data-key="profilo" data-val="azienda"><span class="opt-icon">🏭</span> Azienda / Attività commerciale</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 (dinamico) -->
+      <div class="wizard-step" data-step="2">
+        <div class="wizard-question" id="step2Question">Qual è la tua esigenza principale?</div>
+        <div class="wizard-subtext">Scegli quella più vicina a ciò che ti serve.</div>
+        <div class="wizard-options" id="step2Options"></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="wizard-step" data-step="3">
+        <div class="wizard-question">Dove si trova l'immobile?</div>
+        <div class="wizard-subtext">Ci aiuta a indicarti il referente più vicino a te.</div>
+        <div class="wizard-options">
+          <button class="wizard-opt" data-key="zona" data-val="Matera e provincia">Matera e provincia</button>
+          <button class="wizard-opt" data-key="zona" data-val="Bari e provincia">Bari e provincia</button>
+          <button class="wizard-opt" data-key="zona" data-val="Potenza e provincia">Potenza e provincia</button>
+          <button class="wizard-opt" data-key="zona" data-val="Taranto e provincia">Taranto e provincia</button>
+          <button class="wizard-opt" data-key="zona" data-val="Altra zona (Puglia/Basilicata)">Altra zona (Puglia/Basilicata)</button>
+        </div>
+      </div>
+
+      <!-- RISULTATO -->
+      <div class="wizard-result" id="wizardResult">
         <div class="result-tag">Ti consigliamo</div>
-        <h4 id="config-result-title"></h4>
-        <p id="config-result-text"></p>
-        <a href="#" class="btn-primary" id="config-result-link" style="padding:10px 22px; font-size:14px;">Vai alla pagina →</a>
+        <h4 id="resultTitle"></h4>
+        <p id="resultText"></p>
+        <div class="wizard-result-actions">
+          <a href="#" class="btn-primary" id="resultCta" style="padding:10px 22px; font-size:14px;">CTA</a>
+          <button type="button" class="wizard-restart" id="wizardRestart">Ricomincia</button>
+        </div>
       </div>
     </div>
   </section>
@@ -905,7 +1068,7 @@
   // Nav — evidenzia la sezione attiva durante lo scroll
   const navLinksWrap = document.querySelector('.nav-links-wrap');
   const navUnderline = document.getElementById('navUnderline');
-  const navSections = ['storia', 'prodotti', 'contatti']
+  const navSections = ['storia', 'prodotti', 'configuratore', 'contatti']
     .map(id => document.getElementById(id))
     .filter(Boolean);
   const navLinkGroups = {};
@@ -1035,37 +1198,208 @@
     });
   });
 
-  // Mini configuratore
-  const risultati = {
-    'scale-strette': {
-      title: 'Servoscala a poltroncina',
-      text: '[PLACEHOLDER] Perfetto per scale strette o curve: si monta senza opere murarie e si adatta alla forma esatta della tua scala.',
-      link: 'servoscala.html'
-    },
-    'condominio': {
-      title: 'Ascensori per condominio',
-      text: '[PLACEHOLDER] Valutiamo insieme allo stabile lo spazio disponibile e le soluzioni di installazione più adatte, comprese quelle a basso impatto sulle parti comuni.',
-      link: 'ascensori.html'
-    },
-    'genitore': {
-      title: 'Servoscala a poltroncina',
-      text: '[PLACEHOLDER] La soluzione più rapida da installare, pensata per restituire autonomia in pochi giorni, con assistenza dedicata.',
-      link: 'servoscala.html'
-    }
-  };
+  // ============================================
+  // WIZARD CONFIGURATORE — logica multi-step
+  // ============================================
+  (function () {
+    const wizardEl = document.getElementById('wizard');
+    if (!wizardEl) return;
 
-  document.querySelectorAll('#config-options .config-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#config-options .config-btn').forEach(b => b.classList.remove('selected'));
+    const backBtn = document.getElementById('wizardBack');
+    const progressDots = document.querySelectorAll('#wizardProgress .dot');
+    const wizardPct = document.getElementById('wizardPct');
+    let currentPct = 0;
+    const wsteps = document.querySelectorAll('.wizard-step');
+    const step2Question = document.getElementById('step2Question');
+    const step2Options = document.getElementById('step2Options');
+    const wizardResult = document.getElementById('wizardResult');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultText = document.getElementById('resultText');
+    const resultCta = document.getElementById('resultCta');
+    const restartBtn = document.getElementById('wizardRestart');
+
+    const state = { profilo: null, esigenza: null, zona: null };
+    let currentStep = 1;
+    const whistory = [];
+
+    const ESIGENZE = {
+      privato: [
+        { val: 'barriere', label: 'Superare le scale / abbattere barriere architettoniche', icon: '♿' },
+        { val: 'nuovo-domestico', label: 'Installare un nuovo ascensore domestico', icon: '🛗' }
+      ],
+      condominio: [
+        { val: 'cambio-manutenzione', label: 'Cambiare ditta di manutenzione / assistenza', icon: '🔧' },
+        { val: 'modernizzazione', label: 'Modernizzare o sostituire un vecchio ascensore', icon: '♻️' }
+      ],
+      azienda: [
+        { val: 'montacarichi', label: 'Installare un montacarichi / impianto speciale', icon: '📦' },
+        { val: 'manutenzione-aziendale', label: 'Manutenzione impianti aziendali', icon: '🛠️' }
+      ]
+    };
+
+    const STEP2_QUESTIONS = {
+      privato: 'Qual è la tua esigenza principale?',
+      condominio: 'Di cosa ha bisogno il condominio?',
+      azienda: 'Di cosa ha bisogno la tua attività?'
+    };
+
+    const RISULTATI = {
+      privato: {
+        'barriere': {
+          title: 'Servoscala a poltroncina o piattaforma',
+          text: 'La soluzione più rapida per tornare a muoverti liberamente in casa, senza opere murarie invasive. Potresti inoltre accedere alle detrazioni fiscali attive per l\'abbattimento delle barriere architettoniche. Un tecnico LGM può valutare la tua scala con un sopralluogo gratuito.',
+          ctaLabel: 'Prenota sopralluogo gratuito',
+          subject: 'Richiesta sopralluogo — Servoscala',
+          body: 'Salve, vorrei richiedere un sopralluogo gratuito per valutare l\'installazione di un servoscala.'
+        },
+        'nuovo-domestico': {
+          title: 'Ascensore domestico su misura',
+          text: 'Per chi vuole un impianto elegante e discreto in una casa privata, valutiamo insieme lo spazio disponibile e la soluzione più adatta, dalla progettazione all\'installazione, con assistenza dedicata anche dopo il collaudo.',
+          ctaLabel: 'Richiedi una consulenza',
+          subject: 'Richiesta consulenza — Ascensore domestico',
+          body: 'Salve, sono interessato/a a una consulenza per l\'installazione di un ascensore domestico.'
+        }
+      },
+      condominio: {
+        'cambio-manutenzione': {
+          title: 'Passaggio di consegne senza pensieri',
+          text: 'Per i condomini, LGM offre il passaggio di consegne a costo zero e un primo controllo tecnico gratuito, per capire subito lo stato dell\'impianto prima di firmare qualsiasi contratto. Parla con il nostro team per pianificare la gestione.',
+          ctaLabel: 'Richiedi preventivo manutenzione',
+          subject: 'Richiesta preventivo — Manutenzione condominio',
+          body: 'Salve, siamo interessati a valutare il passaggio della manutenzione del nostro impianto a LGM Elevator.'
+        },
+        'modernizzazione': {
+          title: 'Modernizzazione dell\'impianto esistente',
+          text: 'Un impianto datato può essere aggiornato senza necessariamente sostituirlo del tutto: valutiamo insieme lo stato di conservazione e le normative vigenti, per proporti la soluzione più efficiente in termini di costi e tempi.',
+          ctaLabel: 'Richiedi una valutazione tecnica',
+          subject: 'Richiesta valutazione — Modernizzazione ascensore',
+          body: 'Salve, vorremmo una valutazione tecnica per la modernizzazione del nostro ascensore condominiale.'
+        }
+      },
+      azienda: {
+        'montacarichi': {
+          title: 'Montacarichi e impianti speciali',
+          text: 'Progettiamo e installiamo soluzioni di sollevamento pensate per le esigenze specifiche della tua attività, che si tratti di merci, attrezzature o carichi particolari, seguendoti dalla progettazione alla messa in funzione.',
+          ctaLabel: 'Richiedi un preventivo',
+          subject: 'Richiesta preventivo — Montacarichi',
+          body: 'Salve, vorremmo un preventivo per l\'installazione di un montacarichi/impianto speciale presso la nostra attività.'
+        },
+        'manutenzione-aziendale': {
+          title: 'Manutenzione programmata per la tua attività',
+          text: 'Un impianto fermo è un costo per l\'azienda: offriamo contratti di manutenzione programmata pensati per ridurre al minimo i fermi macchina e garantire la piena conformità normativa.',
+          ctaLabel: 'Richiedi un preventivo',
+          subject: 'Richiesta preventivo — Manutenzione aziendale',
+          body: 'Salve, vorremmo un preventivo per un contratto di manutenzione programmata dei nostri impianti.'
+        }
+      }
+    };
+
+    function animatePct(target) {
+      if (!wizardPct) return;
+      const start = currentPct;
+      const duration = 500;
+      const t0 = performance.now();
+      function tick(now) {
+        const p = Math.min((now - t0) / duration, 1);
+        const val = Math.round(start + (target - start) * p);
+        wizardPct.textContent = val + '%';
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      currentPct = target;
+    }
+
+    function goToStep(n) {
+      wsteps.forEach(s => s.classList.toggle('active', parseInt(s.dataset.step, 10) === n));
+      wizardResult.classList.remove('active');
+      progressDots.forEach(d => d.classList.toggle('filled', parseInt(d.dataset.step, 10) <= n));
+      backBtn.style.visibility = whistory.length ? 'visible' : 'hidden';
+      currentStep = n;
+      animatePct(Math.round(((n - 1) / 3) * 100));
+    }
+
+    function renderStep2() {
+      step2Question.textContent = STEP2_QUESTIONS[state.profilo];
+      step2Options.innerHTML = '';
+      ESIGENZE[state.profilo].forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'wizard-opt';
+        btn.dataset.key = 'esigenza';
+        btn.dataset.val = opt.val;
+        btn.innerHTML = `<span class="opt-icon">${opt.icon}</span> ${opt.label}`;
+        btn.addEventListener('click', () => selectOption(btn));
+        step2Options.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      const r = RISULTATI[state.profilo][state.esigenza];
+      resultTitle.textContent = r.title;
+      resultText.textContent = `${r.text} (Zona: ${state.zona}.)`;
+      resultCta.textContent = r.ctaLabel;
+      const mailto = `mailto:info@lgmelevator.com?subject=${encodeURIComponent(r.subject)}&body=${encodeURIComponent(r.body + '\n\nZona: ' + state.zona)}`;
+      resultCta.setAttribute('href', mailto);
+
+      wsteps.forEach(s => s.classList.remove('active'));
+      wizardResult.classList.add('active');
+      progressDots.forEach(d => d.classList.add('filled'));
+      backBtn.style.visibility = 'visible';
+      currentStep = 4;
+      animatePct(100);
+    }
+
+    function selectOption(btn) {
+      const key = btn.dataset.key;
+      const val = btn.dataset.val;
+      const group = btn.parentElement.querySelectorAll('.wizard-opt');
+      group.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
-      const val = btn.getAttribute('data-val');
-      const r = risultati[val];
-      document.getElementById('config-result-title').textContent = r.title;
-      document.getElementById('config-result-text').textContent = r.text;
-      document.getElementById('config-result-link').setAttribute('href', r.link);
-      document.getElementById('config-result').classList.add('show');
+      state[key] = val;
+
+      whistory.push(currentStep);
+
+      setTimeout(() => {
+        if (key === 'profilo') {
+          renderStep2();
+          goToStep(2);
+        } else if (key === 'esigenza') {
+          goToStep(3);
+        } else if (key === 'zona') {
+          showResult();
+        }
+      }, 220);
+    }
+
+    document.querySelectorAll('.wizard-step[data-step="1"] .wizard-opt').forEach(btn => {
+      btn.addEventListener('click', () => selectOption(btn));
     });
-  });
+    document.querySelectorAll('.wizard-step[data-step="3"] .wizard-opt').forEach(btn => {
+      btn.addEventListener('click', () => selectOption(btn));
+    });
+
+    backBtn.addEventListener('click', () => {
+      if (!whistory.length) return;
+      const prev = whistory.pop();
+      if (prev === 1) {
+        state.esigenza = null;
+        goToStep(1);
+      } else if (prev === 2) {
+        state.zona = null;
+        goToStep(2);
+      } else if (prev === 3) {
+        goToStep(3);
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      state.profilo = null;
+      state.esigenza = null;
+      state.zona = null;
+      whistory.length = 0;
+      document.querySelectorAll('.wizard-opt').forEach(b => b.classList.remove('selected'));
+      goToStep(1);
+    });
+  })();
 </script>
 
 </body>
