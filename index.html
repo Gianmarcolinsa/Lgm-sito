@@ -761,6 +761,12 @@
       var(--bg);
   }
   #cabinCanvas {
+    /* position:absolute lo toglie dal flusso: le dimensioni del canvas
+       (che il renderer aggiorna a ogni resize) non possono mai influenzare
+       la misura del contenitore, evitando qualsiasi loop del ResizeObserver. */
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
     touch-action: pan-y;
@@ -1408,8 +1414,9 @@
       <p class="cfg3d-intro">Ruota la visuale, cambia pareti, pavimento, cielino, bottoniera, corrimano e specchio: vedi solo le combinazioni davvero compatibili con il modello Orona scelto. <span class="cfg3d-demo-badge">Dati dimostrativi — catalogo Orona completo in arrivo</span></p>
 
       <div class="cfg3d-shell" id="cfg3dShell">
-        <!-- Viewer 3D -->
-        <section class="cfg3d-viewer" aria-label="Anteprima 3D della cabina">
+        <!-- Viewer 3D (div, non section: la regola globale section:not(.hero)
+             aggiungerebbe padding 96px e max-width, rompendo il layout del canvas) -->
+        <div class="cfg3d-viewer" role="region" aria-label="Anteprima 3D della cabina">
           <canvas id="cabinCanvas" tabindex="0"
                   aria-label="Cabina dell'ascensore in 3D. Trascina con il mouse o con un dito per ruotare la visuale; da tastiera usa le frecce, Home per reimpostare la vista, P per aprire e chiudere le porte."></canvas>
 
@@ -1436,7 +1443,7 @@
               <p class="cfg3d-overlay__sub" id="viewerOverlayMsg">Caricamento del motore 3D</p>
             </div>
           </div>
-        </section>
+        </div><!-- /cfg3d-viewer -->
 
         <!-- Pannello opzioni (sidebar desktop / bottom sheet mobile) -->
         <aside class="cfg3d-panel" id="cfgPanel" aria-label="Pannello di configurazione della cabina">
@@ -2757,12 +2764,18 @@
      10. DIMENSIONAMENTO E ROBUSTEZZA
      ========================================================================== */
 
+  var lastW = 0, lastH = 0;
+
   function resize() {
     if (!renderer) return;
     var box = canvas.parentElement;
     var cw = box ? box.clientWidth : canvas.clientWidth;
     var ch = box ? box.clientHeight : canvas.clientHeight;
     if (!cw || !ch) return;
+    /* Se le dimensioni non sono cambiate, non toccare il renderer:
+       evita lavoro inutile e qualsiasi rischio di feedback loop. */
+    if (cw === lastW && ch === lastH) return;
+    lastW = cw; lastH = ch;
     renderer.setPixelRatio(Math.min(root.devicePixelRatio || 1, caps.maxDpr));
     renderer.setSize(cw, ch, false);
     camera.aspect = cw / ch;
@@ -2772,7 +2785,18 @@
 
   function bindResize() {
     if (typeof root.ResizeObserver === 'function' && canvas.parentElement) {
-      new root.ResizeObserver(resize).observe(canvas.parentElement);
+      /* Il callback è rimandato al frame successivo con requestAnimationFrame:
+         è il pattern standard per evitare l'errore "ResizeObserver loop
+         completed with undelivered notifications". */
+      var rafPending = false;
+      new root.ResizeObserver(function () {
+        if (rafPending) return;
+        rafPending = true;
+        root.requestAnimationFrame(function () {
+          rafPending = false;
+          resize();
+        });
+      }).observe(canvas.parentElement);
     } else {
       root.addEventListener('resize', resize);
     }
