@@ -1755,7 +1755,8 @@
      viste. Si inizializza in modo lazy (vedi hook in showView) solo
      alla prima apertura della vista #configuratore.
      ================================================================ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+
+<!-- Configuratore 3D: motore Three.js + logica UI (lazy load) -->
 <script id="motore-3d">
 /* ============================================================================
    LGM ELEVATOR — script_config_viewer.js
@@ -3377,7 +3378,27 @@
   window.initLGMConfigurator3D = function () {
     if (cfg3dInitialized) return;
     var canvas = document.getElementById('cabinCanvas');
-    if (!canvas) return; /* markup del configuratore non presente in pagina */
+    if (!canvas) return;
+
+    /* Three.js caricato dinamicamente al primo click sul configuratore.
+       Zero KB aggiuntivi per chi non lo apre mai. */
+    if (typeof root.THREE === 'undefined') {
+      var s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      s.onload = function () { window.initLGMConfigurator3D(); };
+      s.onerror = function () {
+        var o = document.getElementById('viewerOverlay');
+        if (o) {
+          o.classList.add('is-error');
+          var t = o.querySelector('.cfg3d-overlay__title');
+          if (t) t.textContent = 'Motore 3D non disponibile';
+          var sub = document.getElementById('viewerOverlayMsg');
+          if (sub) sub.textContent = 'Verifica la connessione e ricarica la pagina.';
+        }
+      };
+      document.head.appendChild(s);
+      return;
+    }
     cfg3dInitialized = true;
 
     var LGM = { toast: toastLocal, copy: copyLocal };
