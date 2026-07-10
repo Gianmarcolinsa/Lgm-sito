@@ -87,13 +87,38 @@ Il vecchio wizard testuale multi-step (3 step: Chi sei / Esigenza / Zona) è sta
 - Il `ResizeObserver` usa `requestAnimationFrame` come wrapper (pattern anti-loop standard)
 
 **Funzionalità:**
-- Vista 3D ruotabile della cabina (drag mouse / touch)
+- **Vista interna in prima persona** (aggiornato 10/07/2026): la camera parte
+  al centro esatto della cabina, altezza occhi (1.6m), FOV grandangolare 95°
+  (zoom rotella tra 55° e 105°), rotazione libera fino a ±77° in verticale —
+  dà la reale percezione degli spazi interni invece di una vista "a scatola"
+  dall'esterno (feedback diretto del padre del cliente)
+- **Ambiente esterno astratto** (aggiornato 10/07/2026): a porte aperte,
+  oltre la soglia compare un fondale elegante blu/nero con luce diffusa
+  centrale (sostituisce il vecchio pianerottolo beige); si riflette nello
+  specchio via CubeCamera; sparisce completamente a porte chiuse
+- **Logo LGM ELEVATOR statico nell'ambiente esterno** (aggiornato 10/07/2026):
+  stesso SVG della nav, rasterizzato una sola volta in texture, nessuna
+  animazione, ~2.7m di larghezza, centrato all'altezza occhi (1.5m), con
+  retroilluminazione dedicata nello sfondo per risaltare; visibile in
+  riflesso nello specchio. Nota: il testo "ELEVATOR" nella texture 3D usa
+  il font di fallback (Trebuchet/Arial) perché i web font non si caricano
+  nelle texture SVG rasterizzate — differenza minima, da valutare se disegnare
+  il testo direttamente su canvas in futuro
 - Personalizzazione: Modello Orona, Pareti, Pavimento, Cielino, Bottoniera, Corrimano, Specchio
 - Preset pronti (combinazioni curate)
 - Codice configurazione generabile e copiabile (es. `LGM-1010-W1F1C2P1B1D0H0M1-…`)
 - Pannello laterale su desktop, bottom sheet su mobile
 - Riepilogo + CTA "Richiedi preventivo" → apre vista Contatti via `showView('contatti')`
 - Dati Orona: **dimostrativi** (catalogo reale da aggiungere in futuro)
+
+**Qualità grafica** (aggiornato 10/07/2026, solo desktop — mobile invariato
+per performance):
+- Pixel ratio nativo del display (Retina/4K), tetto a 2.5x (prima: fisso a 2x)
+- Risoluzione ombre 2048px (prima: 1024px)
+- Risoluzione riflessi specchio 1024px (prima: 512px)
+- Risoluzione texture procedurali 1024px (prima: 512px)
+- Risoluzione environment map (riflessi metalli) 1024px (prima: 512px)
+- Anisotropia texture 16x su desktop, 8x su mobile (prima: 8x fisso)
 
 **Accesso dal sito:**
 - Da nav → "Configuratore"
@@ -135,6 +160,14 @@ Il vecchio wizard testuale multi-step (3 step: Chi sei / Esigenza / Zona) è sta
 8. **Le modifiche fatte in sessioni precedenti non vanno mai toccate** senza
    ragione esplicita. Il file di base è sempre quello consegnato nell'ultima
    sessione approvata, mai una versione precedente del progetto.
+9. ⚠️ **FONDAMENTALE — Sequenza fissa prima di ogni modifica.** Per qualunque
+   modifica, senza eccezioni: (1) Claude dichiara **modello** e **livello di
+   impegno**; (2) Claude chiede esplicitamente "Vuoi che proceda?"; (3) Claude
+   **aspetta il via libera dell'utente**; solo dopo il via libera esplicito
+   procede con il codice. Questa regola non va ricordata dall'utente: Claude
+   la applica sempre, in automatico, ad ogni singola modifica richiesta.
+   (Rafforza e precisa la regola 2 — stessa logica, sequenza esplicita fissata
+   il 10/07/2026 su richiesta diretta dell'utente.)
 
 ## Struttura attuale del sito — aggiornata 09/07/2026
 **Tema**: scuro elegante, accenti **blu metallizzato**, font Sora (titoli) + Inter (corpo).
@@ -196,6 +229,9 @@ titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 09/07/2026 — Aggiunto configuratore 3D (Three.js, lazy load);
-vista Ascensori completata con CTA; wizard testuale rimosso; fix ResizeObserver loop;
-aggiunta regola 8 sul rispetto delle modifiche precedenti.*
+*Ultimo aggiornamento: 10/07/2026 — Configuratore 3D: vista interna in prima
+persona (FOV 95°, camera centrale), ambiente esterno astratto a porte aperte
+(sostituisce il pianerottolo), logo LGM ELEVATOR statico nell'ambiente esterno,
+qualità grafica potenziata su desktop (pixel ratio nativo, ombre/riflessi/texture
+1024-2048px, anisotropia 16x); aggiunta regola 9 fondamentale sulla sequenza
+dichiarazione modello/impegno → via libera → esecuzione.*

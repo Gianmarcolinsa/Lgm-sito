@@ -821,6 +821,54 @@
     color: var(--accent-2);
   }
 
+  /* Bottone schermo intero: mostra icona "entra" o "esci" secondo lo stato.
+     Lo stato attivo è marcato con la classe .is-fullscreen sul bottone
+     (non con aria-pressed, per non ereditare lo sfondo blu del toggle porte). */
+  .cfg3d-hud__btn .cfg3d-hud__ico-exit { display: none; }
+  .cfg3d-hud__btn.is-fullscreen .cfg3d-hud__ico-enter { display: none; }
+  .cfg3d-hud__btn.is-fullscreen .cfg3d-hud__ico-exit { display: block; }
+
+  /* ---------- Schermo intero del configuratore ----------
+     Due strade, stesso risultato visivo:
+     1) Fullscreen API nativa: :fullscreen viene applicato dal browser
+     2) Fallback overlay: la classe .is-fs-overlay è aggiunta via JS quando
+        l'API nativa non è disponibile (es. iframe sandbox)
+     In entrambi i casi lo shell riempie tutto lo spazio disponibile
+     mantenendo viewer + pannello affiancati (o impilati su mobile). */
+  .cfg3d-shell:fullscreen,
+  .cfg3d-shell.is-fs-overlay {
+    height: 100%;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: var(--bg);
+  }
+  /* :-webkit-full-screen separato: un selettore non riconosciuto invaliderebbe
+     l'intero gruppo, quindi va tenuto in una regola a sé. */
+  .cfg3d-shell:-webkit-full-screen {
+    height: 100%;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: var(--bg);
+  }
+  /* Fallback overlay: posiziona lo shell sopra tutta la pagina.
+     position:fixed copre la viewport; z-index alto per stare sopra la nav. */
+  .cfg3d-shell.is-fs-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  }
+  /* In fullscreen il viewer deve poter crescere quanto serve: rimuoviamo
+     l'altezza fissa mobile e lasciamo che la griglia occupi tutto. */
+  .cfg3d-shell:fullscreen .cfg3d-viewer,
+  .cfg3d-shell.is-fs-overlay .cfg3d-viewer { height: auto; }
+  .cfg3d-shell:-webkit-full-screen .cfg3d-viewer { height: auto; }
+
   .cfg3d-hint {
     position: absolute;
     bottom: 16px; left: 50%;
@@ -1192,6 +1240,41 @@
     .cfg3d-tab { min-height: 44px; flex: 0 0 auto; }
     .cfg3d-hud__btn { width: 48px; height: 48px; }
     .cfg3d-opt-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Schermo intero su mobile: lo shell diventa una colonna a tutta altezza,
+       il viewer prende la maggior parte dello schermo e il pannello resta
+       sotto come area scrollabile — così si personalizza e si vede insieme. */
+    .cfg3d-shell:fullscreen,
+    .cfg3d-shell.is-fs-overlay {
+      display: flex;
+      flex-direction: column;
+    }
+    .cfg3d-shell:-webkit-full-screen { display: flex; flex-direction: column; }
+    .cfg3d-shell:fullscreen .cfg3d-viewer,
+    .cfg3d-shell.is-fs-overlay .cfg3d-viewer {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: auto;
+      border: none;
+      border-radius: 0;
+    }
+    .cfg3d-shell:-webkit-full-screen .cfg3d-viewer {
+      flex: 1 1 auto; min-height: 0; height: auto; border: none; border-radius: 0;
+    }
+    .cfg3d-shell:fullscreen .cfg3d-panel,
+    .cfg3d-shell.is-fs-overlay .cfg3d-panel {
+      flex: 0 0 auto;
+      margin-top: 0;
+      border: none;
+      border-top: 1px solid var(--border);
+      border-radius: 0;
+      max-height: 42vh;
+      overflow-y: auto;
+    }
+    .cfg3d-shell:-webkit-full-screen .cfg3d-panel {
+      flex: 0 0 auto; margin-top: 0; border: none; border-top: 1px solid var(--border);
+      border-radius: 0; max-height: 42vh; overflow-y: auto;
+    }
   }
   @media (max-width: 560px) {
     .cfg3d-opt-grid { grid-template-columns: 1fr; }
@@ -1418,7 +1501,7 @@
              aggiungerebbe padding 96px e max-width, rompendo il layout del canvas) -->
         <div class="cfg3d-viewer" role="region" aria-label="Anteprima 3D della cabina">
           <canvas id="cabinCanvas" tabindex="0"
-                  aria-label="Cabina dell'ascensore in 3D. Trascina con il mouse o con un dito per ruotare la visuale; da tastiera usa le frecce, Home per reimpostare la vista, P per aprire e chiudere le porte."></canvas>
+                  aria-label="Cabina dell'ascensore in 3D. Trascina con il mouse o con un dito per ruotare la visuale; da tastiera usa le frecce, Home per reimpostare la vista, P per aprire e chiudere le porte. Il bottone Schermo intero espande il configuratore a tutta la pagina."></canvas>
 
           <p class="cfg3d-badge" id="viewerModelBadge" aria-live="polite">—</p>
 
@@ -1428,6 +1511,10 @@
             </button>
             <button class="cfg3d-hud__btn" id="hudDoors" type="button" title="Apri o chiudi le porte" aria-label="Apri o chiudi le porte" aria-pressed="false">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18"/><path d="M8.5 10.5 6.5 12l2 1.5M15.5 10.5l2 1.5-2 1.5"/></svg>
+            </button>
+            <button class="cfg3d-hud__btn" id="hudFullscreen" type="button" title="Schermo intero" aria-label="Passa a schermo intero" aria-pressed="false">
+              <svg class="cfg3d-hud__ico-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4"/><path d="M20 9V5a1 1 0 0 0-1-1h-4"/><path d="M4 15v4a1 1 0 0 0 1 1h4"/><path d="M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
+              <svg class="cfg3d-hud__ico-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4v3a1 1 0 0 1-1 1H4"/><path d="M16 4v3a1 1 0 0 0 1 1h3"/><path d="M8 20v-3a1 1 0 0 0-1-1H4"/><path d="M16 20v-3a1 1 0 0 1 1-1h3"/></svg>
             </button>
           </div>
 
@@ -2210,8 +2297,11 @@
   var mirrorDirty = false;
 
   /* Controlli visuale — FOV grandangolare: percezione realistica degli
-     spazi interni della cabina (vista in prima persona) */
-  var DEFAULT_FOV = 95;
+     spazi interni della cabina (vista in prima persona).
+     Default 105°, zoom con la rotella tra 65° (dettagli) e 130° (grandangolo
+     massimo). Oltre i ~120° con camera prospettica i bordi iniziano a
+     incurvarsi: 130° è il tetto voluto, da rivedere se la distorsione dà noia. */
+  var DEFAULT_FOV = 105;
   var yaw = 0, pitch = -0.02, targetYaw = 0, targetPitch = -0.02;
   var fov = DEFAULT_FOV, targetFov = DEFAULT_FOV;
   var ROT_SPEED = 0.0042, KEY_STEP = 0.14;
@@ -2813,7 +2903,7 @@
     /* Zoom (campo visivo) con la rotella, solo sul canvas */
     canvas.addEventListener('wheel', function (e) {
       e.preventDefault();
-      targetFov = clamp(targetFov + e.deltaY * 0.02, 55, 105);
+      targetFov = clamp(targetFov + e.deltaY * 0.02, 65, 130);
       hideHint();
     }, { passive: false });
 
@@ -3574,6 +3664,8 @@
       grip: document.getElementById('sheetGrip'),
       hudReset: document.getElementById('hudReset'),
       hudDoors: document.getElementById('hudDoors'),
+      hudFullscreen: document.getElementById('hudFullscreen'),
+      shell: document.getElementById('cfg3dShell'),
       hint: document.getElementById('viewerHint')
     };
 
@@ -4120,6 +4212,106 @@
 
     /* ---------- HUD ---------- */
 
+    /* ---------- Schermo intero (ibrido: API nativa + fallback overlay) ----------
+       Mette in fullscreen l'INTERO shell (viewer 3D + pannello opzioni), così
+       l'utente continua a personalizzare e vede il risultato a schermo pieno.
+       Prova prima la Fullscreen API nativa; se non disponibile (es. iframe
+       sandbox senza allow="fullscreen") ricade su un overlay CSS a tutta pagina. */
+    function FullscreenController(shell, btn) {
+      var self = {};
+      var overlayActive = false; /* true = stiamo usando il fallback overlay */
+
+      function nativeElement() {
+        return document.fullscreenElement || document.webkitFullscreenElement || null;
+      }
+      function nativeSupported() {
+        return !!(shell.requestFullscreen || shell.webkitRequestFullscreen);
+      }
+      function isActive() {
+        return overlayActive || nativeElement() === shell;
+      }
+
+      function nudgeResize() {
+        /* Il ResizeObserver sul viewer coglie già il cambio dimensioni, ma un
+           colpo di 'resize' esplicito copre i browser che non lo scatenano
+           entrando/uscendo dal fullscreen. requestAnimationFrame: aspetta che
+           il layout sia assestato. */
+        if (typeof root.requestAnimationFrame === 'function') {
+          root.requestAnimationFrame(function () {
+            try { root.dispatchEvent(new Event('resize')); } catch (e) {}
+          });
+        } else {
+          try { root.dispatchEvent(new Event('resize')); } catch (e) {}
+        }
+      }
+
+      function reflect() {
+        var active = isActive();
+        if (btn) {
+          btn.classList.toggle('is-fullscreen', active);
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+          btn.setAttribute('aria-label', active ? 'Esci da schermo intero' : 'Passa a schermo intero');
+          btn.setAttribute('title', active ? 'Esci da schermo intero' : 'Schermo intero');
+        }
+        nudgeResize();
+      }
+
+      function enterOverlay() {
+        overlayActive = true;
+        shell.classList.add('is-fs-overlay');
+        document.body.style.overflow = 'hidden'; /* niente scroll dietro l'overlay */
+        reflect();
+      }
+      function exitOverlay() {
+        overlayActive = false;
+        shell.classList.remove('is-fs-overlay');
+        document.body.style.overflow = '';
+        reflect();
+      }
+
+      function enterNative() {
+        try {
+          var p = shell.requestFullscreen
+            ? shell.requestFullscreen()
+            : shell.webkitRequestFullscreen && shell.webkitRequestFullscreen();
+          if (p && typeof p.catch === 'function') {
+            p.catch(function () { enterOverlay(); }); /* permesso negato → overlay */
+          }
+        } catch (e) {
+          enterOverlay();
+        }
+      }
+      function exitNative() {
+        try {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        } catch (e) {}
+      }
+
+      self.toggle = function () {
+        if (isActive()) {
+          if (overlayActive) exitOverlay();
+          else exitNative();
+        } else {
+          if (nativeSupported()) enterNative();
+          else enterOverlay();
+        }
+      };
+
+      /* Il browser può uscire dal fullscreen da solo (tasto ESC, gesto di
+         sistema): teniamo il bottone allineato allo stato reale. */
+      function onNativeChange() { reflect(); }
+      document.addEventListener('fullscreenchange', onNativeChange);
+      document.addEventListener('webkitfullscreenchange', onNativeChange);
+
+      /* ESC chiude anche l'overlay di fallback (che non ha il fullscreen nativo). */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlayActive) exitOverlay();
+      });
+
+      return self;
+    }
+
     function bindHud() {
       if (els.hudReset) {
         els.hudReset.addEventListener('click', function () {
@@ -4132,6 +4324,14 @@
           var open = Viewer.toggleDoors();
           els.hudDoors.setAttribute('aria-pressed', open ? 'true' : 'false');
         });
+      }
+      if (els.hudFullscreen && els.shell) {
+        var fs = FullscreenController(els.shell, els.hudFullscreen);
+        els.hudFullscreen.addEventListener('click', function () { fs.toggle(); });
+      } else if (els.hudFullscreen) {
+        /* Shell mancante (non dovrebbe accadere): nascondi il bottone
+           invece di lasciarlo inerte. */
+        els.hudFullscreen.style.display = 'none';
       }
       if (els.copyTop) {
         els.copyTop.addEventListener('click', function () {
