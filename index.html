@@ -2367,12 +2367,13 @@
         return tx;
       };
       extTexCache = {
-        /* Fondale: alone blu-viola freddo che sfuma nel nero */
+        /* Fondale: alone blu freddo centrato dietro il logo (altezza
+           occhi) e leggermente più luminoso, per farlo risaltare */
         bg: mk(function (g) {
-          var gr = g.createRadialGradient(256, 205, 25, 256, 235, 350);
-          gr.addColorStop(0, '#33406B');
-          gr.addColorStop(0.32, '#181D38');
-          gr.addColorStop(0.68, '#0A0C17');
+          var gr = g.createRadialGradient(256, 290, 25, 256, 295, 360);
+          gr.addColorStop(0, '#3D4C7E');
+          gr.addColorStop(0.3, '#1B2140');
+          gr.addColorStop(0.66, '#0A0C17');
           gr.addColorStop(1, '#040509');
           g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
         }),
@@ -2419,8 +2420,60 @@
         depthWrite: false
       }));
     extGlow.rotation.y = Math.PI;
-    extGlow.position.set(0, 1.75, d / 2 + 3.3);
+    /* All'altezza del logo: fa da retroilluminazione e lo stacca dal fondo */
+    extGlow.position.set(0, 1.5, d / 2 + 3.3);
     extEnv.add(extGlow);
+
+    /* ---------- Logo LGM ELEVATOR, grande, al centro ----------
+       Riusa l'SVG della nav: viene serializzato e rasterizzato una sola
+       volta in una CanvasTexture (statico, nessuna animazione). */
+    if (!extTexCache.logo) {
+      var lc = document.createElement('canvas');
+      lc.width = 1024; lc.height = 512;
+      var logoTex = new T.CanvasTexture(lc);
+      logoTex.encoding = T.sRGBEncoding;
+      extTexCache.logo = logoTex;
+      extTexCache.logoAspect = 0.5;
+      try {
+        var navSvg = document.querySelector('.logo svg');
+        if (navSvg) {
+          var lclone = navSvg.cloneNode(true);
+          lclone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+          var vb = (lclone.getAttribute('viewBox') || '').split(/[\s,]+/);
+          var vbW = parseFloat(vb[2]) || 558;
+          var vbH = parseFloat(vb[3]) || 280;
+          extTexCache.logoAspect = vbH / vbW;
+          lc.height = Math.max(2, Math.round(1024 * extTexCache.logoAspect));
+          lclone.setAttribute('width', '1024');
+          lclone.setAttribute('height', String(lc.height));
+          var lxml = new XMLSerializer().serializeToString(lclone);
+          var limg = new Image();
+          limg.onload = function () {
+            var g = lc.getContext('2d');
+            g.clearRect(0, 0, lc.width, lc.height);
+            g.drawImage(limg, 0, 0, lc.width, lc.height);
+            logoTex.needsUpdate = true;
+            mirrorDirty = !!mirrorMesh;  // riflesso specchio aggiornato
+            needsRender = true;
+          };
+          limg.src = 'data:image/svg+xml;charset=utf-8,' +
+            encodeURIComponent(lxml);
+        }
+      } catch (e) { /* senza logo l'ambiente resta comunque valido */ }
+    }
+
+    var logoW = 2.7; /* grande e d'impatto, proporzionato alla scena */
+    var logoMesh = new T.Mesh(
+      new T.PlaneGeometry(logoW, logoW * extTexCache.logoAspect),
+      new T.MeshBasicMaterial({
+        map: extTexCache.logo,
+        transparent: true,
+        toneMapped: false
+      }));
+    logoMesh.rotation.y = Math.PI;
+    /* Centro, altezza occhi, davanti all'alone di retroilluminazione */
+    logoMesh.position.set(0, 1.5, d / 2 + 3.15);
+    extEnv.add(logoMesh);
 
     /* Luce fredda che filtra dall'esterno dentro la cabina a porte aperte */
     var extLight = new T.PointLight(0x8FA8E8, 0.55, 6.5);
