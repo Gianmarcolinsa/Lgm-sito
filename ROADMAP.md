@@ -37,10 +37,9 @@
 |---|------|---------|--------------|---------|
 | 1a | Scrivere testo Hero definitivo (partendo dal messaggio-gancio concordato) | Opus | Sì | Medio |
 | 1b | Scrivere testo sezione Storia definitivo (partendo dai dati raccolti in Fase 0) | Opus | Sì | Medio |
-| 1c | Decidere e scrivere titolo sezione Configuratore (oggi è [PLACEHOLDER]) | Sonnet | No | Minimo |
-| 1d | Decidere e scrivere titolo sezione Fiducia (oggi è [PLACEHOLDER]) | Sonnet | No | Minimo |
-| 1e | Confermare dicitura ~14 persone + decidere terzo dato Fiducia (oggi H24) | — | — | Decisione utente, poi Sonnet aggiorna |
-| 1f | Decidere se/come aggiungere menzione Puglia nei contatti | — | — | Decisione utente, poi Sonnet aggiorna |
+| 1c | Decidere e scrivere titolo sezione Fiducia (oggi è [PLACEHOLDER]) | Sonnet | No | Minimo |
+| 1d | Confermare dicitura ~14 persone + decidere terzo dato Fiducia (oggi H24) | — | — | Decisione utente, poi Sonnet aggiorna |
+| 1e | Decidere se/come aggiungere menzione Puglia nei contatti | — | — | Decisione utente, poi Sonnet aggiorna |
 
 ### STEP 2 — Immagini reali
 > Inserire le foto vere al posto dei placeholder grigi nelle card prodotto.
@@ -51,17 +50,16 @@
 | 2b | Inserire foto ascensore reale nella card | Sonnet | No | Minimo |
 
 ### STEP 3 — Viste prodotto dedicate
-> Le card nella Home puntano già alle viste Servoscala e Ascensori,
-> che ora mostrano un placeholder "in costruzione". Da costruire.
+> La vista Ascensori ha già intro + CTA al configuratore 3D. Da completare con contenuti reali.
+> La vista Servoscala è ancora placeholder.
 
 | # | Task | Modello | Ragionamento | Impegno |
 |---|------|---------|--------------|---------|
 | 3a | Definire struttura e contenuti vista Servoscala (come funziona, modelli, FAQ, preventivo) | Opus | Sì | Alto |
 | 3b | Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
-| 3c | Definire struttura e contenuti vista Ascensori | Opus | Sì | Alto |
-| 3d | Costruire la vista Ascensori | Sonnet | No | Alto |
+| 3c | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Opus + Sonnet | Sì | Alto |
+| 3d | Aggiungere catalogo Orona reale al configuratore 3D (in sostituzione dei dati dimostrativi) | Sonnet | No | Medio |
 | 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
-| 3f | Valutare se il Configuratore avrà anche una versione avanzata per ascensori (idea in sospeso) | — | — | Decisione utente |
 
 ### STEP 4 — Rifinitura grafica e UX
 > Da fare dopo che i contenuti sono definitivi.
@@ -88,7 +86,6 @@
 ## Fase 1 — Contenuti definitivi (priorità attuale)
 - ⬜ Testo Hero definitivo
 - ⬜ Testo Storia definitivo
-- ⬜ Titolo sezione Configuratore (oggi [PLACEHOLDER])
 - ⬜ Titolo sezione Fiducia (oggi [PLACEHOLDER])
 - ⬜ Confermare/scrivere i 3 numeri della sezione Fiducia
 - ⬜ Decidere se/come menzionare l'area operativa Puglia nei contatti
@@ -102,9 +99,6 @@
   + ELEVATOR nero metallico riflettente pulsante. Palette sito aggiornata a blu.
 - ✅ Animazioni avanzate: filo dell'ascensore, testi cinematici, timeline
   che si disegna, contatori Fiducia, riflettore card prodotto.
-- ✅ Wizard configuratore multi-step: 3 profili × 2 esigenze × 5 zone,
-  fade morbido tra step, barra avanzamento con percentuale animata,
-  CTA mailto: precompilato, tasto Indietro e Ricomincia.
 - ✅ Animazioni scroll-based con IntersectionObserver: ogni elemento
   si anima al suo ingresso nel viewport durante lo scroll, e riparte
   da capo ad ogni cambio di vista.
@@ -113,9 +107,8 @@
 ## Fase 3 — Viste prodotto Servoscala e Ascensori
 - ⬜ Struttura e contenuti vista Servoscala
 - ⬜ Build vista Servoscala
-- ⬜ Struttura e contenuti vista Ascensori
-- ⬜ Build vista Ascensori
-- ⬜ Valutare configuratore ascensori avanzato (idea sospesa)
+- ⬜ Completare vista Ascensori con contenuti reali (oggi: intro + CTA configuratore)
+- ⬜ Aggiungere catalogo Orona reale al configuratore 3D
 
 ## Fase 4 — Pre-lancio
 - ⬜ SEO base: title, meta description, Open Graph, favicon
@@ -140,12 +133,18 @@
 | 05/07/2026 | Aggiunta nav verticale compatta (pillola a destra): desktop on-scroll, mobile sempre attiva con etichetta sezione visibile. | Sonnet | Medio | ✅ |
 | 05/07/2026 | Aggiornamento ROADMAP con scaletta operativa Step 1→5 (modelli, ragionamento, impegno per ogni task). | Sonnet | Minimo | ✅ |
 | 05/07/2026 | Animazioni avanzate: filo ascensore con freccia direzionale, testi cinematici parola per parola, timeline che si disegna, contatori Fiducia, riflettore card prodotto. | Sonnet | Medio-Alto | ✅ |
-| 06/07/2026 | Wizard configuratore multi-step: 3 step (Chi sei / Esigenza / Zona), 6 percorsi, fade morbido (0.55s), barra avanzamento con percentuale animata, CTA mailto: precompilato, Indietro/Ricomincia. Aggiunto come sezione nella vecchia struttura a scroll. | Sonnet | Medio | ✅ |
-| 06/07/2026 | Migrazione architetturale completa: da homepage a scroll unico a **SPA a viste**. La nav ora cambia vista via JS (fade istantaneo) invece di scrollare. 6 viste: Home, Chi siamo, Servoscala (placeholder), Ascensori (placeholder), Configuratore, Contatti. URL aggiornato via hash. Valido su desktop e mobile. | Opus | Alto | ✅ |
+| 06/07/2026 | Wizard configuratore multi-step: 3 step (Chi sei / Esigenza / Zona), 6 percorsi, fade morbido (0.55s), barra avanzamento con percentuale animata, CTA mailto: precompilato, Indietro/Ricomincia. | Sonnet | Medio | ✅ |
+| 06/07/2026 | Migrazione architetturale completa: da homepage a scroll unico a **SPA a viste**. La nav ora cambia vista via JS (fade istantaneo) invece di scrollare. 6 viste: Home, Chi siamo, Servoscala (placeholder), Ascensori (placeholder), Configuratore, Contatti. URL aggiornato via hash. | Opus | Alto | ✅ |
 | 06/07/2026 | Aggiunta voce "LGM" come primo link nella nav orizzontale e nella pillola verticale (→ Home). Rimosso vecchio bottone tondo "L" ridondante dalla pillola. | Sonnet | Minimo | ✅ |
-| 06/07/2026 | Fix bug critico: `elevatorFill` e variabili correlate dichiarate con `const` dopo `showView` che le usava → ReferenceError che bloccava tutto il JS (inclusi i click nel wizard). Spostate le dichiarazioni prima di `showView`. | Sonnet | Minimo | ✅ |
-| 06/07/2026 | Animazioni scroll-based con IntersectionObserver: ogni elemento si anima al suo ingresso nel viewport durante lo scroll (invece di tutto in blocco all'apertura della vista). Riparte da capo ad ogni cambio di vista. | Sonnet | Medio | ✅ |
-| 06/07/2026 | Aggiornamento CONTESTO_PROGETTO.md e ROADMAP.md: documentata architettura SPA a viste, regola 2 aggiornata (conferma obbligatoria prima di procedere, ragionamento dichiarato solo Sì/No). | Sonnet | Medio | ✅ |
+| 06/07/2026 | Fix bug critico: `elevatorFill` e variabili correlate dichiarate con `const` dopo `showView` → ReferenceError. Spostate le dichiarazioni prima di `showView`. | Sonnet | Minimo | ✅ |
+| 06/07/2026 | Animazioni scroll-based con IntersectionObserver per ogni vista. | Sonnet | Medio | ✅ |
+| 06/07/2026 | Aggiornamento CONTESTO_PROGETTO.md e ROADMAP.md post-migrazione SPA. | Sonnet | Medio | ✅ |
+| 08/07/2026 | **Audit qualità dei file del configuratore** (Fase 1): fix `cubeRT.texture.encoding` non supportato in Three.js r128 (rompeva specchio su Safari/Firefox); aggiunto `document.fonts.ready` + `TexFactory.forgetTextFaces()` per rebuild texture testuali quando IBM Plex Mono carica dopo il primo render. | Sonnet | Medio | ✅ |
+| 09/07/2026 | **Configuratore 3D integrato nel sito** (Fase 2+3): wizard testuale rimosso; vista `#configuratore` sostituita con canvas Three.js + pannello opzioni; vista `#ascensori` completata con intro + CTA "Configura la tua cabina in 3D"; tutte le classi CSS namespaced `cfg3d-*`; hook lazy `initLGMConfigurator3D` in `showView()`; redirect preventivo via `showView('contatti')`. | Sonnet | Alto | ✅ |
+| 09/07/2026 | Fix canvas grigio: Three.js caricato con `defer` + script inline creava race condition (inline eseguito prima che il `defer` fosse pronto). Sostituito con dynamic import (`createElement('script')`) dentro `initLGMConfigurator3D`. Three.js si scarica ora solo al primo click sul configuratore (~600KB lazy). | Sonnet | Medio | ✅ |
+| 09/07/2026 | Fix `ResizeObserver loop completed with undelivered notifications`: viewer `<section>` → `<div>` (evita conflitto con regola CSS globale `section:not(.hero)` che aggiungeva padding 96px); canvas `position:absolute; inset:0` (fuori dal flusso, non può più influenzare il contenitore); `resize()` con guard dimensioni invariate; callback ResizeObserver wrappato in `requestAnimationFrame`. | Sonnet | Medio | ✅ |
+| 09/07/2026 | Fix `history.replaceState` SecurityError in contesti sandbox (iframe): aggiunto try/catch attorno alla chiamata in `showView()`. | Sonnet | Minimo | ✅ |
+| 09/07/2026 | Aggiornamento CONTESTO_PROGETTO.md e ROADMAP.md: documentato configuratore 3D, fix ResizeObserver, aggiunta regola 8. | Sonnet | Minimo | ✅ |
 
 ---
 
@@ -170,9 +169,9 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Sito esistente da sostituire: https://www.lgmelevator.com (WordPress, datato).
   Utile per: contatti/dati aziendali da verificare, materiale fotografico,
   struttura prodotti Ascensori da cui prendere spunto per Fase 3.
-- Configuratore ascensori avanzato (idea futura): potrebbe vivere nella vista
-  Ascensori come wizard più tecnico (n. piani, dimensioni vano, tipo impianto).
-  Decisione rimandata a quando si costruirà quella vista.
+- Configuratore 3D: i dati Orona sono dimostrativi. Il catalogo reale (modelli,
+  dimensioni ufficiali, opzioni finiture disponibili) andrà aggiunto nella Fase 3
+  insieme ai contenuti definitivi della vista Ascensori.
 
 ### Fase 0 — Analisi e contenuti (raccolta dati)
 > Obiettivo dichiarato dall'utente: sito al passo coi tempi, giovanile,

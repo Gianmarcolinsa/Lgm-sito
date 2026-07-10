@@ -43,8 +43,10 @@ futuro per coprire entrambi i prodotti.
   Immagini definitive/professionali da decidere in una fase successiva.
 - **Livello di finitura richiesto prima del lancio**: alto. Nessuna scadenza
   di tempo, ma il sito verrà pubblicato solo quando sarà curato e completo.
+- **Partnership Orona**: LGM installa e mantiene ascensori Orona. Il configuratore
+  3D usa dati Orona dimostrativi; il catalogo reale sarà aggiunto in una fase successiva.
 
-## Architettura del sito (decisione confermata — aggiornata 06/07/2026)
+## Architettura del sito (decisione confermata — aggiornata 09/07/2026)
 Il sito è una **SPA a viste** (Single Page Application leggera): un unico
 `index.html`, la nav non scrolla ma **cambia vista** via JavaScript (fade
 istantaneo, senza ricaricamento pagina). Ogni voce nav = una vista dedicata,
@@ -55,8 +57,8 @@ ogni vista è linkabile/condivisibile direttamente.
 - **Home** (`#home`) — Hero + anteprima 2 prodotti (link alle viste dedicate) + numeri Fiducia
 - **Chi siamo** (`#chisiamo`) — storia famiglia + timeline interattiva cliccabile
 - **Servoscala** (`#servoscala`) — placeholder "in costruzione" (da costruire, Fase 3)
-- **Ascensori** (`#ascensori`) — placeholder "in costruzione" (da costruire, Fase 3)
-- **Configuratore** (`#configuratore`) — wizard multi-step "trova la tua soluzione"
+- **Ascensori** (`#ascensori`) — intro testo + CTA "Configura la tua cabina in 3D" → apre configuratore
+- **Configuratore** (`#configuratore`) — **Configuratore 3D cabina Orona** (Three.js, lazy load)
 - **Contatti** (`#contatti`) — info aziendali + form statico
 
 Le animazioni scroll-based (testi cinematici, timeline, contatori, scroll-reveal)
@@ -67,6 +69,35 @@ ogni volta che si cambia vista e si rientra.
 > ⚠️ **Nota storica**: la struttura precedente era una homepage a scroll unico
 > con sezioni (Hero, Storia, Prodotti, Fiducia, Contatti). La migrazione al
 > sistema a viste SPA è stata completata il 06/07/2026.
+
+## Configuratore 3D (aggiunto 09/07/2026)
+Il vecchio wizard testuale multi-step (3 step: Chi sei / Esigenza / Zona) è stato
+**sostituito** con un configuratore 3D della cabina Orona, basato su Three.js r128.
+
+**Architettura:**
+- Il motore 3D (`LGMViewer` + `LGMEngine`) è inline in `index.html` in fondo al `<body>`
+  in un `<script id="motore-3d">`
+- **Lazy loading reale**: Three.js e il motore si caricano dinamicamente (`createElement('script')`)
+  **solo alla prima apertura** della vista `#configuratore`, tramite hook in `showView()`
+- La funzione di ingresso si chiama `window.initLGMConfigurator3D()`
+- Tutte le classi CSS del configuratore sono namespaced `cfg3d-*` per non collidere
+  con il design system esistente; usano i CSS custom properties del sito (`--accent`,
+  `--surface`, `--border`, ecc.)
+- Il canvas usa `position: absolute; inset: 0` per evitare loop del `ResizeObserver`
+- Il `ResizeObserver` usa `requestAnimationFrame` come wrapper (pattern anti-loop standard)
+
+**Funzionalità:**
+- Vista 3D ruotabile della cabina (drag mouse / touch)
+- Personalizzazione: Modello Orona, Pareti, Pavimento, Cielino, Bottoniera, Corrimano, Specchio
+- Preset pronti (combinazioni curate)
+- Codice configurazione generabile e copiabile (es. `LGM-1010-W1F1C2P1B1D0H0M1-…`)
+- Pannello laterale su desktop, bottom sheet su mobile
+- Riepilogo + CTA "Richiedi preventivo" → apre vista Contatti via `showView('contatti')`
+- Dati Orona: **dimostrativi** (catalogo reale da aggiungere in futuro)
+
+**Accesso dal sito:**
+- Da nav → "Configuratore"
+- Da vista Ascensori → bottone "Configura la tua cabina in 3D"
 
 ## Regole di lavoro (workflow concordato)
 1. **Nessuna modifica viene applicata senza consenso esplicito dell'utente.**
@@ -101,8 +132,11 @@ ogni volta che si cambia vista e si rientra.
    automatico.** Claude li aggiorna solo se l'utente lo chiede esplicitamente.
    Se la chat sta per chiudersi senza che sia stato richiesto, Claude può
    proporre di aggiornare i file — ma è una proposta, non un'azione automatica.
+8. **Le modifiche fatte in sessioni precedenti non vanno mai toccate** senza
+   ragione esplicita. Il file di base è sempre quello consegnato nell'ultima
+   sessione approvata, mai una versione precedente del progetto.
 
-## Struttura attuale del sito — aggiornata 06/07/2026
+## Struttura attuale del sito — aggiornata 09/07/2026
 **Tema**: scuro elegante, accenti **blu metallizzato**, font Sora (titoli) + Inter (corpo).
 
 **Navigazione**:
@@ -120,16 +154,16 @@ ogni volta che si cambia vista e si rientra.
 - Numeri Fiducia che contano da 0 al valore finale
 - Card prodotto con riflettore che segue il mouse
 - Scroll-reveal su tutti gli elementi animabili via **IntersectionObserver**
-  (ogni elemento si anima al suo ingresso nel viewport; tutto riparte da capo
+  (ogni elemento si anima al suo ingresso nel viewport durante lo scroll; tutto riparte da capo
   ad ogni cambio di vista)
 - Tutte le animazioni rispettano `prefers-reduced-motion`
 
-**Wizard Configuratore** (vista `#configuratore`):
-- 3 step: Chi sei → Esigenza principale (dinamico per profilo) → Zona geografica
-- Barra di avanzamento con percentuale animata
-- Fade morbido tra step (0.55s ease)
-- Risultato finale personalizzato (6 combinazioni) con CTA `mailto:` precompilato
-- Tasto "Indietro" e "Ricomincia"
+**Configuratore 3D** (vista `#configuratore`):
+- Canvas Three.js r128 con cabina Orona ruotabile
+- Pannello opzioni: Modello, Preset, Pareti, Pavimento, Cielino, Bottoniera, Corrimano, Specchio, Riepilogo
+- Codice configurazione copiabile
+- Lazy loading reale (Three.js scaricato solo all'apertura della vista)
+- Dati dimostrativi (catalogo Orona reale da aggiungere in futuro)
 
 **Logo aziendale**: SVG vettoriale nella nav, lettere "LGM" tracciate dalla
 foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
@@ -140,16 +174,18 @@ foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
 ⚠️ **IMPORTANTE — testi ancora provvisori**: molti testi sono ancora
 placeholder (marcati `[PLACEHOLDER]` nel codice) in attesa dei contenuti
 definitivi: hero, storia dettagliata, numeri di "Fiducia" da confermare,
-titolo sezione Configuratore, menzione area operativa Puglia nei contatti.
+titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
 
-⚠️ Le viste Servoscala e Ascensori sono placeholder "in costruzione" —
-da costruire in Fase 3 della roadmap.
+⚠️ La vista Servoscala è ancora placeholder "in costruzione" — da costruire in Fase 3.
+⚠️ La vista Ascensori ha intro + CTA al configuratore, ma i contenuti reali sono da completare in Fase 3.
 
 ## Cose note da sistemare (backlog aperto)
 - Scrivere i testi definitivi al posto di tutti i `[PLACEHOLDER]`
 - Inserire le immagini reali al posto dei placeholder
-- Costruire le viste Servoscala e Ascensori (contenuto vero)
-- Decidere titolo definitivo sezione Configuratore
+- Costruire la vista Servoscala (contenuto vero)
+- Completare la vista Ascensori con contenuti reali
+- Aggiungere il catalogo Orona reale al configuratore 3D
+- Decidere titolo definitivo sezione Fiducia
 - Verificare correttezza contatti (telefono, email, indirizzo)
 - Decidere se/come menzionare area operativa Puglia nei contatti
 - SEO (meta description, Open Graph, favicon, alt text immagini)
@@ -160,7 +196,6 @@ da costruire in Fase 3 della roadmap.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 06/07/2026 — Migrazione completa a SPA a viste;
-wizard configuratore con IntersectionObserver; voce LGM in nav;
-aggiornata regola 2 (dichiarare modello/ragionamento/impegno + attendere
-conferma prima di procedere); ragionamento si dichiara solo Sì/No.*
+*Ultimo aggiornamento: 09/07/2026 — Aggiunto configuratore 3D (Three.js, lazy load);
+vista Ascensori completata con CTA; wizard testuale rimosso; fix ResizeObserver loop;
+aggiunta regola 8 sul rispetto delle modifiche precedenti.*

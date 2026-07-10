@@ -2198,14 +2198,17 @@
   var mirrorMesh = null, mirrorCenterY = 1.4;
   var doorL = null, doorR = null;
   var doorProgress = 0, doorTarget = 0;
+  var extEnv = null;                // ambiente esterno astratto (porte aperte)
+  var extTexCache = null;           // texture gradiente riusate tra i rebuild
   var doorSlide = 0.4;              // corsa di ciascuna anta (dipende dal vano)
   var lastResolved = null;
 
   var needsRender = false, firstRenderDone = false, rafId = 0, lastT = 0;
   var mirrorDirty = false;
 
-  /* Controlli visuale */
-  var DEFAULT_FOV = 70;
+  /* Controlli visuale — FOV grandangolare: percezione realistica degli
+     spazi interni della cabina (vista in prima persona) */
+  var DEFAULT_FOV = 95;
   var yaw = 0, pitch = -0.02, targetYaw = 0, targetPitch = -0.02;
   var fov = DEFAULT_FOV, targetFov = DEFAULT_FOV;
   var ROT_SPEED = 0.0042, KEY_STEP = 0.14;
@@ -2262,6 +2265,7 @@
     cabin = null;
     mirrorMesh = null;
     doorL = doorR = null;
+    extEnv = null; /* figlio di cabin: già rimosso; le texture restano in cache */
   }
 
   function buildCabin(res) {
@@ -2345,21 +2349,83 @@
     cabin.add(doorL); cabin.add(doorR);
     placeDoors();
 
-    /* ---------- Pianerottolo esterno (visibile a porte aperte) ---------- */
+    /* ---------- Ambiente esterno astratto (visibile a porte aperte) ----------
+       Sfondo elegante scuro con luce diffusa centrale, al posto del vuoto:
+       dà profondità alla scena, si riflette nello specchio via CubeCamera
+       e viene nascosto (extEnv.visible=false) quando le porte sono chiuse. */
 
-    var landFloor = new T.Mesh(new T.PlaneGeometry(2.6, 1.9), basic(0xC9C4B8));
-    landFloor.rotation.x = -Math.PI / 2;
-    landFloor.position.set(0, -0.001, d / 2 + 0.98);
-    cabin.add(landFloor);
+    if (!extTexCache) {
+      var mk = function (draw) {
+        var c = document.createElement('canvas');
+        c.width = 512; c.height = 512;
+        draw(c.getContext('2d'));
+        var tx = new T.CanvasTexture(c);
+        tx.encoding = T.sRGBEncoding;
+        return tx;
+      };
+      extTexCache = {
+        /* Fondale: alone blu-viola freddo che sfuma nel nero */
+        bg: mk(function (g) {
+          var gr = g.createRadialGradient(256, 205, 25, 256, 235, 350);
+          gr.addColorStop(0, '#33406B');
+          gr.addColorStop(0.32, '#181D38');
+          gr.addColorStop(0.68, '#0A0C17');
+          gr.addColorStop(1, '#040509');
+          g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
+        }),
+        /* Pavimento esterno: sfuma dal riflesso freddo vicino alla soglia
+           al nero in lontananza */
+        fl: mk(function (g) {
+          var gr = g.createLinearGradient(0, 512, 0, 0);
+          gr.addColorStop(0, '#141a2c');
+          gr.addColorStop(0.45, '#090b14');
+          gr.addColorStop(1, '#030407');
+          g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
+        }),
+        /* Alone luminoso additivo: cuore della "luce diffusa" */
+        glow: mk(function (g) {
+          g.clearRect(0, 0, 512, 512);
+          var gr = g.createRadialGradient(256, 256, 10, 256, 256, 250);
+          gr.addColorStop(0, 'rgba(150,175,235,0.42)');
+          gr.addColorStop(0.4, 'rgba(95,115,190,0.16)');
+          gr.addColorStop(1, 'rgba(0,0,0,0)');
+          g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
+        })
+      };
+    }
 
-    var landWall = new T.Mesh(new T.PlaneGeometry(3.2, 2.7), basic(0xE9E3D7));
-    landWall.rotation.y = Math.PI;
-    landWall.position.set(0, 1.32, d / 2 + 1.85);
-    cabin.add(landWall);
+    extEnv = new T.Group();
 
-    var landStrip = new T.Mesh(new T.BoxGeometry(1.4, 0.02, 0.15), basic(0xFFF0D0));
-    landStrip.position.set(0, Math.min(2.18, h), d / 2 + 0.9);
-    cabin.add(landStrip);
+    var extBack = new T.Mesh(new T.PlaneGeometry(8.5, 5.6),
+      new T.MeshBasicMaterial({ map: extTexCache.bg }));
+    extBack.rotation.y = Math.PI;
+    extBack.position.set(0, 1.95, d / 2 + 3.4);
+    extEnv.add(extBack);
+
+    var extFloor = new T.Mesh(new T.PlaneGeometry(8.5, 3.6),
+      new T.MeshBasicMaterial({ map: extTexCache.fl }));
+    extFloor.rotation.x = -Math.PI / 2;
+    extFloor.position.set(0, -0.002, d / 2 + 1.82);
+    extEnv.add(extFloor);
+
+    var extGlow = new T.Mesh(new T.PlaneGeometry(4.6, 4.6),
+      new T.MeshBasicMaterial({
+        map: extTexCache.glow,
+        transparent: true,
+        blending: T.AdditiveBlending,
+        depthWrite: false
+      }));
+    extGlow.rotation.y = Math.PI;
+    extGlow.position.set(0, 1.75, d / 2 + 3.3);
+    extEnv.add(extGlow);
+
+    /* Luce fredda che filtra dall'esterno dentro la cabina a porte aperte */
+    var extLight = new T.PointLight(0x8FA8E8, 0.55, 6.5);
+    extLight.position.set(0, 1.9, d / 2 + 1.3);
+    extEnv.add(extLight);
+
+    extEnv.visible = doorProgress > 0.001;
+    cabin.add(extEnv);
 
     /* ---------- Zoccolino perimetrale ---------- */
 
@@ -2622,6 +2688,10 @@
     var off = doorProgress * doorSlide;
     doorL.position.x = -ow / 4 - off;
     doorR.position.x = ow / 4 + off;
+    /* L'ambiente esterno (fondale, alone, luce) esiste solo a porte
+       aperte: a porte chiuse sparisce del tutto, anche dai riflessi
+       dello specchio catturati dalla CubeCamera. */
+    if (extEnv) extEnv.visible = doorProgress > 0.001;
   }
 
   /* ==========================================================================
@@ -2670,7 +2740,7 @@
       var dx = e.clientX - ptr.x;
       var dy = e.clientY - ptr.y;
       targetYaw += dx * ROT_SPEED;
-      targetPitch = clamp(targetPitch + dy * ROT_SPEED, -1.15, 1.15);
+      targetPitch = clamp(targetPitch + dy * ROT_SPEED, -1.35, 1.35);
       ptr.x = e.clientX;
       ptr.y = e.clientY;
     });
@@ -2687,7 +2757,7 @@
     /* Zoom (campo visivo) con la rotella, solo sul canvas */
     canvas.addEventListener('wheel', function (e) {
       e.preventDefault();
-      targetFov = clamp(targetFov + e.deltaY * 0.02, 50, 90);
+      targetFov = clamp(targetFov + e.deltaY * 0.02, 55, 105);
       hideHint();
     }, { passive: false });
 
@@ -2697,8 +2767,8 @@
       switch (e.key) {
         case 'ArrowLeft': targetYaw += KEY_STEP; break;
         case 'ArrowRight': targetYaw -= KEY_STEP; break;
-        case 'ArrowUp': targetPitch = clamp(targetPitch + KEY_STEP * 0.6, -1.15, 1.15); break;
-        case 'ArrowDown': targetPitch = clamp(targetPitch - KEY_STEP * 0.6, -1.15, 1.15); break;
+        case 'ArrowUp': targetPitch = clamp(targetPitch + KEY_STEP * 0.6, -1.35, 1.35); break;
+        case 'ArrowDown': targetPitch = clamp(targetPitch - KEY_STEP * 0.6, -1.35, 1.35); break;
         case 'Home': Viewer.resetView(); break;
         case 'p': case 'P': Viewer.toggleDoors(); break;
         default: used = false;
@@ -2857,7 +2927,9 @@
 
     camera = new T.PerspectiveCamera(DEFAULT_FOV, 1, 0.05, 30);
     camera.rotation.order = 'YXZ';
-    camera.position.set(0, 1.6, 0.22);
+    /* Osservatore al centro esatto della cabina, altezza occhi:
+       rotazione 360° come se ci si trovasse davvero dentro. */
+    camera.position.set(0, 1.6, 0);
     camera.rotation.set(pitch, yaw, 0);
 
     /* Ambiente per i riflessi dei metalli (equirect procedurale → PMREM) */
@@ -2921,8 +2993,8 @@
     placeDoors();
 
     if (modelChanged) {
-      /* La profondità cambia: riposiziona l'osservatore al centro. */
-      camera.position.set(0, 1.6, resolved.dims.d * 0.16);
+      /* La profondità cambia: l'osservatore resta al centro esatto. */
+      camera.position.set(0, 1.6, 0);
     }
     needsRender = true;
   };
