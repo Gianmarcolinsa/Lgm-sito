@@ -2300,11 +2300,17 @@
      spazi interni della cabina (vista in prima persona).
      Default 105°, zoom con la rotella tra 65° (dettagli) e 110° (grandangolo
      massimo). Il tetto è stato progressivamente abbassato (130→120→110)
-     perché gli angoli più larghi davano fastidio/mal di testa. */
+     perché gli angoli più larghi davano fastidio/mal di testa.
+     Comfort rotazione (per evitare motion sickness/vection): sensibilità
+     drag e passo tastiera ridotti, range verticale limitato a ±50° (non si
+     può guardare quasi dritto su/giù), smorzamento più morbido. Se il
+     fastidio persiste, il prossimo intervento naturale è abbassare anche il
+     FOV di default: più è largo, più la rotazione "si sente" nella visione
+     periferica a parità di velocità angolare. */
   var DEFAULT_FOV = 105;
   var yaw = 0, pitch = -0.02, targetYaw = 0, targetPitch = -0.02;
   var fov = DEFAULT_FOV, targetFov = DEFAULT_FOV;
-  var ROT_SPEED = 0.0042, KEY_STEP = 0.14;
+  var ROT_SPEED = 0.0026, KEY_STEP = 0.09;
 
   /* ==========================================================================
      6. OVERLAY, HINT E MESSAGGI
@@ -2900,7 +2906,7 @@
       var dx = e.clientX - ptr.x;
       var dy = e.clientY - ptr.y;
       targetYaw += dx * ROT_SPEED;
-      targetPitch = clamp(targetPitch + dy * ROT_SPEED, -1.35, 1.35);
+      targetPitch = clamp(targetPitch + dy * ROT_SPEED, -0.87, 0.87);
       ptr.x = e.clientX;
       ptr.y = e.clientY;
     });
@@ -2927,8 +2933,8 @@
       switch (e.key) {
         case 'ArrowLeft': targetYaw += KEY_STEP; break;
         case 'ArrowRight': targetYaw -= KEY_STEP; break;
-        case 'ArrowUp': targetPitch = clamp(targetPitch + KEY_STEP * 0.6, -1.35, 1.35); break;
-        case 'ArrowDown': targetPitch = clamp(targetPitch - KEY_STEP * 0.6, -1.35, 1.35); break;
+        case 'ArrowUp': targetPitch = clamp(targetPitch + KEY_STEP * 0.6, -0.87, 0.87); break;
+        case 'ArrowDown': targetPitch = clamp(targetPitch - KEY_STEP * 0.6, -0.87, 0.87); break;
         case 'Home': Viewer.resetView(); break;
         case 'p': case 'P': Viewer.toggleDoors(); break;
         default: used = false;
@@ -2948,7 +2954,7 @@
     var dt = Math.min((now - lastT) / 1000 || 0.016, 0.05);
     lastT = now;
 
-    var k = 1 - Math.exp(-9 * dt); // smorzamento esponenziale, senza scatti
+    var k = 1 - Math.exp(-6.5 * dt); // smorzamento esponenziale, senza scatti
     var active = false;
 
     if (Math.abs(targetYaw - yaw) > 0.0004 ||
