@@ -2522,6 +2522,14 @@
       lc.width = 1024; lc.height = 512;
       var logoTex = new T.CanvasTexture(lc);
       logoTex.encoding = T.sRGBEncoding;
+      /* Il pannello del logo è ruotato di 180° su Y per guardare verso la
+         telecamera (vedi logoMesh.rotation.y più sotto): questo specchia
+         orizzontalmente la texture ("ELEVATOR" si leggerebbe al contrario).
+         Si corregge ribaltando la U della texture stessa, senza toccare la
+         rotazione del pannello (che resta necessaria per l'orientamento). */
+      logoTex.wrapS = T.RepeatWrapping;
+      logoTex.repeat.x = -1;
+      logoTex.offset.x = 1;
       extTexCache.logo = logoTex;
       extTexCache.logoAspect = 0.5;
       try {
