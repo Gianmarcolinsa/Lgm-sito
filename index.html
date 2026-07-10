@@ -51,7 +51,7 @@
     align-items: center;
   }
   .logo svg {
-    width: 132px;
+    width: 170px;
     height: auto;
     display: block;
     overflow: visible;
@@ -103,7 +103,7 @@
   .nav-links a:hover { color: var(--text); }
   @media (max-width: 800px) {
     .nav-links { display: none; }
-    .logo svg { width: 108px; }
+    .logo svg { width: 128px; }
   }
 
   /* NAV COMPATTA VERTICALE — appare a destra dopo lo scroll (desktop),
@@ -2298,9 +2298,9 @@
 
   /* Controlli visuale — FOV grandangolare: percezione realistica degli
      spazi interni della cabina (vista in prima persona).
-     Default 105°, zoom con la rotella tra 65° (dettagli) e 130° (grandangolo
-     massimo). Oltre i ~120° con camera prospettica i bordi iniziano a
-     incurvarsi: 130° è il tetto voluto, da rivedere se la distorsione dà noia. */
+     Default 105°, zoom con la rotella tra 65° (dettagli) e 110° (grandangolo
+     massimo). Il tetto è stato progressivamente abbassato (130→120→110)
+     perché gli angoli più larghi davano fastidio/mal di testa. */
   var DEFAULT_FOV = 105;
   var yaw = 0, pitch = -0.02, targetYaw = 0, targetPitch = -0.02;
   var fov = DEFAULT_FOV, targetFov = DEFAULT_FOV;
@@ -2525,11 +2525,11 @@
       /* Il pannello del logo è ruotato di 180° su Y per guardare verso la
          telecamera (vedi logoMesh.rotation.y più sotto): questo specchia
          orizzontalmente la texture ("ELEVATOR" si leggerebbe al contrario).
-         Si corregge ribaltando la U della texture stessa, senza toccare la
-         rotazione del pannello (che resta necessaria per l'orientamento). */
-      logoTex.wrapS = T.RepeatWrapping;
-      logoTex.repeat.x = -1;
-      logoTex.offset.x = 1;
+         Correzione: si ribalta orizzontalmente il DISEGNO sul canvas (translate
+         + scale(-1,1) qui sotto), così la doppia specchiatura si annulla e il
+         logo si legge dritto. NB: non si usa repeat.x/wrapS perché su texture
+         non-potenza-di-due WebGL ignora il RepeatWrapping e il fix non si
+         applicherebbe. */
       extTexCache.logo = logoTex;
       extTexCache.logoAspect = 0.5;
       try {
@@ -2549,7 +2549,13 @@
           limg.onload = function () {
             var g = lc.getContext('2d');
             g.clearRect(0, 0, lc.width, lc.height);
+            /* Ribaltamento orizzontale: annulla la specchiatura introdotta
+               dalla rotazione di 180° su Y del pannello (logo dritto). */
+            g.save();
+            g.translate(lc.width, 0);
+            g.scale(-1, 1);
             g.drawImage(limg, 0, 0, lc.width, lc.height);
+            g.restore();
             logoTex.needsUpdate = true;
             mirrorDirty = !!mirrorMesh;  // riflesso specchio aggiornato
             needsRender = true;
@@ -2911,7 +2917,7 @@
     /* Zoom (campo visivo) con la rotella, solo sul canvas */
     canvas.addEventListener('wheel', function (e) {
       e.preventDefault();
-      targetFov = clamp(targetFov + e.deltaY * 0.02, 65, 130);
+      targetFov = clamp(targetFov + e.deltaY * 0.02, 65, 110);
       hideHint();
     }, { passive: false });
 
