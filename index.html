@@ -1823,11 +1823,14 @@
 
     return {
       isMobile: isMobile,
-      antialias: !isMobile,          // AA pieno solo su desktop
-      maxDpr: isMobile ? 1.5 : 2,    // pixel ratio limitato su mobile
-      shadows: !isMobile,            // ombre morbide solo su desktop
-      cubeRes: isMobile ? 256 : 512, // risoluzione riflessi specchio
-      texRes: isMobile ? 256 : 512   // risoluzione texture procedurali
+      antialias: !isMobile,           // AA pieno solo su desktop
+      /* Desktop: pixel ratio nativo del display (Retina/4K = nitidezza
+         reale), con tetto a 2.5 per non sovraccaricare pannelli 3x. */
+      maxDpr: isMobile ? 1.5 : Math.min(root.devicePixelRatio || 1, 2.5),
+      shadows: !isMobile,             // ombre morbide solo su desktop
+      shadowRes: 2048,                // mappa ombre (usata solo se shadows)
+      cubeRes: isMobile ? 256 : 1024, // risoluzione riflessi specchio
+      texRes: isMobile ? 256 : 1024   // risoluzione texture procedurali
     };
   }
 
@@ -2102,8 +2105,8 @@
     }
 
     /* --- Ambiente equirettangolare per i riflessi dei metalli --- */
-    function equirectCanvas() {
-      var W = 512, H = 256;
+    function equirectCanvas(size) {
+      var W = size || 512, H = W / 2;
       var c = makeCanvas(W, H), x = c.getContext('2d');
       var g = x.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, '#D8DEE5');
@@ -2520,7 +2523,7 @@
       spot.target.position.set(0, 0, 0.08);
       if (caps.shadows) {
         spot.castShadow = true;
-        spot.shadow.mapSize.set(1024, 1024);
+        spot.shadow.mapSize.set(caps.shadowRes, caps.shadowRes);
         spot.shadow.bias = -0.0004;
       }
       cabin.add(spot);
@@ -2921,7 +2924,10 @@
       renderer.shadowMap.type = T.PCFSoftShadowMap;
     }
 
-    TexFactory.setAniso(Math.min(8, renderer.capabilities.getMaxAnisotropy() || 4));
+    /* Anisotropia: nitidezza delle texture viste di scorcio (pavimento,
+       pareti). 16x su desktop, 8x su mobile. */
+    TexFactory.setAniso(Math.min(caps.isMobile ? 8 : 16,
+      renderer.capabilities.getMaxAnisotropy() || 4));
 
     scene = new T.Scene();
 
@@ -2932,9 +2938,11 @@
     camera.position.set(0, 1.6, 0);
     camera.rotation.set(pitch, yaw, 0);
 
-    /* Ambiente per i riflessi dei metalli (equirect procedurale → PMREM) */
+    /* Ambiente per i riflessi dei metalli (equirect procedurale → PMREM):
+       1024px su desktop per riflessi più definiti, 512px su mobile. */
     try {
-      var eqTex = new T.CanvasTexture(TexFactory.equirectCanvas());
+      var eqTex = new T.CanvasTexture(
+        TexFactory.equirectCanvas(caps.isMobile ? 512 : 1024));
       eqTex.mapping = T.EquirectangularReflectionMapping;
       eqTex.encoding = T.sRGBEncoding;
       var pmrem = new T.PMREMGenerator(renderer);
