@@ -191,6 +191,18 @@ per performance):
    la applica sempre, in automatico, ad ogni singola modifica richiesta.
    (Rafforza e precisa la regola 2 — stessa logica, sequenza esplicita fissata
    il 10/07/2026 su richiesta diretta dell'utente.)
+10. ⚠️ **FONDAMENTALE — Nessuna procedura "a memoria".** Prima di dare
+    qualunque comando da terminale, procedura di pubblicazione, o istruzione
+    su come muoversi nella cartella/repo, Claude deve **ri-leggere
+    `CONTESTO_PROGETTO.md`** (sezione "Percorso locale e repo GitHub" e
+    "Regole di lavoro") invece di affidarsi alla memoria della chat corrente
+    o a soluzioni alternative inventate lì per lì. Il comando di pubblicazione
+    è **uno solo, sempre lo stesso** (vedi ROADMAP.md → "Come pubblicare il
+    sito"): `git add -A` sulla cartella del repo, mai `cp` da altre cartelle
+    o varianti non concordate. Se Claude nota di aver proposto una deviazione,
+    lo dice subito e torna alla procedura standard. Questa regola nasce da un
+    episodio concreto (10/07/2026): Claude ha proposto `cp ~/Downloads/index.html`
+    invece della procedura standard, causando confusione e perdita di tempo.
 
 ## Struttura attuale del sito — aggiornata 09/07/2026
 **Tema**: scuro elegante, accenti **blu metallizzato**, font Sora (titoli) + Inter (corpo).
@@ -224,8 +236,41 @@ per performance):
 **Logo aziendale**: SVG vettoriale nella nav, lettere "LGM" tracciate dalla
 foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
 (nero metallico riflettente pulsante). Animazioni rispettano `prefers-reduced-motion`.
+- **Fix cross-browser bagliore pulsante** (10/07/2026): il pulse era animato
+  via `filter: drop-shadow` sui gruppi `<g>` interni — Safari (desktop e iOS)
+  non lo renderizzava affatto, mentre Chrome sì. Spostato il bagliore
+  sull'elemento `<svg>` esterno (contesto HTML, dove Safari anima `filter`
+  in modo affidabile); sui gruppi interni resta solo un pulse di opacità
+  (proprietà supportata ovunque). Ora il logo pulsa identico su tutti i browser.
+- **Shine sincronizzato LGM + ELEVATOR** (10/07/2026): il riflesso lucido che
+  attraversa la scritta usava un gradiente SVG animato (`navShine`, via
+  `<animate>` nativo — sempre stato cross-browser affidabile) applicato solo
+  a "ELEVATOR". Duplicato lo stesso tracciato di "LGM" con overlay dello
+  stesso gradiente: ora il riflesso attraversa entrambe le parti del logo
+  nello stesso istante, ovunque.
 
-**Anti-cache browser**: meta tag `Cache-Control`, `Pragma`, `Expires` in `<head>`.
+**Aggiornamento automatico del sito** (10/07/2026): script inline a fine
+`index.html` che rileva da solo quando è stata pubblicata una nuova versione
+e ricarica la pagina in automatico, senza numero di versione da aggiornare
+a mano e senza click dell'utente. Funzionamento: richiede periodicamente
+(al caricamento, ogni 3 minuti, e al ritorno sulla scheda) una copia fresca
+di `index.html` con `fetch(..., {cache:'no-store'})`, confronta la "firma"
+del file (header `ETag`/`Last-Modified` di GitHub Pages, o in fallback
+un'impronta del contenuto) con quella registrata al primo controllo; se è
+cambiata, mostra un breve avviso "Aggiornamento del sito in corso…" e
+ricarica con parametro anti-cache `_v` (poi ripulito dall'URL). Protezioni:
+non ricarica mentre l'utente sta scrivendo nel form contatti (aspetta fine
+digitazione, max ~30s), e non entra in loop (dopo una ricarica automatica,
+2 minuti di tregua prima del prossimo controllo). Limite noto: la primissima
+apertura di un nuovo visitatore può comunque ricevere per pochi minuti la
+cache di GitHub Pages (~10 minuti, non aggirabile lato codice) — riguarda
+solo chi apre il sito proprio in quella finestra.
+
+**Anti-cache browser**: meta tag `Cache-Control`, `Pragma`, `Expires` in `<head>`
+(protezione base, non sempre rispettata da Safari/iOS) + script di
+**aggiornamento automatico** (vedi sopra) che è la protezione effettiva:
+rileva le nuove pubblicazioni e ricarica da solo, indipendentemente da come
+si comporta la cache del browser o del dispositivo.
 
 ⚠️ **IMPORTANTE — testi ancora provvisori**: molti testi sono ancora
 placeholder (marcati `[PLACEHOLDER]` nel codice) in attesa dei contenuti
@@ -252,13 +297,21 @@ titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 10/07/2026 — FOV max abbassato a 110° (da 130° via
-120°, causava mal di testa); comfort rotazione: sensibilità drag -38%,
-range verticale ±77°→±50°, smorzamento più morbido (anti motion sickness);
-fix logo esterno specchiato (flip su canvas 2D); logo sito più grande
-(170px desktop, 128px mobile). In precedenza nella stessa giornata: FOV
-di partenza 105° con zoom 65°–130°, schermo intero del configuratore
-(bottone HUD, Fullscreen API + fallback overlay), vista interna in prima
-persona, ambiente esterno astratto, logo LGM ELEVATOR nell'esterno, qualità
-grafica potenziata su desktop, regola 9 sulla sequenza modello/impegno →
-via libera → esecuzione.*
+*Ultimo aggiornamento: 10/07/2026 — Aggiornamento automatico del sito (rileva
+da solo le nuove pubblicazioni via confronto ETag/Last-Modified e ricarica
+senza intervento manuale); fix cross-browser del bagliore pulsante del logo
+(Safari non animava `filter: drop-shadow` sui gruppi `<g>`, ora spostato
+sull'`<svg>`); shine sincronizzato tra "LGM" ed "ELEVATOR" (stesso gradiente
+animato su entrambi); aggiunta regola 10 su CONTESTO_PROGETTO.md — nessuna
+procedura di pubblicazione "a memoria", Claude deve sempre ri-leggere questo
+file prima di dare comandi terminale (episodio concreto: proposta erronea di
+`cp` da Downloads invece della procedura standard `git add -A`). In precedenza
+nella stessa giornata: FOV max abbassato a 110° (da 130° via 120°, causava
+mal di testa); comfort rotazione: sensibilità drag -38%, range verticale
+±77°→±50°, smorzamento più morbido (anti motion sickness); fix logo esterno
+specchiato (flip su canvas 2D); logo sito più grande (170px desktop, 128px
+mobile); FOV di partenza 105° con zoom 65°–130°, schermo intero del
+configuratore (bottone HUD, Fullscreen API + fallback overlay), vista interna
+in prima persona, ambiente esterno astratto, logo LGM ELEVATOR nell'esterno,
+qualità grafica potenziata su desktop, regola 9 sulla sequenza modello/impegno
+→ via libera → esecuzione.*
