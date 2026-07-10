@@ -88,10 +88,16 @@ Il vecchio wizard testuale multi-step (3 step: Chi sei / Esigenza / Zona) è sta
 
 **Funzionalità:**
 - **Vista interna in prima persona** (aggiornato 10/07/2026): la camera parte
-  al centro esatto della cabina, altezza occhi (1.6m), FOV grandangolare 95°
-  (zoom rotella tra 55° e 105°), rotazione libera fino a ±77° in verticale —
-  dà la reale percezione degli spazi interni invece di una vista "a scatola"
-  dall'esterno (feedback diretto del padre del cliente)
+  al centro esatto della cabina, altezza occhi (1.6m), FOV grandangolare 105°
+  (zoom rotella tra 65° e 110° — abbassato da 130°→120°→110° perché i valori
+  più alti davano fastidio/mal di testa), rotazione verticale limitata a ±50°
+  (in precedenza ±77°: guardare quasi dritto su/giù era causa di vection/nausea
+  in vista prima persona). La visuale parte larga così l'utente decide se
+  stringere o allargare. **Comfort rotazione**: sensibilità drag ridotta del
+  38%, passo tastiera ridotto, smorzamento più morbido — per rendere il
+  configuratore fruibile da tutti senza disagio. Nota: con FOV largo (105°) la
+  rotazione si "sente" di più nella visione periferica; se il fastidio persiste
+  il passo successivo è abbassare il FOV di default.
 - **Ambiente esterno astratto** (aggiornato 10/07/2026): a porte aperte,
   oltre la soglia compare un fondale elegante blu/nero con luce diffusa
   centrale (sostituisce il vecchio pianerottolo beige); si riflette nello
@@ -99,11 +105,28 @@ Il vecchio wizard testuale multi-step (3 step: Chi sei / Esigenza / Zona) è sta
 - **Logo LGM ELEVATOR statico nell'ambiente esterno** (aggiornato 10/07/2026):
   stesso SVG della nav, rasterizzato una sola volta in texture, nessuna
   animazione, ~2.7m di larghezza, centrato all'altezza occhi (1.5m), con
-  retroilluminazione dedicata nello sfondo per risaltare; visibile in
-  riflesso nello specchio. Nota: il testo "ELEVATOR" nella texture 3D usa
-  il font di fallback (Trebuchet/Arial) perché i web font non si caricano
-  nelle texture SVG rasterizzate — differenza minima, da valutare se disegnare
-  il testo direttamente su canvas in futuro
+  retroilluminazione dedicata nello sfondo per risaltare; visibile nel
+  riflesso dello specchio. Fix specchiatura (10/07/2026): il pannello è
+  ruotato di 180° su Y per guardare la telecamera, il che specchiava la
+  texture; corretto con ribaltamento orizzontale diretto sul canvas 2D
+  (`translate + scale(-1,1)`) — l'approccio via `repeat.x` non funzionava
+  su texture non-potenza-di-due. Nota: il testo "ELEVATOR" nella texture 3D
+  usa font di fallback (Trebuchet/Arial) perché i web font non si caricano
+  nelle texture SVG rasterizzate.
+- **Logo del sito nella nav più grande** (aggiornato 10/07/2026): desktop
+  132px→170px, mobile 108px→128px. Badge compatto (scroll) invariato.
+- **Schermo intero del configuratore** (aggiunto 10/07/2026): bottone HUD
+  "Schermo intero" (terzo, sotto reset e apertura porte) che espande l'intero
+  shell — viewer 3D *più* pannello opzioni — a tutta la pagina. Così l'utente
+  personalizza e vede il risultato insieme, a schermo pieno. Soluzione ibrida:
+  prova la Fullscreen API nativa del browser (si esce con ESC); se il browser
+  la blocca (es. anteprima in iframe sandbox) ricade automaticamente su un
+  overlay CSS a tutta pagina, con esperienza identica. Il canvas Three.js si
+  ridimensiona via ResizeObserver + evento resize di sicurezza; il bottone
+  resta allineato allo stato reale anche se si esce con ESC o gesto di sistema.
+  Su desktop viewer e pannello restano affiancati; su mobile il viewer prende
+  la maggior parte dello schermo e il pannello diventa un'area scrollabile
+  sotto (max 42vh). Icona del bottone che alterna "espandi"/"riduci".
 - Personalizzazione: Modello Orona, Pareti, Pavimento, Cielino, Bottoniera, Corrimano, Specchio
 - Preset pronti (combinazioni curate)
 - Codice configurazione generabile e copiabile (es. `LGM-1010-W1F1C2P1B1D0H0M1-…`)
@@ -229,9 +252,13 @@ titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 10/07/2026 — Configuratore 3D: vista interna in prima
-persona (FOV 95°, camera centrale), ambiente esterno astratto a porte aperte
-(sostituisce il pianerottolo), logo LGM ELEVATOR statico nell'ambiente esterno,
-qualità grafica potenziata su desktop (pixel ratio nativo, ombre/riflessi/texture
-1024-2048px, anisotropia 16x); aggiunta regola 9 fondamentale sulla sequenza
-dichiarazione modello/impegno → via libera → esecuzione.*
+*Ultimo aggiornamento: 10/07/2026 — FOV max abbassato a 110° (da 130° via
+120°, causava mal di testa); comfort rotazione: sensibilità drag -38%,
+range verticale ±77°→±50°, smorzamento più morbido (anti motion sickness);
+fix logo esterno specchiato (flip su canvas 2D); logo sito più grande
+(170px desktop, 128px mobile). In precedenza nella stessa giornata: FOV
+di partenza 105° con zoom 65°–130°, schermo intero del configuratore
+(bottone HUD, Fullscreen API + fallback overlay), vista interna in prima
+persona, ambiente esterno astratto, logo LGM ELEVATOR nell'esterno, qualità
+grafica potenziata su desktop, regola 9 sulla sequenza modello/impegno →
+via libera → esecuzione.*
