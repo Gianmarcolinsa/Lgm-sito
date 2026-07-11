@@ -674,6 +674,128 @@
   }
 
   /* ============================================
+     VISTA SERVOSCALA
+     ============================================ */
+  .svs-hero {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+  .svs-hero h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.25;
+    margin-bottom: 18px;
+  }
+  .svs-hero p {
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* Soluzioni */
+  .svs-soluzioni {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .svs-sol-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .svs-sol-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .svs-sol-card h3 { font-size: 17px; margin-bottom: 8px; }
+  .svs-sol-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+  .svs-sol-card .svs-per { display: block; margin-top: 10px; font-size: 13px; color: var(--accent); }
+
+  /* Timeline "Come funziona" */
+  .svs-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .svs-step { text-align: center; }
+  .svs-step .svs-dot {
+    width: 34px; height: 34px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600;
+  }
+  .svs-step h4 { font-size: 15px; margin-bottom: 6px; }
+  .svs-step p { color: var(--text-muted); font-size: 13px; line-height: 1.55; }
+
+  /* FAQ accordion */
+  .svs-faq { max-width: 760px; margin: 0 auto 56px; }
+  .svs-faq-item {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .svs-faq-q {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .svs-faq-chevron { color: var(--accent); transition: transform 0.3s ease; flex-shrink: 0; }
+  .svs-faq-item.open .svs-faq-chevron { transform: rotate(180deg); }
+  .svs-faq-a {
+    max-height: 0;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+  .svs-faq-item.open .svs-faq-a { max-height: 320px; padding-bottom: 18px; }
+
+  /* Agevolazioni */
+  .svs-bonus {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 26px;
+    max-width: 760px;
+    margin: 0 auto 56px;
+  }
+  .svs-bonus h3 { font-size: 17px; margin-bottom: 12px; }
+  .svs-bonus ul { list-style: none; margin-bottom: 14px; }
+  .svs-bonus li {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.65;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .svs-bonus li::before {
+    content: "—";
+    position: absolute; left: 0;
+    color: var(--accent);
+  }
+  .svs-bonus .svs-nota { font-size: 13px; color: var(--text-muted); opacity: 0.8; font-style: italic; }
+
+  /* CTA finale */
+  .svs-cta { text-align: center; padding: 8px 0 24px; }
+  .svs-cta h3 { font-size: 22px; margin-bottom: 12px; }
+  .svs-cta p { color: var(--text-muted); font-size: 15px; margin-bottom: 22px; }
+
+  @media (max-width: 640px) {
+    .svs-hero { margin-bottom: 40px; }
+    .svs-soluzioni, .svs-steps { margin-bottom: 40px; }
+  }
+
+  /* ============================================
      VISTA ASCENSORI — intro + CTA verso il 3D
      ============================================ */
   .ascensori-intro {
@@ -1460,18 +1582,156 @@
     </section>
   </div>
 
-  <!-- ============ VISTA SERVOSCALA (in costruzione) ============ -->
+  <!-- ============ VISTA SERVOSCALA ============ -->
   <div class="view" id="view-servoscala">
+
+    <!-- Hero (variante A — caldo e familiare) -->
     <section class="reveal">
-      <div class="section-label">Servoscala</div>
-      <h2 class="section-title text-reveal">Servoscala a poltroncina e piattaforma</h2>
-      <div class="vista-costruzione">
-        <span class="vc-icon">🪑</span>
-        <h3>Sezione in costruzione</h3>
-        <p>[PLACEHOLDER] Qui costruiremo la pagina dedicata ai servoscala: come funzionano, modelli disponibili, FAQ e richiesta preventivo.</p>
-        <p>Nel frattempo puoi usare il configuratore o contattarci direttamente.</p>
+      <div class="svs-hero">
+        <div class="section-label" style="justify-content:center;">Servoscala</div>
+        <h2 class="section-title text-reveal">Le tue scale, di nuovo tutte tue.</h2>
+        <p>Un servoscala restituisce libertà a chi ama la propria casa e non vuole lasciarla. Lo studiamo su misura per te e lo installiamo con le stesse mani con cui, da tre generazioni, ci prendiamo cura delle case della nostra terra.</p>
+        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Prenota un sopralluogo gratuito</a>
       </div>
     </section>
+
+    <!-- Le soluzioni -->
+    <section class="reveal">
+      <div class="section-label">Le soluzioni</div>
+      <h2 class="section-title text-reveal">Ogni scala è diversa. Anche la soluzione lo è.</h2>
+      <div class="svs-soluzioni">
+        <div class="svs-sol-card">
+          <h3>Servoscala rettilineo</h3>
+          <p>Per scale dritte, senza curve né pianerottoli intermedi. È la soluzione più rapida da installare e la meno invasiva.</p>
+          <span class="svs-per">Per chi cammina con difficoltà ma sta seduto in autonomia</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>Servoscala curvilineo</h3>
+          <p>La guida viene costruita su misura seguendo esattamente l'andamento della tua scala, curve e pianerottoli compresi.</p>
+          <span class="svs-per">Per scale con curve, angoli o più rampe</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>[DA CONFERMARE] Pedana per carrozzina</h3>
+          <p>[DA CONFERMARE] Una piattaforma che permette di salire restando seduti sulla propria carrozzina, senza trasferimenti.</p>
+          <span class="svs-per">Per chi utilizza la sedia a rotelle</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>[DA CONFERMARE] Piattaforma elevatrice</h3>
+          <p>[DA CONFERMARE] Un piccolo elevatore verticale, quando la scala non si presta all'installazione di un servoscala.</p>
+          <span class="svs-per">Quando la scala non è adatta</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Come funziona -->
+    <section class="reveal">
+      <div class="section-label">Come funziona</div>
+      <h2 class="section-title text-reveal">Dal primo contatto alla prima salita</h2>
+      <div class="svs-steps">
+        <div class="svs-step">
+          <div class="svs-dot">1</div>
+          <h4>Ci contatti</h4>
+          <p>Ci racconti com'è fatta la tua scala e di cosa hai bisogno. Bastano pochi minuti.</p>
+        </div>
+        <div class="svs-step">
+          <div class="svs-dot">2</div>
+          <h4>Veniamo a vedere</h4>
+          <p>Un nostro tecnico viene a casa tua, misura la scala e valuta la soluzione giusta. Il sopralluogo è gratuito. <em>[DA CONFERMARE: entro quanti giorni]</em></p>
+        </div>
+        <div class="svs-step">
+          <div class="svs-dot">3</div>
+          <h4>Ti diamo il preventivo</h4>
+          <p>Chiaro, dettagliato e senza impegno. Ne parliamo insieme con calma. <em>[DA CONFERMARE: in quanti giorni]</em></p>
+        </div>
+        <div class="svs-step">
+          <div class="svs-dot">4</div>
+          <h4>Installiamo</h4>
+          <p>Montiamo l'impianto, ti mostriamo come si usa e lasciamo casa tua in ordine. <em>[DA CONFERMARE: tempi]</em></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="reveal">
+      <div class="section-label">Domande frequenti</div>
+      <h2 class="section-title text-reveal">Le domande che ci fanno più spesso</h2>
+      <div class="svs-faq">
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>Il servoscala restringe la scala per chi la usa a piedi?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">No. Quando non è in uso, seduta e pedana si ripiegano contro la parete, lasciando libero il passaggio per tutti. La guida corre lungo il lato della scala e occupa pochissimo spazio.</div>
+        </div>
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>Servono lavori di muratura?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">Nella maggior parte dei casi no: la guida si fissa direttamente ai gradini, non ai muri, quindi l'installazione è pulita e poco invasiva. Serve solo un punto di alimentazione elettrica nelle vicinanze. Le situazioni particolari le valutiamo durante il sopralluogo, così non ci sono sorprese.</div>
+        </div>
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>Quanto dura il montaggio in casa?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">Poco, e lasciamo tutto in ordine. Un modello rettilineo si installa in genere in poche ore; un curvilineo, essendo costruito su misura, richiede un po' più di tempo. <em>[DA CONFERMARE: tempi reali LGM]</em></div>
+        </div>
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>È sicuro per una persona anziana che vive da sola?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">Sì. I servoscala sono pensati proprio per l'uso in autonomia: comandi semplici e intuitivi, cintura di sicurezza, sensori che fermano la corsa in caso di ostacolo. Prima di consegnare l'impianto vi mostriamo con calma come si usa.</div>
+        </div>
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>Cosa succede se manca la corrente?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">L'impianto ha una batteria di riserva che permette di completare la corsa anche durante un'interruzione di corrente, riportandovi in sicurezza al piano.</div>
+        </div>
+
+        <div class="svs-faq-item" onclick="this.classList.toggle('open')">
+          <div class="svs-faq-q">
+            <span>E se poi cambio idea?</span>
+            <span class="svs-faq-chevron">▾</span>
+          </div>
+          <div class="svs-faq-a">Nessun problema: sopralluogo e preventivo sono gratuiti e senza impegno. Ci confrontiamo con calma, senza pressioni, e decidete voi con i vostri tempi.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Agevolazioni fiscali -->
+    <section class="reveal">
+      <div class="section-label">Agevolazioni fiscali</div>
+      <h2 class="section-title text-reveal">Costa meno di quanto pensi</h2>
+      <div class="svs-bonus">
+        <h3>Cosa prevede la normativa nel 2026</h3>
+        <ul>
+          <li><strong>Detrazione 50%</strong> sulle spese per la prima casa (36% per gli altri immobili), recuperabile in 10 anni.</li>
+          <li><strong>IVA agevolata al 4%</strong> sui servoscala conformi alla normativa sull'abbattimento delle barriere architettoniche.</li>
+          <li><strong>Contributo a fondo perduto</strong> previsto dalla Legge 13/1989, da richiedere al proprio Comune.</li>
+        </ul>
+        <p class="svs-nota">[DA CONFERMARE: LGM segue le pratiche per il cliente?] Le agevolazioni vanno sempre verificate sul caso specifico con il proprio commercialista.</p>
+      </div>
+    </section>
+
+    <!-- CTA finale -->
+    <section class="reveal">
+      <div class="svs-cta">
+        <h3>Parliamone senza impegno</h3>
+        <p>Raccontaci la tua situazione: il sopralluogo e il preventivo sono gratuiti.</p>
+        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Richiedi un sopralluogo gratuito</a>
+      </div>
+    </section>
+
   </div>
 
   <!-- ============ VISTA ASCENSORI ============ -->
