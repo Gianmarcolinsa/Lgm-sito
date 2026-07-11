@@ -56,7 +56,7 @@ ogni vista è linkabile/condivisibile direttamente.
 **Viste presenti:**
 - **Home** (`#home`) — Hero + anteprima 2 prodotti (link alle viste dedicate) + numeri Fiducia
 - **Chi siamo** (`#chisiamo`) — storia famiglia + timeline interattiva cliccabile
-- **Servoscala** (`#servoscala`) — placeholder "in costruzione" (da costruire, Fase 3)
+- **Servoscala** (`#servoscala`) — completa: hero, 4 card soluzioni, timeline "Come funziona", 6 FAQ, box agevolazioni fiscali 2026, CTA finale. 6 placeholder `[DA CONFERMARE]` residui (Fase 3, dipendono da scheda dati inviata a Marco/Giovanni)
 - **Ascensori** (`#ascensori`) — intro testo + CTA "Configura la tua cabina in 3D" → apre configuratore
 - **Configuratore** (`#configuratore`) — **Configuratore 3D cabina Orona** (Three.js, lazy load)
 - **Contatti** (`#contatti`) — info aziendali + form statico
@@ -203,6 +203,27 @@ per performance):
     lo dice subito e torna alla procedura standard. Questa regola nasce da un
     episodio concreto (10/07/2026): Claude ha proposto `cp ~/Downloads/index.html`
     invece della procedura standard, causando confusione e perdita di tempo.
+11. **OGNI VOLTA che Claude consegna un `index.html` aggiornato, DEVE fornire
+    insieme, senza che l'utente debba richiederlo, anche il comando da
+    terminale per avviarlo in locale** (server statico, per vederlo/testarlo
+    nel browser prima di pubblicarlo su GitHub Pages). È un passaggio fisso
+    della consegna, distinto dal comando di pubblicazione del punto 5: uno
+    serve a vedere il sito in locale, l'altro a pubblicarlo online — vanno
+    dati entrambi, non in alternativa, **incollati per intero e pronti da
+    incollare nel terminale così come sono**, non solo menzionati o
+    riassunti. Nessuna eccezione, nemmeno se la consegna sembra piccola o
+    intermedia. Template standard:
+    ```
+    cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000
+    ```
+    poi aprire `http://localhost:8000` nel browser. (Regola aggiunta
+    11/07/2026 su richiesta diretta dell'utente; **rinforzata lo stesso
+    giorno** dopo un episodio in cui Claude ha consegnato un `index.html`
+    aggiornato — la vista Servoscala completa — senza dare spontaneamente
+    il comando locale, costringendo l'utente a richiederlo di nuovo. Questa
+    è la seconda volta che la regola viene sollecitata: da qui in avanti va
+    considerata un passaggio automatico e non negoziabile di ogni consegna
+    di `index.html`, da eseguire senza bisogno di promemoria.)
 
 ## Struttura attuale del sito — aggiornata 09/07/2026
 **Tema**: scuro elegante, accenti **blu metallizzato**, font Sora (titoli) + Inter (corpo).
@@ -277,13 +298,13 @@ placeholder (marcati `[PLACEHOLDER]` nel codice) in attesa dei contenuti
 definitivi: hero, storia dettagliata, numeri di "Fiducia" da confermare,
 titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
 
-⚠️ La vista Servoscala è ancora placeholder "in costruzione" — da costruire in Fase 3.
+⚠️ La vista Servoscala è stata costruita (11/07/2026): hero, soluzioni, come funziona, FAQ, agevolazioni fiscali 2026. Restano 6 placeholder `[DA CONFERMARE]` in attesa della scheda dati compilata da Marco e Giovanni (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni).
 ⚠️ La vista Ascensori ha intro + CTA al configuratore, ma i contenuti reali sono da completare in Fase 3.
 
 ## Cose note da sistemare (backlog aperto)
 - Scrivere i testi definitivi al posto di tutti i `[PLACEHOLDER]`
 - Inserire le immagini reali al posto dei placeholder
-- Costruire la vista Servoscala (contenuto vero)
+- Completare i 6 placeholder `[DA CONFERMARE]` della vista Servoscala (dipende dalla scheda compilata da Marco e Giovanni)
 - Completare la vista Ascensori con contenuti reali
 - Aggiungere il catalogo Orona reale al configuratore 3D
 - Decidere titolo definitivo sezione Fiducia
@@ -297,21 +318,13 @@ titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 10/07/2026 — Aggiornamento automatico del sito (rileva
-da solo le nuove pubblicazioni via confronto ETag/Last-Modified e ricarica
-senza intervento manuale); fix cross-browser del bagliore pulsante del logo
-(Safari non animava `filter: drop-shadow` sui gruppi `<g>`, ora spostato
-sull'`<svg>`); shine sincronizzato tra "LGM" ed "ELEVATOR" (stesso gradiente
-animato su entrambi); aggiunta regola 10 su CONTESTO_PROGETTO.md — nessuna
-procedura di pubblicazione "a memoria", Claude deve sempre ri-leggere questo
-file prima di dare comandi terminale (episodio concreto: proposta erronea di
-`cp` da Downloads invece della procedura standard `git add -A`). In precedenza
-nella stessa giornata: FOV max abbassato a 110° (da 130° via 120°, causava
-mal di testa); comfort rotazione: sensibilità drag -38%, range verticale
-±77°→±50°, smorzamento più morbido (anti motion sickness); fix logo esterno
-specchiato (flip su canvas 2D); logo sito più grande (170px desktop, 128px
-mobile); FOV di partenza 105° con zoom 65°–130°, schermo intero del
-configuratore (bottone HUD, Fullscreen API + fallback overlay), vista interna
-in prima persona, ambiente esterno astratto, logo LGM ELEVATOR nell'esterno,
-qualità grafica potenziata su desktop, regola 9 sulla sequenza modello/impegno
-→ via libera → esecuzione.*
+*Ultimo aggiornamento: 11/07/2026 — Vista Servoscala completata (hero, 4 card
+soluzioni, timeline "Come funziona", 6 FAQ, agevolazioni fiscali 2026,
+CTA finale), pubblicata su GitHub Pages (commit `772b544`); scheda dati
+.docx preparata per Marco e Giovanni per chiudere i 6 placeholder
+`[DA CONFERMARE]` residui; verificato e corretto il Bonus barriere
+architettoniche 75%, scaduto dal 1° gennaio 2026 — sostituito nei contenuti
+con il quadro reale 2026 (Bonus Ristrutturazioni 50/36%, IVA 4%, detrazione
+19%, contributo Legge 13/1989); regola 11 rinforzata dopo un episodio in cui
+il comando terminale non è stato dato spontaneamente con la consegna
+dell'`index.html` aggiornato.

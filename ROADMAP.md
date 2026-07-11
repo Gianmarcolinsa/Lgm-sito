@@ -55,8 +55,9 @@
 
 | # | Task | Modello | Ragionamento | Impegno |
 |---|------|---------|--------------|---------|
-| 3a | Definire struttura e contenuti vista Servoscala (come funziona, modelli, FAQ, preventivo) | Opus | Sì | Alto |
-| 3b | Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
+| 3a | ✅ Definire struttura e contenuti vista Servoscala (come funziona, modelli, FAQ, preventivo) | Opus | Sì | Alto |
+| 3b | ✅ Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
+| 3f | ⬜ Completare i 6 punti `[DA CONFERMARE]` nella vista Servoscala (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni) — dipende dalla scheda compilata da Marco e Giovanni | Sonnet | No | Minimo |
 | 3c | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Opus + Sonnet | Sì | Alto |
 | 3d | Aggiungere catalogo Orona reale al configuratore 3D (in sostituzione dei dati dimostrativi) | Sonnet | No | Medio |
 | 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
@@ -160,6 +161,10 @@
 | 10/07/2026 | **Shine sincronizzato LGM + ELEVATOR**: il riflesso lucido animato (gradiente SVG `navShine`) attraversava solo la scritta "ELEVATOR". Duplicato il tracciato di "LGM" con overlay dello stesso gradiente, così il riflesso passa su entrambe le parti del logo nello stesso istante. | Sonnet | Minimo | ✅ |
 | 10/07/2026 | Aggiunta regola 10 **fondamentale** a CONTESTO_PROGETTO.md: nessuna procedura di pubblicazione "a memoria" — Claude deve ri-leggere il contesto prima di dare comandi terminale. Nata da un episodio concreto: proposta erronea di `cp ~/Downloads/index.html` invece della procedura standard `git add -A`, causando confusione. | Sonnet | Minimo | ✅ |
 | 10/07/2026 | **Pubblicato su GitHub Pages** (commit `f3235a8`): aggiornamento automatico, fix logo cross-browser, shine sincronizzato LGM/ELEVATOR. Comando standard `git add -A` confermato funzionante. | Sonnet | — | ✅ |
+| 11/07/2026 | **Verifica bonus fiscale**: il Bonus barriere architettoniche 75% è scaduto (valido solo per spese pagate entro il 31/12/2025). Dal 2026 non esiste più — sostituito nei contenuti con il quadro reale 2026 (Bonus Ristrutturazioni 50/36%, IVA agevolata 4%, detrazione 19%, contributo Legge 13/1989). | — | — | ✅ |
+| 11/07/2026 | **Scheda raccolta dati Servoscala** (.docx) preparata per Marco e Giovanni: 4 sezioni con domande aperte su fattori di preventivo, tipi/marchi prodotto, tempi tipici, gestione pratiche agevolazioni. Necessaria per chiudere i placeholder `[DA CONFERMARE]` nella vista Servoscala. | Opus | Medio | ✅ |
+| 11/07/2026 | **Step 3a/3b — Vista Servoscala completa**: architettura + contenuti definitivi. Hero variante A (caldo/familiare, scelta dall'utente tra 3 varianti proposte), 4 card soluzioni (rettilineo/curvilineo scritti, pedana/piattaforma in attesa di conferma), timeline "Come funziona" a 4 step, 6 FAQ ad accordion, box agevolazioni fiscali 2026 aggiornate, CTA finale. CSS namespaced `svs-*`, riusa variabili e classi esistenti (`reveal`, `section-title text-reveal`, `btn-primary`). 6 placeholder `[DA CONFERMARE]` residui, dipendenti dalla scheda dati. | Opus (contenuti) + Sonnet (build) | Alto | ✅ |
+| 11/07/2026 | **Pubblicato su GitHub Pages** (commit `772b544`): vista Servoscala completa. | Sonnet | — | ✅ |
 
 ---
 
