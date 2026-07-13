@@ -30,36 +30,38 @@
 >   impatto (hero, chi siamo), architettura di nuove viste/pagine,
 >   decisioni strategiche sui contenuti.
 
+> 🔴 = priorità alta (P1-P9) · 🟡 = priorità media (P10-P18) · 🟢 = priorità bassa (P19-P26)
+
 ---
 
 | # | Task | Perché questa priorità | Modello | Ragionamento | Impegno |
 |---|------|------------------------|---------|--------------|---------|
-| P1 | ⭐ Form contatti funzionante (Formspree/Web3Forms) | Oggi i messaggi inviati dal form si perdono: è il buco che vale di più far sparire per primo | Sonnet | No | Minimo |
-| P2 | Scrivere testo Hero definitivo (dal messaggio-gancio concordato) | Senza testi reali tutto il resto resta bozza | Opus | Sì | Medio |
-| P3 | Scrivere testo sezione Storia definitivo (dati Fase 0) | Stesso motivo di P2, stesso blocco di lavoro | Opus | Sì | Medio |
-| P4 | ⬜ Completare i 6 punti `[DA CONFERMARE]` vista Servoscala | Dipende solo dalla scheda già compilata da Marco e Giovanni: sblocco rapido | Sonnet | No | Minimo |
-| P5 | Inserire foto servoscala reale nella card | Placeholder grigio visibile in home, cambio a basso sforzo | Sonnet | No | Minimo |
-| P6 | Inserire foto ascensore reale nella card | Come sopra | Sonnet | No | Minimo |
-| P7 | ⭐ SEO base: title, meta description, Open Graph, favicon, schema.org LocalBusiness | Il sito è oggi invisibile a Google e "muto" se condiviso sui social | Sonnet | Sì | Medio |
-| P8 | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Vista chiave (ha già il configuratore 3D collegato) ma senza contenuti veri | Opus + Sonnet | Sì | Alto |
-| P9 | Aggiungere catalogo Orona reale al configuratore 3D | Segue naturalmente P8, stessa vista | Sonnet | No | Medio |
-| P10 | ⭐ Pulsante WhatsApp flottante con messaggio precompilato | Il target del sito chiama/scrive su WhatsApp più che compilare form: quick win ad alto impatto, sforzo minimo | Sonnet | No | Minimo |
-| P11 | ⭐ Prova sociale: recensioni Google + badge partner Orona/Handicare/Extrema | Basso sforzo, alza subito la fiducia percepita | Sonnet | No | Minimo |
-| P12 | ⭐ Nuova vista "Manutenzione e assistenza" | Vero business ricorrente, oggi assente dal sito; coerente col messaggio-gancio "sai sempre chi entra in casa tua" | Opus | Sì | Alto |
-| P13 | Alt text per tutte le immagini reali inserite | Da fare dopo che le immagini reali (P5/P6/P8) sono a posto | Sonnet | No | Minimo |
-| P14 | Controllo accessibilità: contrasto colori, focus keyboard, screen reader | Base tecnica di accessibilità | Sonnet | No | Medio |
-| P15 | ⭐ Modalità accessibilità dedicata (testo grande / alto contrasto / stop animazioni) | Il pubblico principale è anziano/disabile: coerenza forte con ciò che l'azienda vende, differenziante rispetto ai concorrenti | Sonnet | Sì | Medio |
-| P16 | ⭐ Preventivatore rapido Servoscala (3 domande → fascia prezzo + CTA) | Qualifica il lead prima della chiamata; richiede che i dati di prezzo/tempi (P4) siano già chiusi | Sonnet | Sì | Medio |
-| P17 | ⭐ Sezione "Realizzazioni" (prima/dopo) | Alto impatto sulla credibilità ma dipende da materiale fotografico non ancora disponibile | Opus + Sonnet | Sì | Alto |
-| P18 | Decidere e scrivere titolo sezione Fiducia (oggi [PLACEHOLDER]) | Rifinitura contenuti, non blocca nient'altro | Sonnet | No | Minimo |
-| P19 | Confermare dicitura ~14 persone + terzo dato Fiducia (oggi H24) | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
-| P20 | Decidere se/come menzionare l'area operativa Puglia nei contatti | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
-| P21 | Verificare correttezza contatti (telefono, email, indirizzo) | Controllo di dettaglio | — | — | Manuale dell'utente |
-| P22 | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Rifinitura finale, ha senso solo a contenuti ormai definitivi | Sonnet | No | Minimo |
-| P23 | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) | Dettaglio estetico (nav + texture logo configuratore) | Sonnet | No | Medio |
-| P24 | Eventuali micro-aggiustamenti dopo test su dispositivi reali | Da fare a ridosso del lancio | Sonnet | No | Variabile |
-| P25 | Rimozione nota "BOZZA" dal footer e aggiornamento copyright | Ultimo passaggio prima della pubblicazione definitiva | Sonnet | No | Minimo |
-| P26 | Test finale completo su GitHub Pages (desktop + mobile) | Ultimo controllo prima del lancio pubblico | — | — | Manuale dell'utente |
+| 🔴 P1 | ✅ Form contatti funzionante (Web3Forms) + riepilogo configurazione cabina dal configuratore 3D allegato automaticamente alla richiesta (box visibile + campo email) | Oggi i messaggi inviati dal form si perdono: è il buco che vale di più far sparire per primo | Sonnet | No | Minimo |
+| 🔴 P2 | Scrivere testo Hero definitivo (dal messaggio-gancio concordato) | Senza testi reali tutto il resto resta bozza | Opus | Sì | Medio |
+| 🔴 P3 | Scrivere testo sezione Storia definitivo (dati Fase 0) | Stesso motivo di P2, stesso blocco di lavoro | Opus | Sì | Medio |
+| 🔴 P4 | ⬜ Completare i 6 punti `[DA CONFERMARE]` vista Servoscala | Dipende solo dalla scheda già compilata da Marco e Giovanni: sblocco rapido | Sonnet | No | Minimo |
+| 🔴 P5 | Inserire foto servoscala reale nella card | Placeholder grigio visibile in home, cambio a basso sforzo | Sonnet | No | Minimo |
+| 🔴 P6 | Inserire foto ascensore reale nella card | Come sopra | Sonnet | No | Minimo |
+| 🔴 P7 | ⭐ SEO base: title, meta description, Open Graph, favicon, schema.org LocalBusiness | Il sito è oggi invisibile a Google e "muto" se condiviso sui social | Sonnet | Sì | Medio |
+| 🔴 P8 | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Vista chiave (ha già il configuratore 3D collegato) ma senza contenuti veri | Opus + Sonnet | Sì | Alto |
+| 🔴 P9 | Aggiungere catalogo Orona reale al configuratore 3D | Segue naturalmente P8, stessa vista | Sonnet | No | Medio |
+| 🟡 P10 | ⭐ Pulsante WhatsApp flottante con messaggio precompilato | Il target del sito chiama/scrive su WhatsApp più che compilare form: quick win ad alto impatto, sforzo minimo | Sonnet | No | Minimo |
+| 🟡 P11 | ⭐ Prova sociale: recensioni Google + badge partner Orona/Handicare/Extrema | Basso sforzo, alza subito la fiducia percepita | Sonnet | No | Minimo |
+| 🟡 P12 | ⭐ Nuova vista "Manutenzione e assistenza" | Vero business ricorrente, oggi assente dal sito; coerente col messaggio-gancio "sai sempre chi entra in casa tua" | Opus | Sì | Alto |
+| 🟡 P13 | Alt text per tutte le immagini reali inserite | Da fare dopo che le immagini reali (P5/P6/P8) sono a posto | Sonnet | No | Minimo |
+| 🟡 P14 | Controllo accessibilità: contrasto colori, focus keyboard, screen reader | Base tecnica di accessibilità | Sonnet | No | Medio |
+| 🟡 P15 | ⭐ Modalità accessibilità dedicata (testo grande / alto contrasto / stop animazioni) | Il pubblico principale è anziano/disabile: coerenza forte con ciò che l'azienda vende, differenziante rispetto ai concorrenti | Sonnet | Sì | Medio |
+| 🟡 P16 | ⭐ Preventivatore rapido Servoscala (3 domande → fascia prezzo + CTA) | Qualifica il lead prima della chiamata; richiede che i dati di prezzo/tempi (P4) siano già chiusi | Sonnet | Sì | Medio |
+| 🟡 P17 | ⭐ Sezione "Realizzazioni" (prima/dopo) | Alto impatto sulla credibilità ma dipende da materiale fotografico non ancora disponibile | Opus + Sonnet | Sì | Alto |
+| 🟡 P18 | Decidere e scrivere titolo sezione Fiducia (oggi [PLACEHOLDER]) | Rifinitura contenuti, non blocca nient'altro | Sonnet | No | Minimo |
+| 🟢 P19 | Confermare dicitura ~14 persone + terzo dato Fiducia (oggi H24) | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
+| 🟢 P20 | Decidere se/come menzionare l'area operativa Puglia nei contatti | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
+| 🟢 P21 | Verificare correttezza contatti (telefono, email, indirizzo) | Controllo di dettaglio | — | — | Manuale dell'utente |
+| 🟢 P22 | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Rifinitura finale, ha senso solo a contenuti ormai definitivi | Sonnet | No | Minimo |
+| 🟢 P23 | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) | Dettaglio estetico (nav + texture logo configuratore) | Sonnet | No | Medio |
+| 🟢 P24 | Eventuali micro-aggiustamenti dopo test su dispositivi reali | Da fare a ridosso del lancio | Sonnet | No | Variabile |
+| 🟢 P25 | Rimozione nota "BOZZA" dal footer e aggiornamento copyright | Ultimo passaggio prima della pubblicazione definitiva | Sonnet | No | Minimo |
+| 🟢 P26 | Test finale completo su GitHub Pages (desktop + mobile) | Ultimo controllo prima del lancio pubblico | — | — | Manuale dell'utente |
 
 ---
 
@@ -171,3 +173,9 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Anno fondazione in proprio di Franco: "Dal 1988" confermato dall'utente
 - Area operativa: Matera/Basilicata + Puglia (il sito attuale non lo comunica)
 - Nome "LGM": resta così, nessun significato da spiegare nel sito
+
+| Data | Modifica | Modello | Effort | Stato |
+|------|----------|---------|--------|-------|
+| 13/07/2026 | **P1 — Form contatti collegato a Web3Forms** (access key su email personale, fase sperimentale, da sostituire in futuro con quella aziendale): form reale con Nome/Email/Telefono/Messaggio, invio via `fetch` senza reload, honeypot anti-spam, stati invio/successo/errore. Pubblicato (commit `ccbd73d`). | Sonnet | Minimo | ✅ |
+| 13/07/2026 | **Riepilogo configurazione cabina allegato al preventivo**: quando il cliente arriva a Contatti da "Richiedi preventivo con questa configurazione" nel configuratore 3D, un box mostra codice e dettagli scelti (letti da `localStorage`, chiave `lgm:quotePayload3d`), inclusi automaticamente sia in un campo email nascosto sia pre-compilati nel messaggio se vuoto. Pubblicato (commit `ccbd73d`). | Sonnet | Medio | ✅ |
+| 13/07/2026 | **Fix bug critico**: la modifica precedente aveva cancellato per errore la chiusura `})();` del primo IIFE (invio form), causando `Uncaught SyntaxError: Unexpected end of input` su tutto il sito. Verificato con `node --check` sui 3 blocchi `<script>`. Pubblicato (commit `4656fbb`). | Sonnet | Minimo | ✅ |
