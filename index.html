@@ -461,6 +461,49 @@
   }
   .cf-status.cf-ok { color: #1a7a3c; }
   .cf-status.cf-err { color: #b3261e; }
+
+  .cf-config-summary {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .cf-config-summary__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+  .cf-config-summary__code {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    margin: 0 0 10px;
+  }
+  .cf-config-summary__list {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+  .cf-config-summary__list li {
+    font-size: 14px;
+    color: var(--text);
+  }
+  .cf-config-summary__list li b { color: var(--text-muted); font-weight: 600; }
+  .cf-config-summary__clear {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .cf-config-summary__clear:hover { color: var(--accent); }
   @media (max-width: 800px) {
     .contatti-grid { grid-template-columns: 1fr; }
   }
@@ -1970,9 +2013,17 @@
           <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
         </div>
         <div class="form-box">
+          <div class="cf-config-summary" id="cfConfigSummary" hidden>
+            <p class="cf-config-summary__title">Configurazione cabina allegata alla richiesta</p>
+            <p class="cf-config-summary__code" id="cfConfigCode"></p>
+            <ul class="cf-config-summary__list" id="cfConfigList"></ul>
+            <button type="button" class="cf-config-summary__clear" id="cfConfigClear">Rimuovi configurazione dalla richiesta</button>
+          </div>
+
           <form id="contattiForm" class="contatti-form">
             <input type="hidden" name="access_key" value="dfead459-81ee-4a5d-8681-ae4bd9ab02b6">
             <input type="hidden" name="subject" value="Nuova richiesta sopralluogo — Sito LGM Elevator">
+            <input type="hidden" name="configurazione_cabina" id="cfConfigField" value="">
             <input type="checkbox" name="botcheck" class="cf-hidden" tabindex="-1" autocomplete="off">
 
             <div class="cf-field">
@@ -2372,6 +2423,88 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Invia richiesta';
         });
+    });
+  })();
+
+  // ============================================
+  // FORM CONTATTI — riepilogo configurazione cabina
+  // Se l'utente arriva da "Richiedi preventivo con questa configurazione"
+  // nel configuratore 3D, recupera i dati salvati in localStorage
+  // (chiave lgm:quotePayload3d) e li allega alla richiesta: sia in un
+  // box visibile sopra il form, sia in un campo nascosto incluso nella
+  // mail (così arriva sempre, anche se il cliente non lo guarda).
+  // ============================================
+  (function () {
+    const QUOTE_KEY = 'lgm:quotePayload3d';
+    const summaryBox = document.getElementById('cfConfigSummary');
+    const codeEl = document.getElementById('cfConfigCode');
+    const listEl = document.getElementById('cfConfigList');
+    const clearBtn = document.getElementById('cfConfigClear');
+    const hiddenField = document.getElementById('cfConfigField');
+    const messageEl = document.getElementById('cf-messaggio');
+    if (!summaryBox || !hiddenField) return;
+
+    function readQuote() {
+      try {
+        const raw = localStorage.getItem(QUOTE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function formatForEmail(quote) {
+      const lines = ['Configurazione cabina scelta nel configuratore 3D:',
+        'Codice: ' + quote.code, 'Modello: ' + quote.model];
+      (quote.lines || []).forEach(l => lines.push('- ' + l));
+      return lines.join('\n');
+    }
+
+    function renderSummary() {
+      const quote = readQuote();
+      if (!quote) {
+        summaryBox.hidden = true;
+        hiddenField.value = '';
+        return;
+      }
+      codeEl.textContent = 'Codice: ' + quote.code;
+      listEl.innerHTML = '';
+      const modelLi = document.createElement('li');
+      modelLi.innerHTML = '<b>Modello:</b> ' + quote.model;
+      listEl.appendChild(modelLi);
+      (quote.lines || []).forEach(line => {
+        const parts = line.split(':');
+        const li = document.createElement('li');
+        if (parts.length > 1) {
+          li.innerHTML = '<b>' + parts[0] + ':</b>' + parts.slice(1).join(':');
+        } else {
+          li.textContent = line;
+        }
+        listEl.appendChild(li);
+      });
+      summaryBox.hidden = false;
+      hiddenField.value = formatForEmail(quote);
+
+      // Se il cliente non ha ancora scritto nulla nel messaggio,
+      // pre-compila con il riepilogo così è visibile anche a colpo d'occhio.
+      if (messageEl && !messageEl.value.trim()) {
+        messageEl.value = formatForEmail(quote);
+      }
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        try { localStorage.removeItem(QUOTE_KEY); } catch (e) {}
+        // Se il messaggio conteneva ancora il riepilogo auto-compilato, lo svuota
+        if (messageEl && hiddenField.value && messageEl.value.trim() === hiddenField.value.trim()) {
+          messageEl.value = '';
+        }
+        renderSummary();
+      });
+    }
+
+    renderSummary();
+    // Ricontrolla ogni volta che si rientra nella vista Contatti (SPA senza reload)
+    window.addEventListener('hashchange', function () {
+      if (location.hash === '#contatti') renderSummary();
     });
   })();
 
