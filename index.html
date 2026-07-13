@@ -427,10 +427,40 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 28px;
-    color: var(--text-muted);
-    font-size: 14px;
-    font-style: italic;
   }
+  .contatti-form { display: flex; flex-direction: column; gap: 18px; }
+  .cf-field { display: flex; flex-direction: column; gap: 6px; }
+  .cf-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .cf-field input,
+  .cf-field textarea {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+  }
+  .cf-field input:focus,
+  .cf-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .cf-hidden { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+  .cf-submit { margin-top: 4px; }
+  .cf-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .cf-status {
+    font-size: 14px;
+    min-height: 20px;
+  }
+  .cf-status.cf-ok { color: #1a7a3c; }
+  .cf-status.cf-err { color: #b3261e; }
   @media (max-width: 800px) {
     .contatti-grid { grid-template-columns: 1fr; }
   }
@@ -1940,7 +1970,31 @@
           <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
         </div>
         <div class="form-box">
-          [Form statico — invariato rispetto alla versione attuale: Nome, Email, Telefono, Messaggio]
+          <form id="contattiForm" class="contatti-form">
+            <input type="hidden" name="access_key" value="dfead459-81ee-4a5d-8681-ae4bd9ab02b6">
+            <input type="hidden" name="subject" value="Nuova richiesta sopralluogo — Sito LGM Elevator">
+            <input type="checkbox" name="botcheck" class="cf-hidden" tabindex="-1" autocomplete="off">
+
+            <div class="cf-field">
+              <label for="cf-nome">Nome e cognome</label>
+              <input type="text" id="cf-nome" name="name" required>
+            </div>
+            <div class="cf-field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" required>
+            </div>
+            <div class="cf-field">
+              <label for="cf-telefono">Telefono</label>
+              <input type="tel" id="cf-telefono" name="telefono">
+            </div>
+            <div class="cf-field">
+              <label for="cf-messaggio">Messaggio</label>
+              <textarea id="cf-messaggio" name="message" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary cf-submit" id="cfSubmitBtn">Invia richiesta</button>
+            <div class="cf-status" id="cfStatus" role="status" aria-live="polite"></div>
+          </form>
         </div>
       </div>
     </section>
@@ -2265,6 +2319,61 @@
       card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
     });
   });
+
+  // ============================================
+  // FORM CONTATTI — invio reale via Web3Forms
+  // (fase sperimentale: access key legata a una mail personale,
+  // da sostituire con quella aziendale in futuro)
+  // ============================================
+  (function () {
+    const form = document.getElementById('contattiForm');
+    if (!form) return;
+    const statusEl = document.getElementById('cfStatus');
+    const submitBtn = document.getElementById('cfSubmitBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Honeypot anti-spam: se compilato da un bot, finge successo e non invia
+      const honey = form.querySelector('input[name="botcheck"]');
+      if (honey && honey.checked) {
+        statusEl.textContent = 'Richiesta inviata. Ti contatteremo al più presto.';
+        statusEl.className = 'cf-status cf-ok';
+        form.reset();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Invio in corso…';
+      statusEl.textContent = '';
+      statusEl.className = 'cf-status';
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.success) {
+            statusEl.textContent = 'Richiesta inviata! Ti contatteremo al più presto per fissare il sopralluogo gratuito.';
+            statusEl.className = 'cf-status cf-ok';
+            form.reset();
+          } else {
+            statusEl.textContent = 'Non siamo riusciti a inviare la richiesta. Riprova o chiamaci direttamente.';
+            statusEl.className = 'cf-status cf-err';
+          }
+        })
+        .catch(function () {
+          statusEl.textContent = 'Errore di connessione. Riprova o chiamaci direttamente.';
+          statusEl.className = 'cf-status cf-err';
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Invia richiesta';
+        });
+    });
+  })();
 
 </script>
 

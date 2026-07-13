@@ -13,12 +13,15 @@
 
 ---
 
-## 🗺️ Scaletta operativa — ordine di lavoro consigliato
+## 🗺️ Scaletta operativa — lista unica a priorità decrescente
 
-> Per ogni task è indicato: modello da usare, se attivare il ragionamento
-> esteso (Sì/No), e il livello di impegno stimato. Claude dichiara sempre
-> queste tre informazioni prima di iniziare, e aspetta conferma esplicita
-> prima di procedere (regola 1+2 di CONTESTO_PROGETTO.md).
+> Unica lista, dalla priorità più alta (in cima) alla più bassa (in fondo).
+> Sostituisce la vecchia divisione Step 1-5 / Fase 1-4 (ridondanti tra loro):
+> quei task sono confluiti qui. Per ogni task è indicato: modello da usare,
+> se attivare il ragionamento esteso (Sì/No), e il livello di impegno
+> stimato. Claude dichiara sempre queste tre informazioni prima di iniziare,
+> e aspetta conferma esplicita prima di procedere (regola 1+2/9 di
+> CONTESTO_PROGETTO.md). ⭐ = proposta nuova emersa il 13/07/2026.
 >
 > **Legenda modelli**
 > - **Sonnet** — operativo: tutto il lavoro su CSS/JS/HTML, fix, ritocchi,
@@ -29,98 +32,34 @@
 
 ---
 
-### STEP 1 — Testi definitivi homepage (priorità massima)
-> Senza testi reali tutto il resto è bozza. Va fatto prima di qualsiasi
-> altra cosa destinata al pubblico.
-
-| # | Task | Modello | Ragionamento | Impegno |
-|---|------|---------|--------------|---------|
-| 1a | Scrivere testo Hero definitivo (partendo dal messaggio-gancio concordato) | Opus | Sì | Medio |
-| 1b | Scrivere testo sezione Storia definitivo (partendo dai dati raccolti in Fase 0) | Opus | Sì | Medio |
-| 1c | Decidere e scrivere titolo sezione Fiducia (oggi è [PLACEHOLDER]) | Sonnet | No | Minimo |
-| 1d | Confermare dicitura ~14 persone + decidere terzo dato Fiducia (oggi H24) | — | — | Decisione utente, poi Sonnet aggiorna |
-| 1e | Decidere se/come aggiungere menzione Puglia nei contatti | — | — | Decisione utente, poi Sonnet aggiorna |
-
-### STEP 2 — Immagini reali
-> Inserire le foto vere al posto dei placeholder grigi nelle card prodotto.
-
-| # | Task | Modello | Ragionamento | Impegno |
-|---|------|---------|--------------|---------|
-| 2a | Inserire foto servoscala reale nella card (fornita dall'utente o trovata online) | Sonnet | No | Minimo |
-| 2b | Inserire foto ascensore reale nella card | Sonnet | No | Minimo |
-
-### STEP 3 — Viste prodotto dedicate
-> La vista Ascensori ha già intro + CTA al configuratore 3D. Da completare con contenuti reali.
-> La vista Servoscala è ancora placeholder.
-
-| # | Task | Modello | Ragionamento | Impegno |
-|---|------|---------|--------------|---------|
-| 3a | ✅ Definire struttura e contenuti vista Servoscala (come funziona, modelli, FAQ, preventivo) | Opus | Sì | Alto |
-| 3b | ✅ Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
-| 3f | ⬜ Completare i 6 punti `[DA CONFERMARE]` nella vista Servoscala (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni) — dipende dalla scheda compilata da Marco e Giovanni | Sonnet | No | Minimo |
-| 3c | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Opus + Sonnet | Sì | Alto |
-| 3d | Aggiungere catalogo Orona reale al configuratore 3D (in sostituzione dei dati dimostrativi) | Sonnet | No | Medio |
-| 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
-
-### STEP 4 — Rifinitura grafica e UX
-> Da fare dopo che i contenuti sono definitivi.
-
-| # | Task | Modello | Ragionamento | Impegno |
-|---|------|---------|--------------|---------|
-| 4a | Eventuali micro-aggiustamenti dopo primo test su dispositivi reali | Sonnet | No | Variabile |
-| 4b | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) — vale sia per la nav sia per la texture del logo nel configuratore 3D (oggi fallback Trebuchet/Arial) | Sonnet | No | Medio |
-
-### STEP 5 — Pre-lancio
-> Ultima fase prima della pubblicazione definitiva.
-
-| # | Task | Modello | Ragionamento | Impegno |
-|---|------|---------|--------------|---------|
-| 5a | SEO base: `<title>`, meta description, Open Graph per tutte le viste | Sonnet | Sì | Medio |
-| 5b | Favicon (progettare o usare variante del logo LGM) | Sonnet | No | Medio |
-| 5c | Alt text per tutte le immagini reali inserite | Sonnet | No | Minimo |
-| 5d | Controllo accessibilità: contrasto colori, focus keyboard, screen reader | Sonnet | No | Medio |
-| 5e | Test finale completo su GitHub Pages (desktop + mobile) | — | — | Manuale dell'utente |
-| 5f | Rimozione nota "BOZZA" dal footer e aggiornamento copyright se necessario | Sonnet | No | Minimo |
-
----
-
-## Fase 1 — Contenuti definitivi (priorità attuale)
-- ⬜ Testo Hero definitivo
-- ⬜ Testo Storia definitivo
-- ⬜ Titolo sezione Fiducia (oggi [PLACEHOLDER])
-- ⬜ Confermare/scrivere i 3 numeri della sezione Fiducia
-- ⬜ Decidere se/come menzionare l'area operativa Puglia nei contatti
-- ⬜ Sostituire le due immagini placeholder (Servoscala, Ascensori) nella Home
-- ⬜ Verificare correttezza contatti (telefono, email, indirizzo)
-
-## Fase 2 — Rifinitura grafica/UX
-- ✅ Menu mobile: risolto con la nav verticale compatta (pillola a destra,
-  sempre visibile sotto 800px, con etichetta sezione attiva visibile)
-- ✅ Logo aziendale: ricreato fedele alla targa in blu metallizzato pulsante
-  + ELEVATOR nero metallico riflettente pulsante. Palette sito aggiornata a blu.
-- ✅ Animazioni avanzate: filo dell'ascensore, testi cinematici, timeline
-  che si disegna, contatori Fiducia, riflettore card prodotto.
-- ✅ Animazioni scroll-based con IntersectionObserver: ogni elemento
-  si anima al suo ingresso nel viewport durante lo scroll, e riparte
-  da capo ad ogni cambio di vista.
-- ✅ Salto di stile "unico nel suo genere": porte dell'ascensore come
-  transizione tra le viste, cabina al posto della freccia sul filo,
-  nuovo tema chiaro "Acciaio spazzolato" (palette 1c) al posto dello
-  scuro generico iniziale.
-- ⬜ Eventuali micro-aggiustamenti dopo test su dispositivi reali
-
-## Fase 3 — Viste prodotto Servoscala e Ascensori
-- ⬜ Struttura e contenuti vista Servoscala
-- ⬜ Build vista Servoscala
-- ⬜ Completare vista Ascensori con contenuti reali (oggi: intro + CTA configuratore)
-- ⬜ Aggiungere catalogo Orona reale al configuratore 3D
-
-## Fase 4 — Pre-lancio
-- ⬜ SEO base: title, meta description, Open Graph, favicon
-- ⬜ Alt text per tutte le immagini
-- ⬜ Controllo accessibilità e contrasto colori
-- ✅ Sito pubblicato e visibile su GitHub Pages
-- ⬜ Test finale su GitHub Pages prima del lancio
+| # | Task | Perché questa priorità | Modello | Ragionamento | Impegno |
+|---|------|------------------------|---------|--------------|---------|
+| P1 | ⭐ Form contatti funzionante (Formspree/Web3Forms) | Oggi i messaggi inviati dal form si perdono: è il buco che vale di più far sparire per primo | Sonnet | No | Minimo |
+| P2 | Scrivere testo Hero definitivo (dal messaggio-gancio concordato) | Senza testi reali tutto il resto resta bozza | Opus | Sì | Medio |
+| P3 | Scrivere testo sezione Storia definitivo (dati Fase 0) | Stesso motivo di P2, stesso blocco di lavoro | Opus | Sì | Medio |
+| P4 | ⬜ Completare i 6 punti `[DA CONFERMARE]` vista Servoscala | Dipende solo dalla scheda già compilata da Marco e Giovanni: sblocco rapido | Sonnet | No | Minimo |
+| P5 | Inserire foto servoscala reale nella card | Placeholder grigio visibile in home, cambio a basso sforzo | Sonnet | No | Minimo |
+| P6 | Inserire foto ascensore reale nella card | Come sopra | Sonnet | No | Minimo |
+| P7 | ⭐ SEO base: title, meta description, Open Graph, favicon, schema.org LocalBusiness | Il sito è oggi invisibile a Google e "muto" se condiviso sui social | Sonnet | Sì | Medio |
+| P8 | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Vista chiave (ha già il configuratore 3D collegato) ma senza contenuti veri | Opus + Sonnet | Sì | Alto |
+| P9 | Aggiungere catalogo Orona reale al configuratore 3D | Segue naturalmente P8, stessa vista | Sonnet | No | Medio |
+| P10 | ⭐ Pulsante WhatsApp flottante con messaggio precompilato | Il target del sito chiama/scrive su WhatsApp più che compilare form: quick win ad alto impatto, sforzo minimo | Sonnet | No | Minimo |
+| P11 | ⭐ Prova sociale: recensioni Google + badge partner Orona/Handicare/Extrema | Basso sforzo, alza subito la fiducia percepita | Sonnet | No | Minimo |
+| P12 | ⭐ Nuova vista "Manutenzione e assistenza" | Vero business ricorrente, oggi assente dal sito; coerente col messaggio-gancio "sai sempre chi entra in casa tua" | Opus | Sì | Alto |
+| P13 | Alt text per tutte le immagini reali inserite | Da fare dopo che le immagini reali (P5/P6/P8) sono a posto | Sonnet | No | Minimo |
+| P14 | Controllo accessibilità: contrasto colori, focus keyboard, screen reader | Base tecnica di accessibilità | Sonnet | No | Medio |
+| P15 | ⭐ Modalità accessibilità dedicata (testo grande / alto contrasto / stop animazioni) | Il pubblico principale è anziano/disabile: coerenza forte con ciò che l'azienda vende, differenziante rispetto ai concorrenti | Sonnet | Sì | Medio |
+| P16 | ⭐ Preventivatore rapido Servoscala (3 domande → fascia prezzo + CTA) | Qualifica il lead prima della chiamata; richiede che i dati di prezzo/tempi (P4) siano già chiusi | Sonnet | Sì | Medio |
+| P17 | ⭐ Sezione "Realizzazioni" (prima/dopo) | Alto impatto sulla credibilità ma dipende da materiale fotografico non ancora disponibile | Opus + Sonnet | Sì | Alto |
+| P18 | Decidere e scrivere titolo sezione Fiducia (oggi [PLACEHOLDER]) | Rifinitura contenuti, non blocca nient'altro | Sonnet | No | Minimo |
+| P19 | Confermare dicitura ~14 persone + terzo dato Fiducia (oggi H24) | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
+| P20 | Decidere se/come menzionare l'area operativa Puglia nei contatti | Decisione utente, poi Sonnet aggiorna | — | — | Decisione utente |
+| P21 | Verificare correttezza contatti (telefono, email, indirizzo) | Controllo di dettaglio | — | — | Manuale dell'utente |
+| P22 | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Rifinitura finale, ha senso solo a contenuti ormai definitivi | Sonnet | No | Minimo |
+| P23 | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) | Dettaglio estetico (nav + texture logo configuratore) | Sonnet | No | Medio |
+| P24 | Eventuali micro-aggiustamenti dopo test su dispositivi reali | Da fare a ridosso del lancio | Sonnet | No | Variabile |
+| P25 | Rimozione nota "BOZZA" dal footer e aggiornamento copyright | Ultimo passaggio prima della pubblicazione definitiva | Sonnet | No | Minimo |
+| P26 | Test finale completo su GitHub Pages (desktop + mobile) | Ultimo controllo prima del lancio pubblico | — | — | Manuale dell'utente |
 
 ---
 

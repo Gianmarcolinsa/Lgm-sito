@@ -34,6 +34,16 @@ autoapplicata dall'inizio alla fine di ogni sessione.
 4. Questa regola **si applica anche a sé stessa**: se Claude nota di averla
    violata (anche solo in parte) durante la chat, lo segnala subito
    all'utente e torna sulla procedura corretta, invece di proseguire.
+5. **Ogni volta che Claude aggiorna o modifica un file del progetto**
+   (`index.html`, `CONTESTO_PROGETTO.md`, `ROADMAP.md`, o qualunque altro
+   file dei file di progetto), **deve sempre consegnarlo per intero
+   all'utente nella stessa risposta**, senza che l'utente debba chiederlo.
+   Serve perché l'utente deve poterlo salvare e aggiornare manualmente nei
+   file del progetto (i file del progetto letti da Claude a inizio chat
+   **non si aggiornano da soli** con le modifiche fatte durante la
+   conversazione). Vale per qualsiasi file modificato, non solo `index.html`
+   — quindi anche dopo una modifica a `CONTESTO_PROGETTO.md` o `ROADMAP.md`
+   stessi. (Sotto-regola aggiunta 13/07/2026 su richiesta diretta dell'utente.)
 
 (Regola 0 introdotta il 13/07/2026 su richiesta esplicita dell'utente, dopo
 episodi ripetuti in cui Claude non ha seguito la sequenza già definita nelle
