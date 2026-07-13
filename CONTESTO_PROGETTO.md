@@ -81,6 +81,96 @@ Questo nuovo sito è destinato a **sostituire completamente** quello esistente
 Servoscala che Ascensori: quindi anche il nuovo sito dovrà espandersi in
 futuro per coprire entrambi i prodotti.
 
+## 📈 Linee Guida per le Priorità di Business (Logica Commerciale)
+
+> ⚠️ **Regola fissa e permanente.** Questa è la logica con cui Claude deve
+> pesare, ordinare e riordinare **ogni task** del progetto, in questa chat e
+> in tutte le prossime, senza che l'utente debba richiamarla. Non è una
+> preferenza estetica né una scaletta tecnica: è la **visione commerciale
+> dell'azienda** tradotta in criterio di priorità. Ogni volta che si aggiunge
+> un task nuovo alla `ROADMAP.md`, o si discute cosa fare dopo, Claude deve
+> collocarlo nel blocco corretto secondo questi 4 pilastri e motivare la
+> scelta in termini di ritorno commerciale, non di comodità tecnica.
+> (Regola introdotta il 13/07/2026 su richiesta esplicita dell'utente.)
+
+Il sito non è un esercizio di stile: è uno **strumento di acquisizione
+clienti**. Il criterio guida è quindi sempre lo stesso — *quanto questo task
+avvicina un potenziale cliente a un contatto reale con LGM, e quanto valore
+porta all'azienda?* I task si pesano su questi 4 blocchi, in quest'ordine.
+
+### Blocco 1 — Il Motore Commerciale (Massima Priorità)
+Tutto ciò che **genera lead e contatti caldi immediati**. È la macchina che
+porta il cliente dal sito al telefono/alla mail. Se questo non funziona,
+tutto il resto è decorazione.
+
+Rientrano qui:
+- Le **pagine prodotto reali** (Ascensori e Servoscala con contenuti veri,
+  non placeholder): sono le pagine su cui atterra chi ha davvero un bisogno.
+- Il **catalogo Orona completo** nel configuratore 3D: trasforma un giocattolo
+  dimostrativo in uno strumento di preventivazione credibile.
+- Il **pulsante WhatsApp flottante**: il pubblico di LGM (anziani, famigliari,
+  amministratori) chiama o scrive, non compila form.
+- Gli elementi di **Social Proof e Fiducia** (recensioni reali, badge partner
+  Orona/Handicare/Extrema, certificazioni): abbattono la diffidenza di chi
+  deve far entrare qualcuno in casa propria.
+- Il **canale di contatto funzionante** (form che invia davvero, riepilogo
+  configurazione allegato alla richiesta).
+
+### Blocco 2 — La Cassaforte e i Contenuti Chiave (Priorità Media)
+I servizi a **canone ricorrente ad alto valore per l'azienda** e il
+**copywriting definitivo** che dà al sito la sua voce.
+
+Rientrano qui:
+- La vista **Manutenzione e Assistenza**: è il vero business ricorrente di
+  LGM, quello che genera fatturato stabile anno dopo anno, non una tantum.
+  Oggi il sito non ne parla affatto: è la lacuna commerciale più grande.
+- Il **copywriting definitivo** basato sul messaggio-gancio della
+  **continuità familiare dal 1988** ("sai sempre chi entra in casa tua"):
+  è ciò che distingue LGM da un installatore anonimo qualsiasi, ed è
+  l'argomento di vendita più forte che l'azienda possiede.
+
+### Blocco 3 — Completamento e Materiale Reale (Priorità Coadiuvante)
+Non genera lead da solo, ma **rende credibile e completo** ciò che i Blocchi
+1 e 2 mettono in vetrina. Senza questo, il motore commerciale gira a vuoto.
+
+Rientrano qui:
+- La **chiusura dei dati tecnici in sospeso** (placeholder `[DA CONFERMARE]`
+  della vista Servoscala: tempi, marchi, prodotti, gestione pratiche).
+- La **sostituzione dei riquadri grigi con foto reali degli impianti**: un
+  placeholder grigio in home comunica "sito incompleto", e un sito incompleto
+  non genera fiducia né chiamate.
+- Le sezioni che dipendono da materiale fotografico reale (es. Realizzazioni
+  prima/dopo).
+
+### Blocco 4 — Ottimizzazione, SEO e Lancio (Priorità Finale)
+Tutto ciò che **massimizza la resa** di quanto già costruito, e chiude il
+progetto. Va fatto **dopo**, perché ottimizzare un sito ancora incompleto
+significa doverlo rifare.
+
+Rientrano qui:
+- La **SEO Locale per Puglia e Basilicata** (meta description, Open Graph,
+  favicon, schema.org LocalBusiness, alt text): è ciò che fa trovare LGM
+  su Google da chi cerca "servoscala Matera" o "ascensori Basilicata".
+- L'**accessibilità dedicata agli anziani** (testo grande, alto contrasto,
+  stop animazioni, focus da tastiera, screen reader): coerenza fortissima
+  con ciò che l'azienda vende, e differenziante rispetto ai concorrenti.
+- Le **rifiniture estetiche** e i **test tecnici finali** pre-pubblicazione
+  (coerenza stilistica, font logo, test su dispositivi reali, rimozione
+  nota "BOZZA").
+
+### Come applicare questi blocchi
+1. Un task di Blocco 1 batte sempre un task di Blocco 2, 3 o 4, **anche se è
+   tecnicamente più noioso o più lungo**.
+2. All'interno dello stesso blocco, vince il task con il **miglior rapporto
+   impatto/sforzo**, e a parità di quello, quello che **sblocca altri task**.
+3. Se un task di blocco alto **dipende da materiale che non c'è ancora**
+   (es. foto reali, dati da Marco e Giovanni), va comunque tenuto in alto ma
+   segnalato come **bloccato**: la soluzione è procurare il materiale, non
+   retrocedere il task.
+4. Claude **non riordina mai la roadmap a fatti suoi** senza dirlo: se una
+   nuova esigenza cambia le priorità, lo propone e aspetta il via libera
+   (Regola 0, punto 2).
+
 ## Decisioni prese finora
 - **Priorità attuale**: presentazione/contenuti e cura visiva, non funzionalità.
 - **Form di contatto**: resta statico per ora (no invio email reale). Si valuterà

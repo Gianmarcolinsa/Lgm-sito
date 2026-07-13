@@ -120,6 +120,55 @@
     .logo svg { width: 128px; }
   }
 
+  /* WIDGET H24 DINAMICO — badge cliccabile in nav con numero di telefono
+     che cambia automaticamente in base a orario ufficio / reperibilità.
+     Vedi ROADMAP.md per la nota operativa sull'aggiornamento dei numeri. */
+  .h24-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .h24-widget:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+  }
+  .h24-widget__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .h24-widget--open .h24-widget__dot { background: #1a7a3c; }
+  .h24-widget--oncall .h24-widget__dot {
+    background: #b3261e;
+    animation: h24Pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes h24Pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(179,38,30,0.45); }
+    50%      { box-shadow: 0 0 0 5px rgba(179,38,30,0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .h24-widget--oncall .h24-widget__dot { animation: none; }
+  }
+  @media (max-width: 800px) {
+    .h24-widget { font-size: 12px; padding: 7px 12px; gap: 6px; }
+    .h24-widget__text-full { display: none; }
+  }
+  @media (max-width: 520px) {
+    .h24-widget__text-office { display: none; }
+  }
+
   /* NAV COMPATTA VERTICALE — appare a destra dopo lo scroll (desktop),
      sempre presente sotto gli 800px (sostituisce il menu mancante su mobile) */
   .nav-condensed {
@@ -1634,6 +1683,10 @@
         </g>
       </svg>
     </div>
+    <a href="tel:" id="h24Widget" class="h24-widget" aria-live="polite">
+      <span class="h24-widget__dot" aria-hidden="true"></span>
+      <span class="h24-widget__text-full" id="h24WidgetText">—</span>
+    </a>
     <div class="nav-links-wrap">
       <ul class="nav-links">
         <li><a data-view="home">LGM</a></li>
@@ -2056,6 +2109,50 @@
 
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ============================================
+  // WIDGET H24 DINAMICO — badge + numero cliccabile in nav
+  // Cambia automaticamente testo e link tel: in base a giorno/ora:
+  // Lun-Ven 08:00-18:30 -> ufficio aperto, resto del tempo -> reperibilità H24.
+  //
+  // ⚠️ NOTA OPERATIVA (vedi anche ROADMAP.md): questi due numeri vanno
+  // aggiornati manualmente ogni volta che cambia il tecnico di turno o il
+  // numero di reperibilità aziendale. Non è automatico.
+  // ============================================
+  const NUMERO_UFFICIO = "InserisciNumeroUfficioQui";
+  const NUMERO_REPERIBILITA = "InserisciNumeroTecnicoQui";
+
+  function updateH24Widget() {
+    const widget = document.getElementById('h24Widget');
+    const textEl = document.getElementById('h24WidgetText');
+    if (!widget || !textEl) return;
+
+    const now = new Date();
+    const day = now.getDay();               // 0 = domenica, 6 = sabato
+    const minutesNow = now.getHours() * 60 + now.getMinutes();
+    const isWeekday = day >= 1 && day <= 5;  // lunedì-venerdì
+    const isOfficeHours = minutesNow >= (8 * 60) && minutesNow <= (18 * 60 + 30);
+
+    const isOfficeOpen = isWeekday && isOfficeHours;
+
+    widget.classList.remove('h24-widget--open', 'h24-widget--oncall');
+
+    if (isOfficeOpen) {
+      widget.classList.add('h24-widget--open');
+      widget.href = 'tel:' + NUMERO_UFFICIO;
+      textEl.innerHTML = '🟢 Uffici Aperti <span class="h24-widget__text-office">| Clicca per chiamare</span>';
+      widget.setAttribute('aria-label', 'Uffici aperti, chiama ' + NUMERO_UFFICIO);
+    } else {
+      widget.classList.add('h24-widget--oncall');
+      widget.href = 'tel:' + NUMERO_REPERIBILITA;
+      textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Chiama il Tecnico di Turno</span>';
+      widget.setAttribute('aria-label', 'Reperibilità H24 attiva, chiama il tecnico di turno ' + NUMERO_REPERIBILITA);
+    }
+  }
+
+  updateH24Widget();
+  setInterval(updateH24Widget, 60 * 1000); // ricontrolla ogni minuto (cambio fascia orario in tempo reale)
+
 
   // ============================================
   // ROUTER DELLE VISTE (SPA)
