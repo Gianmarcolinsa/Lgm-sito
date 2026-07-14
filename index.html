@@ -1571,13 +1571,17 @@
   // Cambia automaticamente testo e link in base a giorno/ora:
   // Lun-Ven 08:00-18:30 -> ufficio aperto, resto del tempo -> reperibilità H24.
   //
-  // Comportamento (riscritto il 14/07/2026 — via WhatsApp e via il form
-  // "inserisci il tuo numero", sostituiti da una modale a due opzioni dirette):
-  // - UFFICIO aperto: il widget in nav è sempre un link "tel:" diretto.
-  // - REPERIBILITÀ attiva: il click sul widget apre la modale con due
-  //   bottoni — "Tecnico reperibile" e "Ufficio" — entrambi link "tel:"
-  //   diretti con numero visibile. Da mobile parte la chiamata, da desktop
-  //   il link resta cliccabile (inerte senza softphone, ma corretto).
+  // Comportamento (aggiornato il 14/07/2026 — il badge in nav apre sempre
+  // la stessa modale con due opzioni dirette, sia in orario ufficio che in
+  // reperibilità; prima chiamava direttamente l'ufficio durante l'orario
+  // di lavoro, comportamento diverso da quello del bottone in Contatti):
+  // - Click sul badge H24 in nav (qualsiasi orario): apre la modale con
+  //   due bottoni — "Tecnico reperibile" e "Ufficio" — entrambi link
+  //   "tel:" diretti con numero visibile. Da mobile parte la chiamata,
+  //   da desktop il link resta cliccabile (inerte senza softphone, ma
+  //   corretto).
+  // - Verde "Uffici Aperti" / rosso "Reperibilità H24 Attiva" restano
+  //   solo indicatori visivi dello stato: non cambiano più il click.
   // - Dalle 20:00 fino alla riapertura ufficio, la modale si apre da sola
   //   UNA VOLTA per sessione di navigazione (sessionStorage), per rendere
   //   visibile subito come contattare l'assistenza fuori orario. Dopo la
@@ -1620,12 +1624,12 @@
     widget.classList.remove('h24-widget--open', 'h24-widget--oncall');
 
     if (isOfficeOpen) {
-      widget.href = 'tel:' + NUMERO_UFFICIO;
+      widget.href = 'javascript:void(0)';
       widget.removeAttribute('target');
       widget.removeAttribute('rel');
       widget.classList.add('h24-widget--open');
-      textEl.innerHTML = '🟢 Uffici Aperti <span class="h24-widget__text-office">| Clicca per chiamare</span>';
-      widget.setAttribute('aria-label', 'Uffici aperti, chiama ' + NUMERO_UFFICIO);
+      textEl.innerHTML = '🟢 Uffici Aperti <span class="h24-widget__text-office">| Contatta l\'assistenza</span>';
+      widget.setAttribute('aria-label', 'Uffici aperti, contatta l\'assistenza');
     } else {
       // Reperibilità: il click apre sempre la modale con le due opzioni
       // (gestito dal listener dedicato più sotto).
@@ -1670,7 +1674,6 @@
 
     if (widget) {
       widget.addEventListener('click', function (e) {
-        if (h24IsOfficeOpen) return; // ufficio aperto: link tel: normale, nessuna modale
         e.preventDefault();
         openModal();
       });

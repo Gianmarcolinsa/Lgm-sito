@@ -20,6 +20,12 @@
 > queste tre informazioni prima di iniziare, e aspetta conferma esplicita
 > prima di procedere (regola 1+2 di CONTESTO_PROGETTO.md).
 >
+> ⚠️ **Il configuratore 3D non è più parte di questo progetto.** Il
+> 14/07/2026 è stato trasferito, intero e invariato, nell'app interna
+> **LGM Studio** — progetto Claude separato, non online. Tutti i task che
+> lo riguardano (catalogo Orona reale, font logo nella texture 3D, ecc.)
+> vivono ora nel `ROADMAP.md` di quel progetto, non in questo file.
+>
 > **Legenda modelli**
 > - **Sonnet** — operativo: tutto il lavoro su CSS/JS/HTML, fix, ritocchi,
 >   aggiornamenti file, task con struttura già chiara.
@@ -50,7 +56,8 @@
 | 2b | Inserire foto ascensore reale nella card | Sonnet | No | Minimo |
 
 ### STEP 3 — Viste prodotto dedicate
-> La vista Ascensori ha già intro + CTA al configuratore 3D. Da completare con contenuti reali.
+> La vista Ascensori presenta oggi il configuratore come strumento
+> riservato (usato al sopralluogo), non più come CTA pubblica diretta.
 > La vista Servoscala è ancora placeholder.
 
 | # | Task | Modello | Ragionamento | Impegno |
@@ -59,7 +66,6 @@
 | 3b | ✅ Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
 | 3f | ⬜ Completare i 6 punti `[DA CONFERMARE]` nella vista Servoscala (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni) — dipende dalla scheda compilata da Marco e Giovanni | Sonnet | No | Minimo |
 | 3c | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Opus + Sonnet | Sì | Alto |
-| 3d | Aggiungere catalogo Orona reale al configuratore 3D (in sostituzione dei dati dimostrativi) | Sonnet | No | Medio |
 | 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
 
 ### STEP 4 — Rifinitura grafica e UX
@@ -68,7 +74,7 @@
 | # | Task | Modello | Ragionamento | Impegno |
 |---|------|---------|--------------|---------|
 | 4a | Eventuali micro-aggiustamenti dopo primo test su dispositivi reali | Sonnet | No | Variabile |
-| 4b | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) — vale sia per la nav sia per la texture del logo nel configuratore 3D (oggi fallback Trebuchet/Arial) | Sonnet | No | Medio |
+| 4b | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) — vale per la nav del sito; la stessa texture nel configuratore 3D (oggi fallback Trebuchet/Arial) va sistemata nel progetto LGM Studio | Sonnet | No | Medio |
 
 ### STEP 5 — Pre-lancio
 > Ultima fase prima della pubblicazione definitiva.
@@ -112,8 +118,8 @@
 ## Fase 3 — Viste prodotto Servoscala e Ascensori
 - ⬜ Struttura e contenuti vista Servoscala
 - ⬜ Build vista Servoscala
-- ⬜ Completare vista Ascensori con contenuti reali (oggi: intro + CTA configuratore)
-- ⬜ Aggiungere catalogo Orona reale al configuratore 3D
+- ⬜ Completare vista Ascensori con contenuti reali (oggi: intro + nota sul
+  configuratore come strumento riservato)
 
 ## Fase 4 — Pre-lancio
 - ⬜ SEO base: title, meta description, Open Graph, favicon
@@ -178,21 +184,22 @@
 | 11/07/2026 | **Vista Servoscala**: chiusi i 6 placeholder `[DA CONFERMARE]` con i dati reali raccolti da Marco e Giovanni (tempi sopralluogo/preventivo/installazione, prodotti confermati); aggiunte etichette marchio Handicare/Extrema/Orona sulle 4 card soluzioni; aggiornata la FAQ opere murarie/allaccio elettrico con i dati reali (99% dei casi senza opere murarie, allaccio incluso solo se il punto è vicino). Pubblicato su GitHub Pages (commit `abef2f5`). Raccolte anche info extra per la futura vista Ascensori (tipi ascensore, tensioni) — non ancora inserite nel sito. | Sonnet | Minimo | ✅ |
 | 13/07/2026 | ⚠️ **Aggiunta REGOLA 0 fondamentale a CONTESTO_PROGETTO.md**, su richiesta esplicita e diretta dell'utente dopo episodi ripetuti in cui la sequenza modello/impegno → conferma → via libera (regola 9) e la procedura standard senza improvvisazioni (regola 10/11) non sono state applicate in automatico. La Regola 0 consolida e rende obbligatoria l'autoapplicazione di queste regole fin dal primo messaggio di ogni chat, senza bisogno che l'utente le richiami. Priorità assoluta dichiarata dall'utente. | Sonnet | Minimo | ✅ |
 | 13/07/2026 | Aggiunta **regola 12** a CONTESTO_PROGETTO.md: quando l'utente manda uno screenshot/elenco di file da eliminare dal progetto, Claude deve fare un'analisi puntuale (riferimenti reali in `index.html` + cronologia ROADMAP/CONTESTO) e classificare ogni file come Eliminabile / Da tenere / Da verificare — mai un giudizio sommario. | Sonnet | Minimo | ✅ |
-| 14/07/2026 | **Fix popup "Contatta il tecnico di turno"**: si apriva da solo al caricamento della pagina, in qualunque fascia oraria, invece di comparire solo al click sul badge H24 in reperibilità da desktop. Causa: la regola CSS `.h24-modal-overlay { display: flex }` aveva priorità più alta dell'attributo HTML `hidden` e lo annullava. Aggiunta la regola `.h24-modal-overlay[hidden] { display: none }` in `index.html`. | Opus | Minimo | ✅ |
-| 14/07/2026 | ⚠️ **Fuse le regole 5 e 11** di `CONTESTO_PROGETTO.md` e `CONTESTO_PROGETTO_SITO.md` in un'unica regola, su richiesta diretta dell'utente: ora ogni consegna di `index.html` porta **un solo blocco terminale** che avvia il server locale e, alla chiusura, chiede se pubblicare online — non più due comandi separati. Aggiornato di conseguenza anche il "Comando unico standard" in questa ROADMAP. | Opus | Minimo | ✅ |
+| 14/07/2026 | **Configuratore 3D rimosso da `index.html`** e trasferito, intero e invariato, in una nuova app separata (`lgm-studio-app.html`, progetto Claude "LGM Studio", non online) insieme a un nuovo strumento di render fotorealistico su foto reali (via Gemini/Nano Banana, uso manuale). Vista `#configuratore` eliminata; vista Ascensori aggiornata con nota sul nuovo strumento riservato; router e array delle viste aggiornati (5 piani invece di 6). | Opus | Alto | ✅ |
+| 14/07/2026 | **Fix bug modale "Contatta il tecnico di turno"**: `display:flex` senza eccezioni nel CSS annullava l'attributo `hidden`, causando apertura automatica al caricamento del sito e "Annulla" che non chiudeva nulla. Corretto con `.h24-modal-overlay[hidden] { display:none }`. Aggiunto secondo punto d'accesso alla modale nella vista Contatti (bottone visibile solo con reperibilità attiva). ⚠️ *Nota di correzione (14/07/2026, sessione successiva): questa riga riportava anche "widget H24 spostato dalla nav a una fascia dedicata sopra l'header" — verificato che non è mai stato applicato al codice. Il widget è sempre rimasto in `<nav>`. Rettifica registrata per non lasciare un disallineamento tra ROADMAP e `index.html` reale. | Opus | Medio | ✅ (fix modale/Contatti) — ❌ (fascia dedicata, mai fatta) |
+| 14/07/2026 | **Incidente e correzione**: `lgm-studio-app.html` finito online per errore su GitHub Pages (era stato salvato nella cartella del sito prima di un `git add -A`; GitHub Pages pubblica tutto il repo, non solo `index.html`). Rimosso con `git rm` (che ha cancellato anche la copia locale su disco). Aggiunta regola fondamentale a CONTESTO_PROGETTO.md: nella cartella `Lgm sito` va SOLO il sito pubblico. | Opus | Minimo | ✅ |
+| 14/07/2026 | **Riscrittura completa modale reperibilità H24**: via WhatsApp e il campo "inserisci il tuo numero" rimossi. Nuova modale con due opzioni dirette — "Tecnico reperibile" e "Ufficio", entrambe link `tel:` con numero visibile — e bottone "Annulla" separato e funzionante (chiude anche con tasto Esc o click fuori dalla modale). Aggiunta apertura automatica della modale una volta per sessione di navigazione dalle 20:00 fino a riapertura ufficio (`sessionStorage`, chiave `lgm:h24AutoShown`). Aggiunto bottone dedicato "Serve assistenza urgente?" nella vista Contatti, collegato alla stessa modale. Rimosso codice morto residuo del vecchio configuratore 3D nei Contatti (campo hidden `cfConfigField` orfano; lo script "ponte" con LGM Studio resta ma è innocuo perché la card `cfConfigSummary` non esiste più nel markup). | Sonnet | Medio | ✅ |
+| 14/07/2026 | **Fix comportamento badge H24 in nav**: durante l'orario ufficio il badge chiamava direttamente il numero fisso (`tel:`), un comportamento diverso e meno protettivo di quello del bottone in Contatti, che apre sempre la modale a due opzioni. Uniformato: il badge in nav ora apre sempre la stessa modale, in qualsiasi orario. I colori/testo verde "Uffici Aperti" e rosso "Reperibilità H24 Attiva" restano solo indicatori visivi di stato, non cambiano più il comportamento al click. | Sonnet | Minimo | ✅ |
+| 14/07/2026 | Creato il progetto Claude separato **"LGM Studio"**, con proprio `ROADMAP.md` e `CONTESTO_PROGETTO.md` dedicati. Questo progetto ("Sito LGM Elevator") resta la fonte solo per `index.html` e il repo `Lgm-sito`. | Opus | Minimo | — (nessuna pubblicazione, riguarda l'organizzazione dei progetti) |
 
 ---
 
 ## 🚀 Come pubblicare il sito (procedura confermata e funzionante)
 
-**Comando unico standard** (14/07/2026: fonde test locale + pubblicazione in
-un solo blocco — vedi regola 5 di `CONTESTO_PROGETTO.md`):
+**Comando unico standard:**
 ```
-cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000; read -p "Pubblicare online? (s/n) " r; [ "$r" = "s" ] && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
+cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
 ```
-Apre il server locale su `http://localhost:8000` per il test; alla chiusura
-(`Ctrl+C`) chiede se pubblicare (`s`/`n`). Dopo la pubblicazione, attendere
-1-2 minuti → https://gianmarcolinsa.github.io/Lgm-sito/
+Poi attendere 1-2 minuti → https://gianmarcolinsa.github.io/Lgm-sito/
 
 **Se il deploy si blocca** (raro):
 ```
@@ -207,9 +214,9 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Sito esistente da sostituire: https://www.lgmelevator.com (WordPress, datato).
   Utile per: contatti/dati aziendali da verificare, materiale fotografico,
   struttura prodotti Ascensori da cui prendere spunto per Fase 3.
-- Configuratore 3D: i dati Orona sono dimostrativi. Il catalogo reale (modelli,
-  dimensioni ufficiali, opzioni finiture disponibili) andrà aggiunto nella Fase 3
-  insieme ai contenuti definitivi della vista Ascensori.
+- Configuratore 3D: **trasferito il 14/07/2026** nel progetto separato
+  "LGM Studio" (non online). I dati Orona restano dimostrativi lì; il
+  catalogo reale va aggiunto in quel progetto, non in questo.
 
 ### Fase 0 — Analisi e contenuti (raccolta dati)
 > Obiettivo dichiarato dall'utente: sito al passo coi tempi, giovanile,

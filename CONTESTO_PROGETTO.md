@@ -304,23 +304,15 @@ per performance):
    properties) — vanno riutilizzate, non duplicate con colori hardcoded nuovi.
 5. **OGNI VOLTA che Claude consegna un `index.html` aggiornato (o qualunque
    altro file versionato su GitHub), DEVE fornire insieme, senza che l'utente
-   debba richiederlo, UN UNICO blocco da terminale, pronto da
-   copiare-incollare così com'è**, che fa in sequenza: (1) avvia il server
-   locale per testare la modifica nel browser, (2) alla chiusura del server
-   (`Ctrl+C`) chiede se pubblicare online, (3) se la risposta è "s", esegue
-   commit e push su GitHub Pages — se "n", non pubblica nulla. Non è
-   opzionale: è un passaggio fisso della consegna, sempre allegato al file,
-   mai da chiedere a parte, e mai spezzato in due blocchi separati (regole
-   5 e 11 fuse in una il 14/07/2026, dopo che tenerle separate obbligava
-   l'utente a chiedere ogni volta un unico comando invece di riceverlo già
-   così). Template standard:
+   debba richiederlo, il comando da terminale pronto da copiare-incollare**
+   per pubblicare la modifica su GitHub Pages. Non è opzionale: è un passaggio
+   fisso della consegna, sempre allegato al file, mai da chiedere a parte.
+   ⚠️ **Formato richiesto dall'utente**: un UNICO blocco con i comandi
+   concatenati con `&&`. NON spezzare in più passaggi salvo necessità.
+   Template standard:
    ```
-   cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000; read -p "Pubblicare online? (s/n) " r; [ "$r" = "s" ] && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
+   cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
    ```
-   Dopo aver incollato il comando: si apre `http://localhost:8000` nel
-   browser per verificare la modifica; quando si è soddisfatti si torna al
-   terminale e si preme `Ctrl+C` per chiudere il server locale, a quel
-   punto il terminale chiede se pubblicare (`s`/`n`).
 6. **Claude non ha memoria tra chat diverse.** Ogni nuova sessione di lavoro
    deve iniziare allegando le versioni più aggiornate di `index.html`,
    `CONTESTO_PROGETTO.md` e `ROADMAP.md`.
@@ -351,11 +343,27 @@ per performance):
     lo dice subito e torna alla procedura standard. Questa regola nasce da un
     episodio concreto (10/07/2026): Claude ha proposto `cp ~/Downloads/index.html`
     invece della procedura standard, causando confusione e perdita di tempo.
-11. *(Regola assorbita nella regola 5 il 14/07/2026 — comando locale e
-    comando di pubblicazione ora sono un unico blocco da terminale, non
-    due separati. Storico: introdotta l'11/07/2026, rinforzata lo stesso
-    giorno dopo un episodio in cui Claude non aveva dato spontaneamente il
-    comando locale.)*
+11. **OGNI VOLTA che Claude consegna un `index.html` aggiornato, DEVE fornire
+    insieme, senza che l'utente debba richiederlo, anche il comando da
+    terminale per avviarlo in locale** (server statico, per vederlo/testarlo
+    nel browser prima di pubblicarlo su GitHub Pages). È un passaggio fisso
+    della consegna, distinto dal comando di pubblicazione del punto 5: uno
+    serve a vedere il sito in locale, l'altro a pubblicarlo online — vanno
+    dati entrambi, non in alternativa, **incollati per intero e pronti da
+    incollare nel terminale così come sono**, non solo menzionati o
+    riassunti. Nessuna eccezione, nemmeno se la consegna sembra piccola o
+    intermedia. Template standard:
+    ```
+    cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000
+    ```
+    poi aprire `http://localhost:8000` nel browser. (Regola aggiunta
+    11/07/2026 su richiesta diretta dell'utente; **rinforzata lo stesso
+    giorno** dopo un episodio in cui Claude ha consegnato un `index.html`
+    aggiornato — la vista Servoscala completa — senza dare spontaneamente
+    il comando locale, costringendo l'utente a richiederlo di nuovo. Questa
+    è la seconda volta che la regola viene sollecitata: da qui in avanti va
+    considerata un passaggio automatico e non negoziabile di ogni consegna
+    di `index.html`, da eseguire senza bisogno di promemoria.)
 12. ⚠️ **Eliminazione file — analisi chirurgica, mai "a spanne".** Quando
     l'utente manda uno screenshot (o elenco) di file da valutare per
     l'eliminazione dal progetto, Claude non deve dare un giudizio sommario:
@@ -442,27 +450,33 @@ foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
   stesso gradiente: ora il riflesso attraversa entrambe le parti del logo
   nello stesso istante, ovunque.
 
-**Widget H24 dinamico in nav** (13/07/2026, P2 Blocco 1): badge cliccabile
-sempre visibile in `<nav>`, accanto al logo, responsive su desktop e mobile.
-Cambia automaticamente testo/comportamento in base a giorno/ora (Lun-Ven
-08:00-18:30 = orario ufficio, resto del tempo = reperibilità H24):
-- **Orario ufficio** (numero fisso): badge verde "🟢 Uffici Aperti", link
-  `tel:` sempre e solo — da mobile e da desktop. Il fisso non ha WhatsApp,
-  quindi non viene mai proposto quel canale in questa fascia.
-- **Reperibilità H24** (numero cellulare del tecnico di turno): badge rosso
-  pulsante "🔴 Reperibilità H24 Attiva".
-  - Da **smartphone**: `tel:` diretto, chiama subito.
-  - Da **computer**: si apre un **popup sul sito** ("Contatta il tecnico di
-    turno") che chiede il numero della persona; il pulsante "Invia messaggio
-    WhatsApp" resta disabilitato finché il campo è vuoto. Solo dopo l'invio
-    si apre WhatsApp Web verso il tecnico, con messaggio già pronto in tono
-    di emergenza: *"⚠️ RICHIESTA URGENTE — Reperibilità H24 LGM Elevator. Ho
-    bisogno del tecnico di turno. Il mio numero è [numero], richiamatemi il
-    prima possibile."*
-  - Motivo del popup: WhatsApp non permette a nessun sito di inviare
-    messaggi in automatico per conto dell'utente (limite della piattaforma,
-    non del codice) — il popup è il modo più vicino possibile a un invio
-    automatico, garantendo che il numero della persona sia sempre incluso.
+**Widget H24 dinamico in nav** (13/07/2026, P2 Blocco 1 — comportamento al
+click riscritto il 14/07/2026): badge cliccabile sempre visibile in `<nav>`,
+accanto al logo, responsive su desktop e mobile. Cambia automaticamente
+testo/colore in base a giorno/ora (Lun-Ven 08:00-18:30 = orario ufficio,
+resto del tempo = reperibilità H24), ma **il click apre sempre la stessa
+modale**, in qualsiasi orario — verde/rosso sono solo indicatori visivi di
+stato, non cambiano più cosa succede al click:
+- **Orario ufficio**: badge verde "🟢 Uffici Aperti".
+- **Reperibilità H24**: badge rosso pulsante "🔴 Reperibilità H24 Attiva".
+- Click sul badge (in entrambi i casi) → si apre la modale **"Reperibilità
+  H24 attiva"** con due opzioni dirette: "Tecnico reperibile" e "Ufficio",
+  entrambe link `tel:` con numero visibile. Da **smartphone** parte la
+  chiamata subito; da **computer** il link resta cliccabile (inerte senza
+  softphone installato, ma corretto — nessun tentativo di aprire WhatsApp).
+- Bottone "Annulla" nella modale, chiusura anche con tasto Esc o click fuori
+  dalla modale.
+- **Apertura automatica serale**: dalle 20:00 fino alla riapertura ufficio,
+  la modale si apre da sola **una volta per sessione di navigazione**
+  (`sessionStorage`, chiave `lgm:h24AutoShown`) per rendere subito visibile
+  come contattare l'assistenza fuori orario. Dopo la prima chiusura resta
+  comunque richiamabile a mano dal badge in nav.
+- **Stesso accesso anche nella vista Contatti**: bottone dedicato "Serve
+  assistenza urgente? Contatta il reperibile", apre la stessa modale.
+- ⚠️ Via WhatsApp e il vecchio campo "inserisci il tuo numero" **rimossi**
+  il 14/07/2026: la modale precedente chiedeva il numero della persona e
+  apriva WhatsApp Web solo per la reperibilità da desktop — sostituita per
+  semplicità e affidabilità con le due opzioni dirette sopra.
 - Le due variabili `NUMERO_UFFICIO` e `NUMERO_REPERIBILITA` sono dichiarate
   in cima allo script dedicato in `index.html`. **NOTA OPERATIVA
   PERMANENTE**: vanno aggiornate manualmente ogni volta che cambia il
