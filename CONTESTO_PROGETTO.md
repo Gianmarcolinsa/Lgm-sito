@@ -304,15 +304,23 @@ per performance):
    properties) — vanno riutilizzate, non duplicate con colori hardcoded nuovi.
 5. **OGNI VOLTA che Claude consegna un `index.html` aggiornato (o qualunque
    altro file versionato su GitHub), DEVE fornire insieme, senza che l'utente
-   debba richiederlo, il comando da terminale pronto da copiare-incollare**
-   per pubblicare la modifica su GitHub Pages. Non è opzionale: è un passaggio
-   fisso della consegna, sempre allegato al file, mai da chiedere a parte.
-   ⚠️ **Formato richiesto dall'utente**: un UNICO blocco con i comandi
-   concatenati con `&&`. NON spezzare in più passaggi salvo necessità.
-   Template standard:
+   debba richiederlo, UN UNICO blocco da terminale, pronto da
+   copiare-incollare così com'è**, che fa in sequenza: (1) avvia il server
+   locale per testare la modifica nel browser, (2) alla chiusura del server
+   (`Ctrl+C`) chiede se pubblicare online, (3) se la risposta è "s", esegue
+   commit e push su GitHub Pages — se "n", non pubblica nulla. Non è
+   opzionale: è un passaggio fisso della consegna, sempre allegato al file,
+   mai da chiedere a parte, e mai spezzato in due blocchi separati (regole
+   5 e 11 fuse in una il 14/07/2026, dopo che tenerle separate obbligava
+   l'utente a chiedere ogni volta un unico comando invece di riceverlo già
+   così). Template standard:
    ```
-   cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
+   cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000; read -p "Pubblicare online? (s/n) " r; [ "$r" = "s" ] && git add -A && git commit -m "MESSAGGIO DESCRITTIVO" && git push
    ```
+   Dopo aver incollato il comando: si apre `http://localhost:8000` nel
+   browser per verificare la modifica; quando si è soddisfatti si torna al
+   terminale e si preme `Ctrl+C` per chiudere il server locale, a quel
+   punto il terminale chiede se pubblicare (`s`/`n`).
 6. **Claude non ha memoria tra chat diverse.** Ogni nuova sessione di lavoro
    deve iniziare allegando le versioni più aggiornate di `index.html`,
    `CONTESTO_PROGETTO.md` e `ROADMAP.md`.
@@ -343,27 +351,11 @@ per performance):
     lo dice subito e torna alla procedura standard. Questa regola nasce da un
     episodio concreto (10/07/2026): Claude ha proposto `cp ~/Downloads/index.html`
     invece della procedura standard, causando confusione e perdita di tempo.
-11. **OGNI VOLTA che Claude consegna un `index.html` aggiornato, DEVE fornire
-    insieme, senza che l'utente debba richiederlo, anche il comando da
-    terminale per avviarlo in locale** (server statico, per vederlo/testarlo
-    nel browser prima di pubblicarlo su GitHub Pages). È un passaggio fisso
-    della consegna, distinto dal comando di pubblicazione del punto 5: uno
-    serve a vedere il sito in locale, l'altro a pubblicarlo online — vanno
-    dati entrambi, non in alternativa, **incollati per intero e pronti da
-    incollare nel terminale così come sono**, non solo menzionati o
-    riassunti. Nessuna eccezione, nemmeno se la consegna sembra piccola o
-    intermedia. Template standard:
-    ```
-    cd "/Users/gianmarcolinsa/Documents/GitHub/Lgm sito" && python3 -m http.server 8000
-    ```
-    poi aprire `http://localhost:8000` nel browser. (Regola aggiunta
-    11/07/2026 su richiesta diretta dell'utente; **rinforzata lo stesso
-    giorno** dopo un episodio in cui Claude ha consegnato un `index.html`
-    aggiornato — la vista Servoscala completa — senza dare spontaneamente
-    il comando locale, costringendo l'utente a richiederlo di nuovo. Questa
-    è la seconda volta che la regola viene sollecitata: da qui in avanti va
-    considerata un passaggio automatico e non negoziabile di ogni consegna
-    di `index.html`, da eseguire senza bisogno di promemoria.)
+11. *(Regola assorbita nella regola 5 il 14/07/2026 — comando locale e
+    comando di pubblicazione ora sono un unico blocco da terminale, non
+    due separati. Storico: introdotta l'11/07/2026, rinforzata lo stesso
+    giorno dopo un episodio in cui Claude non aveva dato spontaneamente il
+    comando locale.)*
 12. ⚠️ **Eliminazione file — analisi chirurgica, mai "a spanne".** Quando
     l'utente manda uno screenshot (o elenco) di file da valutare per
     l'eliminazione dal progetto, Claude non deve dare un giudizio sommario:

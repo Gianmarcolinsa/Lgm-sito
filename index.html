@@ -169,8 +169,9 @@
     .h24-widget__text-office { display: none; }
   }
 
-  /* POPUP "Contatta il tecnico di turno" — chiede il numero della persona
-     prima di aprire WhatsApp verso il tecnico reperibile (solo desktop). */
+  /* POPUP "Contatta l'assistenza" — due opzioni dirette (tecnico reperibile
+     / ufficio), niente WhatsApp, niente campo da compilare.
+     Riscritto il 14/07/2026: sostituisce la vecchia modale a form WhatsApp. */
   .h24-modal-overlay {
     position: fixed;
     inset: 0;
@@ -180,6 +181,12 @@
     justify-content: center;
     z-index: 999;
     padding: 20px;
+  }
+  /* FIX (14/07/2026): senza questa regola, "display: flex" qui sopra vince
+     sull'attributo HTML "hidden" e il popup resta visibile al caricamento
+     della pagina. Con questa, il popup compare SOLO quando lo apre il JS. */
+  .h24-modal-overlay[hidden] {
+    display: none;
   }
   .h24-modal {
     background: var(--surface);
@@ -200,59 +207,89 @@
   .h24-modal__desc {
     font-size: 14px;
     color: var(--text-muted);
-    margin: 0 0 18px;
+    margin: 0 0 20px;
     line-height: 1.5;
   }
-  .h24-modal__label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-  .h24-modal__input {
+  .h24-modal__option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: var(--text);
+    text-align: left;
     background: var(--surface-2);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 11px 14px;
-    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
   }
-  .h24-modal__input:focus { outline: none; border-color: var(--accent); }
-  .h24-modal__actions {
+  .h24-modal__option:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .h24-modal__option-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex-shrink: 0;
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .h24-modal__option--tecnico .h24-modal__option-icon { background: rgba(179,38,30,0.12); }
+  .h24-modal__option--ufficio .h24-modal__option-icon { background: rgba(12,68,124,0.10); }
+  .h24-modal__option-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+  }
+  .h24-modal__option-number {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
   }
   .h24-modal__cancel {
+    display: block;
+    width: 100%;
     background: none;
     border: none;
     font-size: 14px;
     font-weight: 600;
     color: var(--text-muted);
     cursor: pointer;
-    padding: 10px 12px;
+    padding: 12px;
+    margin-top: 6px;
+    text-align: center;
   }
   .h24-modal__cancel:hover { color: var(--text); }
-  .h24-modal__submit {
-    background: var(--accent);
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 14px;
-    border: none;
-    border-radius: 8px;
-    padding: 11px 18px;
+
+  /* Bottone assistenza nella vista Contatti */
+  .contatti-h24-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
     cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
-  .h24-modal__submit:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+  .contatti-h24-btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .contatti-h24-btn__dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #b3261e; flex-shrink: 0;
   }
-  .h24-modal__submit:not(:disabled):hover { transform: translateY(-1px); }
 
   /* NAV COMPATTA VERTICALE — appare a destra dopo lo scroll (desktop),
      sempre presente sotto gli 800px (sostituisce il menu mancante su mobile) */
@@ -1171,14 +1208,23 @@
 
     <div class="h24-modal-overlay" id="h24ModalOverlay" hidden>
       <div class="h24-modal" role="dialog" aria-modal="true" aria-labelledby="h24ModalTitle">
-        <p class="h24-modal__title" id="h24ModalTitle">Contatta il tecnico di turno</p>
-        <p class="h24-modal__desc">Inserisci il tuo numero: si aprirà WhatsApp con un messaggio già pronto per il tecnico reperibile, che potrà richiamarti subito.</p>
-        <label for="h24ModalPhone" class="h24-modal__label">Il tuo numero di telefono</label>
-        <input type="tel" id="h24ModalPhone" class="h24-modal__input" placeholder="Es. 333 1234567" autocomplete="tel">
-        <div class="h24-modal__actions">
-          <button type="button" class="h24-modal__cancel" id="h24ModalCancel">Annulla</button>
-          <button type="button" class="h24-modal__submit" id="h24ModalSubmit" disabled>Invia messaggio WhatsApp</button>
-        </div>
+        <p class="h24-modal__title" id="h24ModalTitle">Reperibilità H24 attiva</p>
+        <p class="h24-modal__desc">Fuori dall'orario ufficio. Scegli chi contattare.</p>
+        <a href="tel:" id="h24ModalTecnico" class="h24-modal__option h24-modal__option--tecnico">
+          <span class="h24-modal__option-icon">📞</span>
+          <span>
+            <span class="h24-modal__option-label">Tecnico reperibile</span>
+            <span class="h24-modal__option-number" id="h24ModalTecnicoNum"></span>
+          </span>
+        </a>
+        <a href="tel:" id="h24ModalUfficio" class="h24-modal__option h24-modal__option--ufficio">
+          <span class="h24-modal__option-icon">🏢</span>
+          <span>
+            <span class="h24-modal__option-label">Ufficio</span>
+            <span class="h24-modal__option-number" id="h24ModalUfficioNum"></span>
+          </span>
+        </a>
+        <button type="button" class="h24-modal__cancel" id="h24ModalCancel">Annulla</button>
       </div>
     </div>
 
@@ -1477,15 +1523,12 @@
           <div class="contatto-riga">✉️ info@lgmelevator.com</div>
           <div class="contatto-riga">📍 Via dell'Agricoltura, 20 — 75100 Matera (MT)</div>
           <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
+          <button type="button" class="contatti-h24-btn" id="contattiH24Btn">
+            <span class="contatti-h24-btn__dot"></span>
+            Serve assistenza urgente? Contatta il reperibile
+          </button>
         </div>
         <div class="form-box">
-          <div class="cf-config-summary" id="cfConfigSummary" hidden>
-            <p class="cf-config-summary__title">Configurazione cabina allegata alla richiesta</p>
-            <p class="cf-config-summary__code" id="cfConfigCode"></p>
-            <ul class="cf-config-summary__list" id="cfConfigList"></ul>
-            <button type="button" class="cf-config-summary__clear" id="cfConfigClear">Rimuovi configurazione dalla richiesta</button>
-          </div>
-
           <form id="contattiForm" class="contatti-form">
             <input type="hidden" name="access_key" value="dfead459-81ee-4a5d-8681-ae4bd9ab02b6">
             <input type="hidden" name="subject" value="Nuova richiesta sopralluogo — Sito LGM Elevator">
@@ -1528,17 +1571,18 @@
   // Cambia automaticamente testo e link in base a giorno/ora:
   // Lun-Ven 08:00-18:30 -> ufficio aperto, resto del tempo -> reperibilità H24.
   //
-  // Comportamento per orario e dispositivo:
-  // - UFFICIO (numero fisso): SEMPRE "tel:", sia da mobile che da desktop.
-  //   Il fisso non ha WhatsApp, quindi da desktop il click non tenta di
-  //   aprirlo: rimane un link "tel:" normale (inerte su PC senza softphone,
-  //   ma corretto — non deve mai proporre WhatsApp).
-  // - REPERIBILITÀ (numero cellulare del tecnico di turno):
-  //   - da smartphone: link "tel:" -> apre l'app Telefono e chiama subito.
-  //   - da computer: si apre un popup che chiede il numero della persona;
-  //     solo dopo averlo inserito si apre WhatsApp Web verso il tecnico,
-  //     con messaggio già completo del numero da richiamare. Il pulsante
-  //     di invio resta disabilitato finché il campo è vuoto.
+  // Comportamento (riscritto il 14/07/2026 — via WhatsApp e via il form
+  // "inserisci il tuo numero", sostituiti da una modale a due opzioni dirette):
+  // - UFFICIO aperto: il widget in nav è sempre un link "tel:" diretto.
+  // - REPERIBILITÀ attiva: il click sul widget apre la modale con due
+  //   bottoni — "Tecnico reperibile" e "Ufficio" — entrambi link "tel:"
+  //   diretti con numero visibile. Da mobile parte la chiamata, da desktop
+  //   il link resta cliccabile (inerte senza softphone, ma corretto).
+  // - Dalle 20:00 fino alla riapertura ufficio, la modale si apre da sola
+  //   UNA VOLTA per sessione di navigazione (sessionStorage), per rendere
+  //   visibile subito come contattare l'assistenza fuori orario. Dopo la
+  //   prima chiusura resta comunque richiamabile a mano dal widget in nav
+  //   e dal bottone nella vista Contatti.
   //
   // ⚠️ NOTA OPERATIVA (vedi anche ROADMAP.md): questi due numeri vanno
   // aggiornati manualmente ogni volta che cambia il tecnico di turno o il
@@ -1548,18 +1592,15 @@
   // ============================================
   const NUMERO_UFFICIO = "0835381904";
   const NUMERO_REPERIBILITA = "3914622464"; // TEST — sostituire con il numero reale di reperibilità
+  const H24_AUTOAPRI_DALLE_ORE = 20; // da qui in poi (fino a riapertura ufficio) la modale si apre da sola
 
-  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-  function waLink(numero, messaggio) {
-    // wa.me vuole il numero in formato internazionale senza "+" o spazi.
-    // I numeri italiani sono salvati senza prefisso: si antepone 39.
-    const pulito = numero.replace(/\D/g, '');
-    const internazionale = pulito.startsWith('39') ? pulito : '39' + pulito;
-    return 'https://wa.me/' + internazionale + '?text=' + encodeURIComponent(messaggio);
+  function formatNumero(numero) {
+    // Solo per la visualizzazione nella modale: es. "0835 381904"
+    return numero.length === 10 ? numero.slice(0, 4) + ' ' + numero.slice(4) : numero;
   }
 
   let h24IsOfficeOpen = true; // stato corrente, usato anche dal popup
+  let h24IsEveningAutoOpen = false; // true nella fascia 20:00 -> riapertura ufficio
 
   function updateH24Widget() {
     const widget = document.getElementById('h24Widget');
@@ -1574,33 +1615,26 @@
 
     const isOfficeOpen = isWeekday && isOfficeHours;
     h24IsOfficeOpen = isOfficeOpen;
+    h24IsEveningAutoOpen = !isOfficeOpen && (now.getHours() >= H24_AUTOAPRI_DALLE_ORE || now.getHours() < 8);
 
     widget.classList.remove('h24-widget--open', 'h24-widget--oncall');
 
     if (isOfficeOpen) {
-      // Ufficio: sempre e solo chiamata diretta, mai WhatsApp (il fisso non ce l'ha).
       widget.href = 'tel:' + NUMERO_UFFICIO;
       widget.removeAttribute('target');
       widget.removeAttribute('rel');
       widget.classList.add('h24-widget--open');
       textEl.innerHTML = '🟢 Uffici Aperti <span class="h24-widget__text-office">| Clicca per chiamare</span>';
       widget.setAttribute('aria-label', 'Uffici aperti, chiama ' + NUMERO_UFFICIO);
-    } else if (isMobileDevice) {
-      // Reperibilità da mobile: chiamata diretta.
-      widget.href = 'tel:' + NUMERO_REPERIBILITA;
-      widget.removeAttribute('target');
-      widget.removeAttribute('rel');
-      widget.classList.add('h24-widget--oncall');
-      textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Chiama il Tecnico di Turno</span>';
-      widget.setAttribute('aria-label', 'Reperibilità H24 attiva, chiama il tecnico di turno ' + NUMERO_REPERIBILITA);
     } else {
-      // Reperibilità da desktop: niente link diretto, apre il popup al click.
+      // Reperibilità: il click apre sempre la modale con le due opzioni
+      // (gestito dal listener dedicato più sotto).
       widget.href = 'javascript:void(0)';
       widget.removeAttribute('target');
       widget.removeAttribute('rel');
       widget.classList.add('h24-widget--oncall');
-      textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Scrivi al Tecnico di Turno</span>';
-      widget.setAttribute('aria-label', 'Reperibilità H24 attiva, scrivi al tecnico di turno su WhatsApp');
+      textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Contatta l\'assistenza</span>';
+      widget.setAttribute('aria-label', 'Reperibilità H24 attiva, contatta l\'assistenza');
     }
   }
 
@@ -1608,51 +1642,64 @@
   setInterval(updateH24Widget, 60 * 1000); // ricontrolla ogni minuto (cambio fascia orario in tempo reale)
 
   // ============================================
-  // POPUP "Contatta il tecnico di turno" (solo reperibilità + desktop)
+  // MODALE "Reperibilità H24 attiva" — due opzioni dirette
   // ============================================
   (function () {
     const widget = document.getElementById('h24Widget');
     const overlay = document.getElementById('h24ModalOverlay');
-    const phoneInput = document.getElementById('h24ModalPhone');
-    const submitBtn = document.getElementById('h24ModalSubmit');
     const cancelBtn = document.getElementById('h24ModalCancel');
-    if (!widget || !overlay || !phoneInput || !submitBtn || !cancelBtn) return;
+    const tecnicoLink = document.getElementById('h24ModalTecnico');
+    const ufficioLink = document.getElementById('h24ModalUfficio');
+    const tecnicoNum = document.getElementById('h24ModalTecnicoNum');
+    const ufficioNum = document.getElementById('h24ModalUfficioNum');
+    if (!overlay || !cancelBtn || !tecnicoLink || !ufficioLink) return;
+
+    tecnicoLink.href = 'tel:' + NUMERO_REPERIBILITA;
+    ufficioLink.href = 'tel:' + NUMERO_UFFICIO;
+    if (tecnicoNum) tecnicoNum.textContent = formatNumero(NUMERO_REPERIBILITA);
+    if (ufficioNum) ufficioNum.textContent = formatNumero(NUMERO_UFFICIO);
 
     function openModal() {
       overlay.hidden = false;
-      phoneInput.value = '';
-      submitBtn.disabled = true;
-      setTimeout(function () { phoneInput.focus(); }, 50);
     }
     function closeModal() {
       overlay.hidden = true;
     }
+    // Espone le funzioni per il bottone nella vista Contatti e per l'apertura automatica.
+    window.lgmOpenH24Modal = openModal;
 
-    widget.addEventListener('click', function (e) {
-      // Il popup si apre solo se siamo nel caso reperibilità + desktop
-      // (in tutti gli altri casi il link tel: normale fa già il suo lavoro).
-      if (h24IsOfficeOpen || isMobileDevice) return;
-      e.preventDefault();
-      openModal();
-    });
-
-    phoneInput.addEventListener('input', function () {
-      submitBtn.disabled = phoneInput.value.trim().length < 6;
-    });
+    if (widget) {
+      widget.addEventListener('click', function (e) {
+        if (h24IsOfficeOpen) return; // ufficio aperto: link tel: normale, nessuna modale
+        e.preventDefault();
+        openModal();
+      });
+    }
 
     cancelBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) closeModal();
     });
-
-    submitBtn.addEventListener('click', function () {
-      const mioNumero = phoneInput.value.trim();
-      if (mioNumero.length < 6) return; // sicurezza extra, il bottone è comunque disabilitato
-      const messaggio = '⚠️ RICHIESTA URGENTE — Reperibilità H24 LGM Elevator. Ho bisogno del tecnico di turno. ' +
-        'Il mio numero è ' + mioNumero + ', richiamatemi il prima possibile.';
-      window.open(waLink(NUMERO_REPERIBILITA, messaggio), '_blank', 'noopener');
-      closeModal();
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !overlay.hidden) closeModal();
     });
+
+    // Apertura automatica serale: una sola volta per sessione di navigazione.
+    try {
+      const giaMostrata = sessionStorage.getItem('lgm:h24AutoShown') === '1';
+      if (h24IsEveningAutoOpen && !giaMostrata) {
+        openModal();
+        sessionStorage.setItem('lgm:h24AutoShown', '1');
+      }
+    } catch (e) {
+      // sessionStorage non disponibile (es. modalità privata restrittiva): nessuna apertura automatica.
+    }
+
+    // Bottone assistenza nella vista Contatti: apre la stessa modale.
+    const contattiBtn = document.getElementById('contattiH24Btn');
+    if (contattiBtn) {
+      contattiBtn.addEventListener('click', openModal);
+    }
   })();
 
 
