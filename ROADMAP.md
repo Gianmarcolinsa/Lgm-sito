@@ -66,6 +66,8 @@
 | 3b | ✅ Costruire la vista Servoscala in HTML/CSS coerente col design system | Sonnet | No | Alto |
 | 3f | ⬜ Completare i 6 punti `[DA CONFERMARE]` nella vista Servoscala (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni) — dipende dalla scheda compilata da Marco e Giovanni | Sonnet | No | Minimo |
 | 3c | Completare la vista Ascensori con contenuti reali (modelli, tipologie installazione, manutenzione) | Opus + Sonnet | Sì | Alto |
+| 3g | ⬜ Completare i `[PLACEHOLDER]`/`[DA CONFERMARE]` della vista Assistenza (frequenza visite, cosa include il canone, tempo medio di intervento, dettagli verifiche di legge) — servono i dati da Marco e Giovanni | Sonnet | No | Minimo |
+| 3h | ⬜ Confermare i due nuovi numeri Fiducia in Home (impianti seguiti in manutenzione, tempo medio di intervento) — decisione/dato dell'utente, poi Sonnet aggiorna i contatori | — | — | Decisione utente |
 | 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
 
 ### STEP 4 — Rifinitura grafica e UX
@@ -191,6 +193,7 @@
 | 14/07/2026 | **Fix comportamento badge H24 in nav**: durante l'orario ufficio il badge chiamava direttamente il numero fisso (`tel:`), un comportamento diverso e meno protettivo di quello del bottone in Contatti, che apre sempre la modale a due opzioni. Uniformato: il badge in nav ora apre sempre la stessa modale, in qualsiasi orario. I colori/testo verde "Uffici Aperti" e rosso "Reperibilità H24 Attiva" restano solo indicatori visivi di stato, non cambiano più il comportamento al click. | Sonnet | Minimo | ✅ |
 | 14/07/2026 | **Fix badge H24 su mobile**: sotto gli 800px il testo del badge (`.h24-widget__text-full`) veniva nascosto del tutto, lasciando visibile solo il pallino colorato — su mobile il badge non comunicava più nulla. Corretto: il testo completo ("🔴 Reperibilità H24 Attiva | Contatta l'assistenza" / "🟢 Uffici Aperti | Contatta l'assistenza") resta sempre visibile su ogni dimensione di schermo, solo font-size e padding si riducono progressivamente sotto 800px e 520px per stare bene nello spazio della nav mobile. | Sonnet | Minimo | ✅ |
 | 14/07/2026 | Creato il progetto Claude separato **"LGM Studio"**, con proprio `ROADMAP.md` e `CONTESTO_PROGETTO.md` dedicati. Questo progetto ("Sito LGM Elevator") resta la fonte solo per `index.html` e il repo `Lgm-sito`. | Opus | Minimo | — (nessuna pubblicazione, riguarda l'organizzazione dei progetti) |
+| 14/07/2026 | **Ristrutturazione Home per bisogno del visitatore + nuova vista Assistenza + nav riordinata a imbuto** (decisione presa insieme all'utente ragionando sui 4 profili di visitatore: chi ha l'impianto fermo, amministratore che valuta manutentore, chi installa ex novo, chi confronta aziende). Home: aggiunta riga area operativa sotto l'hero ("Matera, Basilicata e Puglia" — dato confermato in Fase 0), fascia Assistenza ("anche impianti non installati da noi") con link alla nuova vista, fascia rossa "Impianto fermo?" con bottone che apre la modale H24 esistente, numeri Fiducia ristrutturati (1988 + due card `[DA CONFERMARE]`: impianti seguiti e tempo medio di intervento — il dato commercialmente più forte da trovare), sezione partner (Orona/Handicare/Extrema) con placeholder recensioni, CTA finale. Nuova vista `#assistenza`: intro, 4 card servizio (manutenzione programmata, pronto intervento, verifiche di legge, modernizzazione — con `[PLACEHOLDER]`/`[DA CONFERMARE]`), fascia emergenza, CTA "controllo gratuito". Nav riordinata (orizzontale + pillola): `LGM · Servoscala · Ascensori · Assistenza · Chi siamo · Contatti` — Chi siamo spostata subito prima di Contatti (rimuove l'ultima obiezione prima del contatto). Piani ascensore e viste valide da hash aggiornati di conseguenza (6 piani). Scale mobili (nuovo ramo d'azienda, fresco) volutamente NON inserite: vedi Note. Pubblicato su GitHub Pages (commit `e0c6657`). | Opus | Alto | ✅ |
 
 ---
 
@@ -218,6 +221,13 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Configuratore 3D: **trasferito il 14/07/2026** nel progetto separato
   "LGM Studio" (non online). I dati Orona restano dimostrativi lì; il
   catalogo reale va aggiunto in quel progetto, non in questo.
+- **Scale mobili (backlog, in standby — deciso 14/07/2026)**: LGM ha
+  iniziato da poco a installarle e manutenerle, ma è un ramo troppo fresco
+  per andare sul sito ora (niente card "prossimamente": comunica solo
+  incompletezza). La Home è però già predisposta: quando sarà il momento
+  basterà aggiungere una terza card nella griglia prodotti + eventuale
+  vista dedicata, senza rifare la struttura. Da valutare allora anche il
+  taglio B2B (centri commerciali, stazioni, negozi) nella vista Assistenza.
 
 ### Fase 0 — Analisi e contenuti (raccolta dati)
 > Obiettivo dichiarato dall'utente: sito al passo coi tempi, giovanile,

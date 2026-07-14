@@ -193,13 +193,17 @@ istantaneo, senza ricaricamento pagina). Ogni voce nav = una vista dedicata,
 autonoma e indipendente. L'URL cambia via hash (es. `#configuratore`) così
 ogni vista è linkabile/condivisibile direttamente.
 
-**Viste presenti:**
-- **Home** (`#home`) — Hero + anteprima 2 prodotti (link alle viste dedicate) + numeri Fiducia
-- **Chi siamo** (`#chisiamo`) — storia famiglia + timeline interattiva cliccabile
+**Viste presenti (6 — aggiornate 14/07/2026):**
+- **Home** (`#home`) — Hero + riga area operativa (Matera, Basilicata, Puglia) + anteprima 2 prodotti (link alle viste dedicate) + fascia Assistenza (link a `#assistenza`) + fascia emergenza "Impianto fermo?" + numeri Fiducia (1988 + 2 placeholder `[DA CONFERMARE]`) + partner (Orona/Handicare/Extrema) + CTA finale
 - **Servoscala** (`#servoscala`) — completa: hero, 4 card soluzioni, timeline "Come funziona", 6 FAQ, box agevolazioni fiscali 2026, CTA finale. 6 placeholder `[DA CONFERMARE]` residui (Fase 3, dipendono da scheda dati inviata a Marco/Giovanni)
-- **Ascensori** (`#ascensori`) — intro testo + CTA "Configura la tua cabina in 3D" → apre configuratore
-- **Configuratore** (`#configuratore`) — **Configuratore 3D cabina Orona** (Three.js, lazy load)
+- **Ascensori** (`#ascensori`) — intro testo + nota sullo strumento di render fotorealistico riservato (LGM Studio)
+- **Assistenza** (`#assistenza`, **nuova 14/07/2026**) — intro manutenzione + 4 card servizio (manutenzione programmata, pronto intervento, verifiche di legge, modernizzazione — parzialmente `[PLACEHOLDER]`) + fascia emergenza + CTA "controllo gratuito"
+- **Chi siamo** (`#chisiamo`) — storia famiglia + timeline interattiva cliccabile
 - **Contatti** (`#contatti`) — info aziendali + form funzionante (Web3Forms) + widget H24 in nav sempre visibile
+
+> ⚠️ Il Configuratore 3D (`#configuratore`) è stato **rimosso da questo sito
+> il 14/07/2026** e trasferito nel progetto separato "LGM Studio" (non
+> online). Non esiste più come vista qui.
 
 Le animazioni scroll-based (testi cinematici, timeline, contatori, scroll-reveal)
 sono gestite da un **IntersectionObserver** dedicato per ogni vista: si attivano
@@ -393,19 +397,28 @@ dell'ascensore (transizione tra viste), sfondo del visualizzatore 3D del
 configuratore, notifiche/toast. Tutti gli altri colori del sito passano
 dalle variabili centralizzate in `:root`.
 
-**Navigazione**:
-- Nav orizzontale in alto: voci `LGM` (→ Home), `Chi siamo`, `Servoscala`,
-  `Ascensori`, `Configuratore`, `Contatti` — tutte cambiano vista via JS
+**Navigazione (riordinata 14/07/2026 — logica "a imbuto" per bisogno,
+non per organigramma aziendale)**:
+- Nav orizzontale in alto: voci `LGM` (→ Home), `Servoscala`, `Ascensori`,
+  `Assistenza`, `Chi siamo`, `Contatti` — tutte cambiano vista via JS.
+  `Chi siamo` spostata subito prima di `Contatti` (di proposito: rimuove
+  l'ultima obiezione dell'utente prima del contatto, invece di raccontare
+  la storia aziendale a chi non ha ancora capito cosa offriamo). `Assistenza`
+  è la vista nuova, aggiunta subito dopo `Ascensori`. `Configuratore` non
+  è più una voce di nav dal 14/07/2026 (vista rimossa, vedi sopra).
 - Nav verticale compatta (pillola a destra): sempre visibile su mobile (<800px),
-  compare dopo 200px di scroll su desktop; stessi link, etichetta al passaggio
-  del mouse; voce "LGM" come primo puntino (sostituisce il vecchio bottone "L")
+  compare dopo 200px di scroll su desktop; stesso ordine e stessi link della
+  nav orizzontale, etichetta al passaggio del mouse; voce "LGM" come primo
+  puntino (sostituisce il vecchio bottone "L")
 - Il **logo SVG** in alto a sinistra è anch'esso cliccabile → torna alla Home
 
 **Porte dell'ascensore — transizione tra le viste** (11/07/2026):
 - Ogni cambio vista (click su nav, card, bottoni con `data-view`) chiude le
-  porte, fa scorrere il display centrale sui piani intermedi (PT·1·2·3·4·★),
-  passa alla vista tramite la `showView()` esistente (non modificata) e riapre
-  le porte. Funzione `goToView()` che avvolge `showView()`.
+  porte, fa scorrere il display centrale sui piani intermedi — ordine
+  aggiornato 14/07/2026: PT (Home) · 1 (Servoscala) · 2 (Ascensori) ·
+  3 (Assistenza) · 4 (Chi siamo) · ★ (Contatti) — passa alla vista tramite
+  la `showView()` esistente (non modificata) e riapre le porte. Funzione
+  `goToView()` che avvolge `showView()`.
 - Apertura d'ingresso una volta per sessione (`sessionStorage`), non ad ogni ricarica
 - Ante volutamente **metalliche scure** indipendentemente dal tema pagina chiaro:
   è l'effetto "vano ascensore" a fare da colpo d'occhio
