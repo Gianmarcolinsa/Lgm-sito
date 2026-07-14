@@ -581,6 +581,99 @@
     .fiducia-grid { grid-template-columns: 1fr; }
   }
 
+  /* AREA OPERATIVA (riga sotto l'hero) */
+  .hero-area {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-2);
+    margin: -18px 0 32px;
+  }
+
+  /* ASSISTENZA — fascia in home */
+  .assist-band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .assist-band__testo p { color: var(--text-muted); font-size: 16px; line-height: 1.65; margin: 0; }
+  .assist-band__testo strong { color: var(--text); }
+  .assist-band__cta {
+    flex-shrink: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .assist-band__cta:hover { transform: translateX(4px); }
+
+  /* ASSISTENZA — fascia emergenza (home + vista assistenza) */
+  .assist-emergenza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--surface);
+    border: 1px solid #C33;
+    border-radius: 14px;
+    padding: 22px 28px;
+  }
+  .assist-emergenza__titolo { font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 4px; }
+  .assist-emergenza__sotto { font-size: 14px; color: var(--text-muted); }
+  .assist-emergenza__btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #B02A2A;
+    color: #FFFFFF;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .assist-emergenza__btn:hover { opacity: 0.92; transform: translateY(-1px); }
+  .assist-emergenza__dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #FFFFFF;
+    animation: assistDotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes assistDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.8); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .assist-emergenza__dot { animation: none; }
+  }
+  @media (max-width: 800px) {
+    .assist-band, .assist-emergenza { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* PARTNER BADGES */
+  .partner-badges { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+  .partner-badge {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 30px;
+    padding: 10px 26px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .partner-nota { font-size: 14px; color: var(--text-muted); max-width: 620px; }
+
   /* CONTATTI */
   .contatti-grid {
     display: grid;
@@ -1230,9 +1323,10 @@
     <div class="nav-links-wrap">
       <ul class="nav-links">
         <li><a data-view="home">LGM</a></li>
-        <li><a data-view="chisiamo">Chi siamo</a></li>
         <li><a data-view="servoscala">Servoscala</a></li>
         <li><a data-view="ascensori">Ascensori</a></li>
+        <li><a data-view="assistenza">Assistenza</a></li>
+        <li><a data-view="chisiamo">Chi siamo</a></li>
         <li><a data-view="contatti">Contatti</a></li>
       </ul>
       <span class="nav-underline" id="navUnderline"></span>
@@ -1241,9 +1335,10 @@
 
   <nav class="nav-condensed" id="navCondensed" aria-label="Navigazione rapida">
     <a data-view="home" data-target="home" data-lbl="LGM" aria-label="LGM — Home"></a>
-    <a data-view="chisiamo" data-target="chisiamo" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
     <a data-view="servoscala" data-target="servoscala" data-lbl="Servoscala" aria-label="Servoscala"></a>
     <a data-view="ascensori" data-target="ascensori" data-lbl="Ascensori" aria-label="Ascensori"></a>
+    <a data-view="assistenza" data-target="assistenza" data-lbl="Assistenza" aria-label="Assistenza"></a>
+    <a data-view="chisiamo" data-target="chisiamo" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
     <a data-view="contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
   </nav>
 
@@ -1253,6 +1348,7 @@
       <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
       <h1 class="text-reveal">Chi entra in casa tua per l'ascensore? Con noi lo sai sempre.</h1>
       <p class="hero-fade" style="transition-delay:.9s;">Tre generazioni della stessa famiglia, un'unica squadra che segue ogni impianto dal sopralluogo alla manutenzione. Servoscala e ascensori a Matera e in Basilicata dal 1988.</p>
+      <div class="hero-area hero-fade" style="transition-delay:.98s;">📍 Operiamo a Matera, in tutta la Basilicata e in Puglia</div>
       <a data-view="contatti" class="btn-primary hero-fade" style="transition-delay:1.05s; cursor:pointer;">Richiedi un sopralluogo gratuito</a>
     </section>
 
@@ -1278,23 +1374,66 @@
       </div>
     </section>
 
+    <!-- Assistenza e manutenzione nella home: asse "servizio", trasversale ai prodotti -->
+    <section class="reveal">
+      <div class="section-label">Assistenza e manutenzione</div>
+      <h2 class="section-title text-reveal">Hai già un impianto? Ce ne occupiamo noi.</h2>
+      <div class="assist-band">
+        <div class="assist-band__testo">
+          <p>Manutenzione programmata, riparazioni e modernizzazione di servoscala e ascensori — <strong>anche se non li abbiamo installati noi</strong>. Un contratto chiaro, sempre gli stessi tecnici, e un ufficio a Matera che risponde.</p>
+        </div>
+        <a data-view="assistenza" class="assist-band__cta" style="cursor:pointer;">Scopri l'assistenza →</a>
+      </div>
+      <div class="assist-emergenza">
+        <div class="assist-emergenza__testo">
+          <div class="assist-emergenza__titolo">Impianto fermo?</div>
+          <div class="assist-emergenza__sotto">Tecnico reperibile, anche fuori orario.</div>
+        </div>
+        <button type="button" class="assist-emergenza__btn" id="homeH24Btn">
+          <span class="assist-emergenza__dot"></span>
+          Chiama ora
+        </button>
+      </div>
+    </section>
+
     <!-- Fiducia nella home -->
     <section class="reveal">
       <div class="section-label">Perché scegliere LGM Elevator</div>
-      <h2 class="section-title text-reveal">[PLACEHOLDER — da confermare i numeri esatti]</h2>
+      <h2 class="section-title text-reveal">[PLACEHOLDER — titolo e numeri da confermare]</h2>
       <div class="fiducia-grid">
         <div class="fiducia-card">
           <div class="num" data-target="1988" data-prefix="">0</div>
           <div class="label">L'anno in cui tutto è cominciato</div>
         </div>
         <div class="fiducia-card">
-          <div class="num" data-target="14" data-prefix="~">0</div>
-          <div class="label">Persone nel team, tra ufficio e tecnici</div>
+          <div class="num">—</div>
+          <div class="label">[DA CONFERMARE] Impianti seguiti in manutenzione</div>
         </div>
         <div class="fiducia-card">
-          <div class="num" data-target="24" data-prefix="H">0</div>
-          <div class="label">Assistenza per le emergenze</div>
+          <div class="num">—</div>
+          <div class="label">[DA CONFERMARE] Tempo medio di intervento in caso di guasto</div>
         </div>
+      </div>
+    </section>
+
+    <!-- Prove: partner e recensioni -->
+    <section class="reveal">
+      <div class="section-label">I nostri partner</div>
+      <h2 class="section-title text-reveal">Marchi che installiamo e manuteniamo ogni giorno</h2>
+      <div class="partner-badges">
+        <span class="partner-badge">Orona</span>
+        <span class="partner-badge">Handicare</span>
+        <span class="partner-badge">Extrema</span>
+      </div>
+      <p class="partner-nota">[PLACEHOLDER] Qui andranno anche 2-3 recensioni reali dei clienti (da raccogliere: Google, passaparola, condomini seguiti da anni).</p>
+    </section>
+
+    <!-- CTA finale della home -->
+    <section class="reveal">
+      <div class="svs-cta">
+        <h3>Un sopralluogo gratuito, nessun impegno.</h3>
+        <p>Raccontaci la tua situazione: ti diciamo cosa si può fare e quanto costa, senza vincoli.</p>
+        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Contattaci</a>
       </div>
     </section>
   </div>
@@ -1511,6 +1650,69 @@
   </div>
 
 
+  <!-- ============ VISTA ASSISTENZA ============ -->
+  <div class="view" id="view-assistenza">
+    <section class="reveal">
+      <div class="section-label">Assistenza e manutenzione</div>
+      <h2 class="section-title text-reveal">Il tuo impianto, seguito dalle stesse mani. Anno dopo anno.</h2>
+      <div class="ascensori-intro">
+        <p>[PLACEHOLDER] Un servoscala o un ascensore non si "compra e basta": va tenuto in salute. La manutenzione è il cuore del nostro lavoro dal 1988 — ed è il motivo per cui i nostri clienti sanno sempre chi entra in casa loro.</p>
+        <p><strong>Prendiamo in carico anche impianti installati da altri</strong>: dopo un primo controllo gratuito, ti proponiamo un piano di manutenzione su misura.</p>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-label">Cosa comprende</div>
+      <h2 class="section-title text-reveal">Quattro modi in cui ci prendiamo cura del tuo impianto</h2>
+      <div class="svs-soluzioni">
+        <div class="svs-sol-card">
+          <h3>Manutenzione programmata</h3>
+          <p>[PLACEHOLDER] Visite periodiche a calendario: controlli, pulizia, lubrificazione e regolazioni previste dalla normativa, con registro degli interventi sempre aggiornato.</p>
+          <span class="svs-per">[DA CONFERMARE] Frequenza visite e cosa include il canone</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>Riparazioni e pronto intervento</h3>
+          <p>Guasti e fermi impianto: intervento dei nostri tecnici, con reperibilità H24 per le emergenze. Sono le stesse persone che vedi alle visite programmate.</p>
+          <span class="svs-per">[DA CONFERMARE] Tempo medio di intervento</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>Verifiche periodiche di legge</h3>
+          <p>[PLACEHOLDER] Ti ricordiamo noi le scadenze delle verifiche obbligatorie e affianchiamo l'ente incaricato durante il controllo: tu non devi tenere a mente nulla.</p>
+          <span class="svs-per">Per condomìni e attività aperte al pubblico</span>
+        </div>
+        <div class="svs-sol-card">
+          <h3>Modernizzazione</h3>
+          <p>[PLACEHOLDER] L'impianto ha 20 o 30 anni? Spesso non serve sostituirlo: si ammoderna — quadro, porte, cabina, sicurezze — a una frazione del costo del nuovo.</p>
+          <span class="svs-per">Preventivo dopo sopralluogo gratuito</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-label">Emergenze</div>
+      <h2 class="section-title text-reveal">Se l'impianto si ferma, non resti solo</h2>
+      <div class="assist-emergenza">
+        <div class="assist-emergenza__testo">
+          <div class="assist-emergenza__titolo">Impianto fermo o persona bloccata?</div>
+          <div class="assist-emergenza__sotto">Reperibilità attiva anche fuori orario: rispondiamo noi, non un call center.</div>
+        </div>
+        <button type="button" class="assist-emergenza__btn" id="assistenzaH24Btn">
+          <span class="assist-emergenza__dot"></span>
+          Chiama ora
+        </button>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="svs-cta">
+        <h3>Vuoi cambiare manutentore o mettere in regola un impianto?</h3>
+        <p>Il primo controllo è gratuito: vediamo com'è messo l'impianto e ti diciamo cosa serve davvero.</p>
+        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Richiedi il controllo gratuito</a>
+      </div>
+    </section>
+  </div>
+
+
   <!-- ============ VISTA CONTATTI ============ -->
   <div class="view" id="view-contatti">
     <section class="reveal">
@@ -1702,6 +1904,13 @@
     if (contattiBtn) {
       contattiBtn.addEventListener('click', openModal);
     }
+
+    // Bottoni "Chiama ora" nelle fasce emergenza (Home + vista Assistenza):
+    // stessa modale, stesso comportamento.
+    ['homeH24Btn', 'assistenzaH24Btn'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.addEventListener('click', openModal);
+    });
   })();
 
 
@@ -1856,8 +2065,8 @@
   // ============================================
   const liftDoors = document.getElementById('liftDoors');
   const liftNum = document.getElementById('liftNum');
-  const liftFloors = ['home', 'chisiamo', 'servoscala', 'ascensori', 'contatti'];
-  const liftLabels = { home: 'PT', chisiamo: '1', servoscala: '2', ascensori: '3', contatti: '★' };
+  const liftFloors = ['home', 'servoscala', 'ascensori', 'assistenza', 'chisiamo', 'contatti'];
+  const liftLabels = { home: 'PT', servoscala: '1', ascensori: '2', assistenza: '3', chisiamo: '4', contatti: '★' };
   const LIFT_T = 620; // deve combaciare con la transizione .lift-panel in CSS
   let liftBusy = false;
 
@@ -1914,7 +2123,7 @@
 
   // All'avvio: apri la vista da hash URL (se presente) o la Home
   const initialHash = window.location.hash.replace('#', '');
-  const validViews = ['home', 'chisiamo', 'servoscala', 'ascensori', 'contatti'];
+  const validViews = ['home', 'servoscala', 'ascensori', 'assistenza', 'chisiamo', 'contatti'];
   const startView = validViews.includes(initialHash) ? initialHash : 'home';
   showView(startView, false);
 

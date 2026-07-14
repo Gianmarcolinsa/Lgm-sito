@@ -488,6 +488,11 @@ stato, non cambiano più cosa succede al click:
 - Ricontrollo automatico ogni 60 secondi (cambio fascia oraria in tempo reale
   senza bisogno di ricaricare la pagina). Badge con pulse animato in fascia
   di reperibilità, rispetta `prefers-reduced-motion`.
+- **Su mobile il testo completo del badge resta sempre visibile** (fix
+  14/07/2026): in precedenza sotto gli 800px il testo spariva del tutto,
+  lasciando solo il pallino colorato senza alcun messaggio. Ora si riduce
+  solo font-size/padding, il testo — incluso "| Contatta l'assistenza" —
+  resta leggibile su ogni dimensione di schermo.
 
 
 **Aggiornamento automatico del sito** (10/07/2026): script inline a fine
