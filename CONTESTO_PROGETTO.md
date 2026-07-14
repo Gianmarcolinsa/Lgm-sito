@@ -172,9 +172,11 @@ Rientrano qui:
    (Regola 0, punto 2).
 
 ## Decisioni prese finora
-- **Priorità attuale**: presentazione/contenuti e cura visiva, non funzionalità.
-- **Form di contatto**: resta statico per ora (no invio email reale). Si valuterà
-  in futuro (es. Formspree, servizi serverless) solo quando il resto sarà solido.
+- **Priorità attuale**: Blocco 1 della Logica Commerciale (motore commerciale), vedi sezione dedicata sopra.
+- **Form di contatto**: ✅ funzionante da P1 (13/07/2026), collegato a Web3Forms.
+  Access key attualmente legata a una mail **personale dell'utente** (fase
+  sperimentale, P9 in roadmap prevede la sostituzione con la casella
+  aziendale definitiva prima del lancio).
 - **Hosting**: GitHub Pages. Ogni modifica approvata va riportata nell'`index.html`
   versionato su GitHub.
 - **Immagini**: fase mista — placeholder + eventuali foto personali del cliente.
@@ -197,7 +199,7 @@ ogni vista è linkabile/condivisibile direttamente.
 - **Servoscala** (`#servoscala`) — completa: hero, 4 card soluzioni, timeline "Come funziona", 6 FAQ, box agevolazioni fiscali 2026, CTA finale. 6 placeholder `[DA CONFERMARE]` residui (Fase 3, dipendono da scheda dati inviata a Marco/Giovanni)
 - **Ascensori** (`#ascensori`) — intro testo + CTA "Configura la tua cabina in 3D" → apre configuratore
 - **Configuratore** (`#configuratore`) — **Configuratore 3D cabina Orona** (Three.js, lazy load)
-- **Contatti** (`#contatti`) — info aziendali + form statico
+- **Contatti** (`#contatti`) — info aziendali + form funzionante (Web3Forms) + widget H24 in nav sempre visibile
 
 Le animazioni scroll-based (testi cinematici, timeline, contatori, scroll-reveal)
 sono gestite da un **IntersectionObserver** dedicato per ogni vista: si attivano
@@ -448,6 +450,40 @@ foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
   stesso gradiente: ora il riflesso attraversa entrambe le parti del logo
   nello stesso istante, ovunque.
 
+**Widget H24 dinamico in nav** (13/07/2026, P2 Blocco 1): badge cliccabile
+sempre visibile in `<nav>`, accanto al logo, responsive su desktop e mobile.
+Cambia automaticamente testo/comportamento in base a giorno/ora (Lun-Ven
+08:00-18:30 = orario ufficio, resto del tempo = reperibilità H24):
+- **Orario ufficio** (numero fisso): badge verde "🟢 Uffici Aperti", link
+  `tel:` sempre e solo — da mobile e da desktop. Il fisso non ha WhatsApp,
+  quindi non viene mai proposto quel canale in questa fascia.
+- **Reperibilità H24** (numero cellulare del tecnico di turno): badge rosso
+  pulsante "🔴 Reperibilità H24 Attiva".
+  - Da **smartphone**: `tel:` diretto, chiama subito.
+  - Da **computer**: si apre un **popup sul sito** ("Contatta il tecnico di
+    turno") che chiede il numero della persona; il pulsante "Invia messaggio
+    WhatsApp" resta disabilitato finché il campo è vuoto. Solo dopo l'invio
+    si apre WhatsApp Web verso il tecnico, con messaggio già pronto in tono
+    di emergenza: *"⚠️ RICHIESTA URGENTE — Reperibilità H24 LGM Elevator. Ho
+    bisogno del tecnico di turno. Il mio numero è [numero], richiamatemi il
+    prima possibile."*
+  - Motivo del popup: WhatsApp non permette a nessun sito di inviare
+    messaggi in automatico per conto dell'utente (limite della piattaforma,
+    non del codice) — il popup è il modo più vicino possibile a un invio
+    automatico, garantendo che il numero della persona sia sempre incluso.
+- Le due variabili `NUMERO_UFFICIO` e `NUMERO_REPERIBILITA` sono dichiarate
+  in cima allo script dedicato in `index.html`. **NOTA OPERATIVA
+  PERMANENTE**: vanno aggiornate manualmente ogni volta che cambia il
+  tecnico di turno o il numero di reperibilità aziendale — non è automatico.
+  Oggi: `NUMERO_UFFICIO = "0835381904"` (numero reale ufficio Matera),
+  `NUMERO_REPERIBILITA = "3914622464"` (⚠️ numero di TEST, quello personale
+  dell'utente — da sostituire col numero reale del tecnico reperibile
+  prima del lancio pubblico, vedi P8 in roadmap).
+- Ricontrollo automatico ogni 60 secondi (cambio fascia oraria in tempo reale
+  senza bisogno di ricaricare la pagina). Badge con pulse animato in fascia
+  di reperibilità, rispetta `prefers-reduced-motion`.
+
+
 **Aggiornamento automatico del sito** (10/07/2026): script inline a fine
 `index.html` che rileva da solo quando è stata pubblicata una nuova versione
 e ricarica la pagina in automatico, senza numero di versione da aggiornare
@@ -471,16 +507,16 @@ solo chi apre il sito proprio in quella finestra.
 rileva le nuove pubblicazioni e ricarica da solo, indipendentemente da come
 si comporta la cache del browser o del dispositivo.
 
-⚠️ **IMPORTANTE — testi ancora provvisori**: molti testi sono ancora
-placeholder (marcati `[PLACEHOLDER]` nel codice) in attesa dei contenuti
-definitivi: hero, storia dettagliata, numeri di "Fiducia" da confermare,
-titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
+⚠️ **IMPORTANTE — testi ancora provvisori**: l'Hero è ormai definitivo
+(13/07/2026). Restano `[PLACEHOLDER]` per: storia dettagliata, numeri di
+"Fiducia" da confermare, titolo sezione Fiducia, menzione area operativa
+Puglia nei contatti.
 
 ⚠️ La vista Servoscala è stata costruita (11/07/2026): hero, soluzioni, come funziona, FAQ, agevolazioni fiscali 2026. Restano 6 placeholder `[DA CONFERMARE]` in attesa della scheda dati compilata da Marco e Giovanni (tipi/marchi prodotto, tempi sopralluogo/preventivo/installazione, gestione pratiche agevolazioni).
 ⚠️ La vista Ascensori ha intro + CTA al configuratore, ma i contenuti reali sono da completare in Fase 3.
 
 ## Cose note da sistemare (backlog aperto)
-- Scrivere i testi definitivi al posto di tutti i `[PLACEHOLDER]`
+- Scrivere i testi definitivi al posto dei `[PLACEHOLDER]` residui (Storia, Fiducia)
 - Inserire le immagini reali al posto dei placeholder
 - Completare i 6 placeholder `[DA CONFERMARE]` della vista Servoscala (dipende dalla scheda compilata da Marco e Giovanni)
 - Completare la vista Ascensori con contenuti reali
@@ -490,24 +526,42 @@ titolo sezione Fiducia, menzione area operativa Puglia nei contatti.
 - Decidere se/come menzionare area operativa Puglia nei contatti
 - SEO (meta description, Open Graph, favicon, alt text immagini)
 - Accessibilità: contrasto colori, focus keyboard, screen reader
+- ⚠️ **Sostituire `NUMERO_REPERIBILITA` nel widget H24** (oggi numero di test
+  personale dell'utente) con il numero reale del tecnico di turno, prima del
+  lancio pubblico — vedi nota operativa permanente nella sezione tecnica sopra
+- ⚠️ **Sostituire l'access key Web3Forms** (oggi legata a una mail personale)
+  con la casella aziendale definitiva, prima del lancio pubblico
 
 ## File collegati
 - **ROADMAP.md** — elenco operativo di task, modifiche fatte/da fare.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 11/07/2026 — Vista Servoscala completata (hero, 4 card
-soluzioni, timeline "Come funziona", 6 FAQ, agevolazioni fiscali 2026,
-CTA finale), pubblicata su GitHub Pages (commit `772b544`); scheda dati
-.docx preparata per Marco e Giovanni per chiudere i 6 placeholder
-`[DA CONFERMARE]` residui; verificato e corretto il Bonus barriere
-architettoniche 75%, scaduto dal 1° gennaio 2026 — sostituito nei contenuti
-con il quadro reale 2026 (Bonus Ristrutturazioni 50/36%, IVA 4%, detrazione
-19%, contributo Legge 13/1989); regola 11 rinforzata dopo un episodio in cui
-il comando terminale non è stato dato spontaneamente con la consegna
-dell'`index.html` aggiornato. **Aggiornamento successivo (stesso giorno):**
-salto di stile "unico nel suo genere" — porte dell'ascensore come
-transizione tra le viste (con fix bug apertura), cabina al posto della
-freccia sul filo (filo/cavo invariato), nuovo tema chiaro "Acciaio
-spazzolato" (palette 1c) al posto dello scuro iniziale, scelto dopo 3 round
-di mockup comparativi col cliente; pubblicato su GitHub Pages.
+*Ultimo aggiornamento: 13/07/2026 —*
+- *Introdotta la Logica Commerciale a 4 blocchi come regola fissa e
+  permanente (sezione dedicata sopra); intera scaletta di `ROADMAP.md`
+  riorganizzata e rinumerata di conseguenza.*
+- *Regola 0 estesa (punto 5): ogni file modificato va sempre riconsegnato
+  per intero all'utente nella stessa risposta.*
+- *P1 completato: form contatti funzionante via Web3Forms (mail personale,
+  fase sperimentale) + riepilogo configurazione cabina dal configuratore 3D
+  allegato automaticamente alla richiesta di preventivo. Corretto un bug
+  critico di sintassi introdotto durante questa modifica (IIFE non chiuso).*
+- *P2 completato: widget H24 dinamico in nav (dettagli nella sezione tecnica
+  sopra), con numero ufficio reale e numero di reperibilità di test
+  (personale dell'utente, da sostituire prima del lancio).*
+- *Testo Hero definitivo scelto e pubblicato (Variante C); fix contrasto
+  `.btn-primary` (nero residuo tema scuro → bianco).*
+- *Precedenti (11/07/2026): vista Servoscala completata (hero, 4 card
+  soluzioni, timeline "Come funziona", 6 FAQ, agevolazioni fiscali 2026,
+  CTA finale), pubblicata su GitHub Pages (commit `772b544`); scheda dati
+  .docx preparata per Marco e Giovanni per chiudere i 6 placeholder
+  `[DA CONFERMARE]` residui; verificato e corretto il Bonus barriere
+  architettoniche 75%, scaduto dal 1° gennaio 2026 — sostituito nei
+  contenuti con il quadro reale 2026 (Bonus Ristrutturazioni 50/36%, IVA 4%,
+  detrazione 19%, contributo Legge 13/1989); salto di stile "unico nel suo
+  genere" — porte dell'ascensore come transizione tra le viste (con fix bug
+  apertura), cabina al posto della freccia sul filo (filo/cavo invariato),
+  nuovo tema chiaro "Acciaio spazzolato" (palette 1c) al posto dello scuro
+  iniziale, scelto dopo 3 round di mockup comparativi col cliente; pubblicato
+  su GitHub Pages.*
