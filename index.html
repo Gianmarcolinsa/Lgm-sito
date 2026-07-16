@@ -27,7 +27,16 @@
     --pannello-scuro: #14161A;
     --pannello-scuro-2: #1B1E23;
     --su-scuro: #EDEAE3;
+    /* CICLO GIORNO/NOTTE (16/07/2026): variante "notte" applicata via
+       classe .tema-notte sul <body>, impostata automaticamente da JS in
+       base all'orario reale (07:00-20:00 giorno, resto notte). Cambia
+       solo la temperatura dello sfondo pagina/superficie secondaria:
+       card bianche, testo, accent e tutto il resto del design system
+       restano identici. Palette scelta con l'utente: "Blu freddo pulito". */
+    --bg-notte: #9FB6D6;
   }
+  body { transition: background-color 0.8s ease; }
+  body.tema-notte { background-color: var(--bg-notte); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -115,6 +124,12 @@
     transition: color 0.2s ease;
   }
   .nav-links a:hover { color: var(--text); }
+  @media (max-width: 1140px) {
+    /* Gap ridotto (16/07/2026): con l'aggiunta di "Scale mobili" la nav
+       passa da 6 a 7 voci; qui compensiamo lo spazio senza toccare il
+       badge H24 in bianco, che resta invariato come richiesto. */
+    .nav-links { gap: 20px !important; }
+  }
   @media (max-width: 800px) {
     .nav-links { display: none; }
     .logo svg { width: 128px; }
@@ -500,9 +515,12 @@
   /* PRODOTTI */
   .prodotti-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 28px;
     margin-bottom: 56px;
+  }
+  @media (max-width: 980px) {
+    .prodotti-grid { grid-template-columns: 1fr 1fr; }
   }
   .prodotto-card {
     background: var(--surface);
@@ -525,6 +543,12 @@
     margin-bottom: 20px;
     text-align: center;
     padding: 12px;
+  }
+  .img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
   }
   .prodotto-card .tag {
     display: inline-block;
@@ -1325,6 +1349,7 @@
         <li><a data-view="home">LGM</a></li>
         <li><a data-view="servoscala">Servoscala</a></li>
         <li><a data-view="ascensori">Ascensori</a></li>
+        <li><a data-view="scalemobili">Scale mobili</a></li>
         <li><a data-view="assistenza">Assistenza</a></li>
         <li><a data-view="chisiamo">Chi siamo</a></li>
         <li><a data-view="contatti">Contatti</a></li>
@@ -1337,6 +1362,7 @@
     <a data-view="home" data-target="home" data-lbl="LGM" aria-label="LGM — Home"></a>
     <a data-view="servoscala" data-target="servoscala" data-lbl="Servoscala" aria-label="Servoscala"></a>
     <a data-view="ascensori" data-target="ascensori" data-lbl="Ascensori" aria-label="Ascensori"></a>
+    <a data-view="scalemobili" data-target="scalemobili" data-lbl="Scale mobili" aria-label="Scale mobili"></a>
     <a data-view="assistenza" data-target="assistenza" data-lbl="Assistenza" aria-label="Assistenza"></a>
     <a data-view="chisiamo" data-target="chisiamo" data-lbl="Chi siamo" aria-label="Chi siamo"></a>
     <a data-view="contatti" data-target="contatti" data-lbl="Contatti" aria-label="Contatti"></a>
@@ -1355,21 +1381,28 @@
     <!-- Anteprima prodotti nella home -->
     <section class="reveal">
       <div class="section-label">Cosa facciamo</div>
-      <h2 class="section-title text-reveal">Due modi per restituirti libertà di movimento in casa</h2>
+      <h2 class="section-title text-reveal">Tre modi per restituirti libertà di movimento</h2>
       <div class="prodotti-grid">
         <div class="prodotto-card">
-          <div class="img-placeholder">[foto servoscala — da inserire]</div>
+          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1583905009587-681022839d3d?w=800&q=80&auto=format&fit=crop" alt="Scala interna con corrimano in legno" loading="lazy"></div>
           <div class="tag">Servoscala</div>
           <h3>Servoscala a poltroncina</h3>
           <p>[PLACEHOLDER] La soluzione più rapida per superare le scale in autonomia, senza opere murarie, adatta a scale dritte o curve.</p>
           <a data-view="servoscala" style="cursor:pointer;">Scopri i modelli →</a>
         </div>
         <div class="prodotto-card">
-          <div class="img-placeholder">[foto ascensore — da inserire]</div>
+          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?w=800&q=80&auto=format&fit=crop" alt="Porta di un ascensore in acciaio con pulsantiera" loading="lazy"></div>
           <div class="tag">Ascensori</div>
           <h3>Ascensori e impianti di sollevamento</h3>
           <p>[PLACEHOLDER] Installazione e manutenzione di ascensori per abitazioni private e condomini, in Basilicata e Puglia.</p>
           <a data-view="ascensori" style="cursor:pointer;">Scopri gli impianti →</a>
+        </div>
+        <div class="prodotto-card">
+          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1696361297650-94451ee6b0ca?w=800&q=80&auto=format&fit=crop" alt="Scala mobile in un edificio" loading="lazy"></div>
+          <div class="tag">Scale mobili</div>
+          <h3>Scale mobili</h3>
+          <p>[DA CONFERMARE] Installazione e manutenzione di scale mobili per attività commerciali e spazi pubblici. Contenuti in fase di definizione.</p>
+          <a data-view="scalemobili" style="cursor:pointer;">Scopri il servizio →</a>
         </div>
       </div>
     </section>
@@ -1650,6 +1683,22 @@
   </div>
 
 
+  <!-- ============ VISTA SCALE MOBILI ============ -->
+  <!-- Vista aggiunta il 16/07/2026 per collaudare la nav e lo spazio in
+       Home. Contenuti ancora [DA CONFERMARE]: ramo attività fresco per
+       LGM, tornato attivo dal backlog "in standby" (vedi ROADMAP.md).
+       Copy definitivo, B2C/B2B, marchi ecc. da definire con l'utente. -->
+  <div class="view" id="view-scalemobili">
+    <section class="reveal">
+      <div class="section-label">Scale mobili</div>
+      <h2 class="section-title text-reveal">Scale mobili</h2>
+      <div class="ascensori-intro">
+        <p>[DA CONFERMARE] LGM ha da poco avviato l'installazione e la manutenzione di scale mobili, affiancando questo servizio a servoscala e ascensori. Contenuti in fase di definizione.</p>
+        <p>[DA CONFERMARE] Qui andranno i dettagli su tipologie di impianto, ambiti di applicazione (centri commerciali, stazioni, negozi) e modalità di intervento.</p>
+      </div>
+    </section>
+  </div>
+
   <!-- ============ VISTA ASSISTENZA ============ -->
   <div class="view" id="view-assistenza">
     <section class="reveal">
@@ -1766,6 +1815,21 @@
 
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ============================================
+  // CICLO GIORNO/NOTTE (16/07/2026) — sfondo pagina automatico in base
+  // all'orario reale. 07:00-20:00 = tema giorno (default), resto = tema
+  // notte (classe .tema-notte su <body>, variabili --bg-notte/
+  // --surface-2-notte in :root). Stesso pattern di ricontrollo ogni 60s
+  // già usato dal widget H24, per coerenza col resto del sito.
+  // ============================================
+  function updateTemaGiornoNotte() {
+    const ora = new Date().getHours();
+    const isNotte = ora >= 20 || ora < 7;
+    document.body.classList.toggle('tema-notte', isNotte);
+  }
+  updateTemaGiornoNotte();
+  setInterval(updateTemaGiornoNotte, 60 * 1000);
 
   // ============================================
   // WIDGET H24 DINAMICO — badge + CTA cliccabile in nav
@@ -2065,8 +2129,8 @@
   // ============================================
   const liftDoors = document.getElementById('liftDoors');
   const liftNum = document.getElementById('liftNum');
-  const liftFloors = ['home', 'servoscala', 'ascensori', 'assistenza', 'chisiamo', 'contatti'];
-  const liftLabels = { home: 'PT', servoscala: '1', ascensori: '2', assistenza: '3', chisiamo: '4', contatti: '★' };
+  const liftFloors = ['home', 'servoscala', 'ascensori', 'scalemobili', 'assistenza', 'chisiamo', 'contatti'];
+  const liftLabels = { home: 'PT', servoscala: '1', ascensori: '2', scalemobili: '3', assistenza: '4', chisiamo: '5', contatti: '★' };
   const LIFT_T = 620; // deve combaciare con la transizione .lift-panel in CSS
   let liftBusy = false;
 
@@ -2123,7 +2187,7 @@
 
   // All'avvio: apri la vista da hash URL (se presente) o la Home
   const initialHash = window.location.hash.replace('#', '');
-  const validViews = ['home', 'servoscala', 'ascensori', 'assistenza', 'chisiamo', 'contatti'];
+  const validViews = ['home', 'servoscala', 'ascensori', 'scalemobili', 'assistenza', 'chisiamo', 'contatti'];
   const startView = validViews.includes(initialHash) ? initialHash : 'home';
   showView(startView, false);
 
