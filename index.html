@@ -390,8 +390,36 @@
   .hero {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 80px 24px 96px;
+    padding: 88px 24px 0;
     border-top: 1px solid var(--border);
+    position: relative;
+  }
+  /* RESTYLING TAPPA 1 (16/07/2026) — numerazione di sezione in stile
+     "studio di architettura": il numero del piano corrente (PT, 01, 02…)
+     enorme e semitrasparente dietro il titolo, aggiornato dal router a
+     ogni cambio vista. Rafforza la metafora ascensore già presente. */
+  .piano-num {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(72px, 12vw, 150px);
+    font-weight: 800;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(12,68,124,0.22);
+    user-select: none;
+    pointer-events: none;
+    letter-spacing: -0.02em;
+  }
+  .piano-num small {
+    font-size: 0.28em;
+    -webkit-text-stroke: 1px rgba(12,68,124,0.30);
+    font-weight: 700;
+    vertical-align: super;
+  }
+  @media (max-width: 800px) {
+    .piano-num { font-size: 64px; top: 14px; right: 16px; }
   }
   .hero-eyebrow {
     font-size: 13px;
@@ -402,17 +430,61 @@
     margin-bottom: 20px;
   }
   .hero h1 {
-    font-size: clamp(32px, 5vw, 52px);
+    font-size: clamp(38px, 6.6vw, 76px);
     font-weight: 800;
-    line-height: 1.15;
-    max-width: 780px;
-    margin-bottom: 24px;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    max-width: 920px;
+    margin-bottom: 28px;
   }
   .hero p {
-    font-size: 18px;
+    font-size: clamp(17px, 1.6vw, 20px);
     color: var(--text-muted);
-    max-width: 620px;
+    max-width: 640px;
     margin-bottom: 36px;
+  }
+  /* Barra "vetro" a chiusura dell'hero: micro-punti di forza sempre
+     visibili, effetto smerigliato (backdrop-filter) sopra lo sfondo
+     texturizzato della pagina. Fallback pulito dove il filtro non è
+     supportato (sfondo semi-solido). */
+  .hero-glass {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 56px -24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.45);
+  }
+  @supports (backdrop-filter: blur(10px)) {
+    .hero-glass { background: rgba(255,255,255,0.28); backdrop-filter: blur(10px); }
+  }
+  .hero-glass__item {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .hero-glass__item + .hero-glass__item { border-left: 1px solid var(--border); }
+  .hero-glass__item .hg-ico {
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .hero-glass__item .hg-sub {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  @media (max-width: 800px) {
+    .hero-glass { flex-direction: column; }
+    .hero-glass__item + .hero-glass__item { border-left: none; border-top: 1px solid var(--border); }
   }
   .btn-primary {
     display: inline-block;
@@ -444,9 +516,11 @@
     margin-bottom: 16px;
   }
   .section-title {
-    font-size: clamp(26px, 3.4vw, 36px);
-    font-weight: 700;
-    max-width: 720px;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    max-width: 780px;
     margin-bottom: 48px;
     line-height: 1.25;
   }
@@ -1371,11 +1445,26 @@
   <!-- ============ VISTA HOME ============ -->
   <div class="view active" id="view-home">
     <section class="hero" style="border-top:none;">
+      <div class="piano-num" id="pianoNum" aria-hidden="true">PT<small>/06</small></div>
       <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
       <h1 class="text-reveal">Chi entra in casa tua per l'ascensore? Con noi lo sai sempre.</h1>
       <p class="hero-fade" style="transition-delay:.9s;">Tre generazioni della stessa famiglia, un'unica squadra che segue ogni impianto dal sopralluogo alla manutenzione. Servoscala e ascensori a Matera e in Basilicata dal 1988.</p>
       <div class="hero-area hero-fade" style="transition-delay:.98s;">📍 Operiamo a Matera, in tutta la Basilicata e in Puglia</div>
       <a data-view="contatti" class="btn-primary hero-fade" style="transition-delay:1.05s; cursor:pointer;">Richiedi un sopralluogo gratuito</a>
+      <div class="hero-glass hero-fade" style="transition-delay:1.15s;">
+        <div class="hero-glass__item">
+          <span class="hg-ico">📋</span>
+          <span>Sopralluogo gratuito<span class="hg-sub">Senza impegno, in tutta l'area operativa</span></span>
+        </div>
+        <div class="hero-glass__item">
+          <span class="hg-ico">👤</span>
+          <span>Un solo referente<span class="hg-sub">Dal preventivo alla manutenzione</span></span>
+        </div>
+        <div class="hero-glass__item">
+          <span class="hg-ico">🏗️</span>
+          <span>Dal 1988<span class="hg-sub">Tre generazioni, la stessa famiglia</span></span>
+        </div>
+      </div>
     </section>
 
     <!-- Anteprima prodotti nella home -->
@@ -2084,6 +2173,11 @@
     });
     target.classList.add('active');
 
+    // RESTYLING TAPPA 1: numerazione di piano nella prima sezione della
+    // vista attiva ("PT/06", "01/06"…), riusa le etichette liftLabels
+    // dell'animazione ascensore. Creata al volo se la vista non ce l'ha.
+    updatePianoNum(name, target);
+
     // Aggiorna stato attivo nella nav
     navLinks.forEach(a => a.classList.toggle('active', a.dataset.view === name));
     condLinks.forEach(a => a.classList.toggle('active', a.dataset.view === name));
@@ -2133,6 +2227,23 @@
   const liftLabels = { home: 'PT', servoscala: '1', ascensori: '2', scalemobili: '3', assistenza: '4', chisiamo: '5', contatti: '★' };
   const LIFT_T = 620; // deve combaciare con la transizione .lift-panel in CSS
   let liftBusy = false;
+
+  // RESTYLING TAPPA 1 — numerazione di piano nell'hero/prima sezione di
+  // ogni vista, in stile "studio di architettura". Usa liftLabels.
+  function updatePianoNum(name, viewEl) {
+    const label = liftLabels[name] || '';
+    let el = viewEl.querySelector('.piano-num');
+    if (!el) {
+      const firstSection = viewEl.querySelector('section');
+      if (!firstSection) return;
+      el = document.createElement('div');
+      el.className = 'piano-num';
+      el.setAttribute('aria-hidden', 'true');
+      firstSection.style.position = 'relative';
+      firstSection.prepend(el);
+    }
+    el.innerHTML = label + '<small>/06</small>';
+  }
 
   function goToView(name) {
     if (liftBusy || name === document.querySelector('.view.active')?.id.replace('view-', '')) {
