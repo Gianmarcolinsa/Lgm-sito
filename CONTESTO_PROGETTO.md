@@ -555,13 +555,39 @@ Puglia nei contatti.
   lancio pubblico — vedi nota operativa permanente nella sezione tecnica sopra
 - ⚠️ **Sostituire l'access key Web3Forms** (oggi legata a una mail personale)
   con la casella aziendale definitiva, prima del lancio pubblico
+- **Scale mobili — sbloccata dal backlog il 17/07/2026**: nav, card Home e
+  vista `#scalemobili` create come collaudo layout; contenuti ancora
+  `[DA CONFERMARE]` (taglio B2C/B2B, marchi, tipologie impianto)
+- Sostituire le foto stock Unsplash (Servoscala/Ascensori/Scale mobili in
+  Home) con foto reali dei cantieri LGM, quando disponibili
+- Restyling "Tappa 3" (da fare): animazioni scroll raffinate, parallax
+  leggero, griglia realizzazioni fotografica — quest'ultima dipende dalle
+  foto reali dei cantieri
 
 ## File collegati
 - **ROADMAP.md** — elenco operativo di task, modifiche fatte/da fare.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 13/07/2026 —*
+*Ultimo aggiornamento: 17/07/2026 —*
+- *Sfondo pagina automatico giorno/notte (07:00-20:00 chiaro, resto "Blu
+  freddo pulito" #9FB6D6), stesso pattern di ricontrollo orario del widget H24.*
+- *Scale mobili sbloccata dal backlog (deroga esplicita alla decisione di
+  standby del 14/07/2026): nav, card Home, vista `#scalemobili` create per
+  collaudo layout; contenuti ancora `[DA CONFERMARE]`.*
+- *Foto stock Unsplash (licenza libera) al posto dei placeholder grigi nelle
+  3 card prodotto Home, in attesa delle foto reali dei cantieri LGM.*
+- *Restyling "Tappa 1" e "Tappa 2", ispirati a riferimenti visivi forniti
+  dall'utente: tipografia hero/titoli più grande, numerazione di piano in
+  ogni vista, barra "vetro" con punti di forza in Home, Bento Grid per la
+  sezione Fiducia, effetto vetro smerigliato + tilt 3D su tutte le card
+  prodotto/soluzioni del sito (Home, Servoscala, Assistenza). Palette
+  invariata su richiesta esplicita — solo layout/tipografia/animazioni.*
+- *Restyling "Tappa 3" (animazioni scroll raffinate, griglia realizzazioni
+  fotografica) resta da fare, vedi STEP 4f in ROADMAP.*
+
+---
+*Aggiornamento precedente: 13/07/2026 —*
 - *Introdotta la Logica Commerciale a 4 blocchi come regola fissa e
   permanente (sezione dedicata sopra); intera scaletta di `ROADMAP.md`
   riorganizzata e rinumerata di conseguenza.*

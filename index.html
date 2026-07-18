@@ -532,6 +532,148 @@
     .reveal { opacity: 1; transform: none; transition: none; }
   }
 
+  /* ============================================================
+     RESTYLING TAPPA 3 (17/07/2026) — scroll raffinato + parallax +
+     griglia Realizzazioni fotografica (stile go.arch).
+     ⚠️ Le foto della griglia sono STOCK/PLACEHOLDER (Unsplash): vanno
+     sostituite con le foto reali dei cantieri LGM — dipende dal task
+     3j in ROADMAP. Tutto rispetta prefers-reduced-motion.
+     ============================================================ */
+
+  /* Reveal SFALSATO: i figli diretti di un .stagger-group entrano uno
+     dopo l'altro. L'indice --stg-i è impostato da JS all'ingresso in
+     viewport (e resettato al cambio vista). */
+  .stagger-group > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: calc(var(--stg-i, 0) * 85ms);
+  }
+  .stagger-group.stg-in > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stagger-group > * { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* PARALLAX leggero: l'immagine è un filo più alta del suo contenitore
+     (.px-wrap, overflow nascosto) così lo spostamento verticale resta
+     sempre coperto, senza bordi vuoti. --py è impostato da JS in base
+     allo scroll. Attivo solo dove c'è hover reale (desktop). */
+  .px-wrap { overflow: hidden; }
+  .px-wrap .parallax {
+    transform: translate3d(0, var(--py, 0px), 0);
+    will-change: transform;
+  }
+  @media (hover: hover) {
+    .px-wrap .parallax { height: 122%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .px-wrap .parallax { transform: none; height: 100%; }
+  }
+
+  /* GRIGLIA REALIZZAZIONI — mosaico asimmetrico stile portfolio
+     architettonico. 12 colonne, span differenziati via nth-child. */
+  .realizz-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 200px;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .realizz-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    cursor: default;
+  }
+  .realizz-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* velatura scura in basso per leggere la didascalia */
+  .realizz-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,20,34,0.78) 0%, rgba(10,20,34,0.15) 42%, transparent 70%);
+    z-index: 1;
+    transition: opacity 0.35s ease;
+    opacity: 0.9;
+  }
+  .realizz-card:hover::after { opacity: 1; }
+  .realizz-cap {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+    z-index: 2;
+    color: #fff;
+    transform: translateY(6px);
+    transition: transform 0.35s ease;
+  }
+  .realizz-card:hover .realizz-cap { transform: translateY(0); }
+  .realizz-cap .rz-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #BFD4F0;
+    margin-bottom: 6px;
+  }
+  .realizz-cap .rz-titolo {
+    font-family: 'Sora', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .realizz-cap .rz-luogo {
+    font-size: 13px;
+    color: rgba(255,255,255,0.82);
+    margin-top: 3px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.35s ease, margin-top 0.35s ease;
+  }
+  .realizz-card:hover .rz-luogo { max-height: 40px; opacity: 1; margin-top: 4px; }
+  .realizz-zoom { transition: transform 0.6s cubic-bezier(.2,.7,.2,1); }
+  .realizz-card:hover .realizz-zoom:not(.parallax) { transform: scale(1.05); }
+
+  /* Mosaico asimmetrico (desktop) */
+  .realizz-grid .realizz-card:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+  .realizz-grid .realizz-card:nth-child(2) { grid-column: span 5; grid-row: span 1; }
+  .realizz-grid .realizz-card:nth-child(3) { grid-column: span 5; grid-row: span 1; }
+  .realizz-grid .realizz-card:nth-child(4) { grid-column: span 4; grid-row: span 1; }
+  .realizz-grid .realizz-card:nth-child(5) { grid-column: span 4; grid-row: span 1; }
+  .realizz-grid .realizz-card:nth-child(6) { grid-column: span 4; grid-row: span 1; }
+
+  .realizz-nota {
+    margin-top: 18px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .realizz-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 170px; }
+    .realizz-grid .realizz-card:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+    .realizz-grid .realizz-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  }
+  @media (max-width: 560px) {
+    .realizz-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+    .realizz-grid .realizz-card:nth-child(n),
+    .realizz-grid .realizz-card:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+  }
+
   /* STORIA */
   .storia-grid {
     display: grid;
@@ -599,11 +741,25 @@
   .prodotto-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 28px;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
   }
-  .prodotto-card:hover { border-color: var(--accent-2); transform: translateY(-3px); }
+  /* RESTYLING TAPPA 2 — effetto "vetro smerigliato" dove supportato:
+     la card diventa leggermente trasparente e sfoca la texture della
+     pagina sottostante. Fallback: resta bianca piena. */
+  @supports (backdrop-filter: blur(8px)) {
+    .prodotto-card {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(8px);
+    }
+  }
+  .prodotto-card:hover {
+    border-color: var(--accent-2);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px var(--ombra);
+  }
   .img-placeholder {
     height: 160px;
     background: var(--surface-2);
@@ -652,17 +808,38 @@
   }
 
   /* FIDUCIA */
+  /* RESTYLING TAPPA 2 (17/07/2026) — sezione Fiducia in "Bento Grid"
+     asimmetrica: la card 1988 è la protagonista (2 righe di altezza,
+     numero enorme), le altre due si impilano a destra. Su mobile torna
+     una colonna semplice. */
   .fiducia-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: 1.35fr 1fr;
+    grid-template-rows: repeat(2, minmax(120px, auto));
+    gap: 20px;
   }
   .fiducia-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 32px 24px;
-    text-align: center;
+    border-radius: 16px;
+    padding: 28px 26px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .fiducia-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px var(--ombra);
+  }
+  .fiducia-card--big {
+    grid-row: 1 / 3;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+  }
+  .fiducia-card--big .num {
+    font-size: clamp(64px, 8vw, 104px);
+    line-height: 1;
   }
   .fiducia-card .num {
     font-family: 'Sora', sans-serif;
@@ -670,13 +847,16 @@
     font-weight: 800;
     color: var(--accent);
     margin-bottom: 10px;
+    letter-spacing: -0.02em;
   }
   .fiducia-card .label {
     font-size: 14px;
     color: var(--text-muted);
   }
   @media (max-width: 800px) {
-    .fiducia-grid { grid-template-columns: 1fr; }
+    .fiducia-grid { grid-template-columns: 1fr; grid-template-rows: none; }
+    .fiducia-card--big { grid-row: auto; }
+    .fiducia-card--big .num { font-size: 56px; }
   }
 
   /* AREA OPERATIVA (riga sotto l'hero) */
@@ -1088,11 +1268,13 @@
   }
 
   /* Card prodotto — riflettore che segue il mouse + zoom immagine */
-  .prodotto-card {
+  .prodotto-card,
+  .svs-sol-card {
     position: relative;
     overflow: hidden;
   }
-  .prodotto-card::before {
+  .prodotto-card::before,
+  .svs-sol-card::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -1102,8 +1284,10 @@
     pointer-events: none;
     z-index: 0;
   }
-  .prodotto-card:hover::before { opacity: 1; }
-  .prodotto-card > * {
+  .prodotto-card:hover::before,
+  .svs-sol-card:hover::before { opacity: 1; }
+  .prodotto-card > *,
+  .svs-sol-card > * {
     position: relative;
     z-index: 1;
   }
@@ -1219,9 +1403,23 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 22px;
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
   }
-  .svs-sol-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  /* RESTYLING TAPPA 2 estesa (17/07/2026) — stesso effetto vetro delle
+     card prodotto in Home, applicato alle card soluzione di Servoscala
+     e Assistenza per coerenza in tutto il sito. */
+  @supports (backdrop-filter: blur(8px)) {
+    .svs-sol-card {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(8px);
+    }
+  }
+  .svs-sol-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px var(--ombra);
+  }
   .svs-sol-card h3 { font-size: 17px; margin-bottom: 8px; }
   .svs-sol-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
   .svs-sol-card .svs-per { display: block; margin-top: 10px; font-size: 13px; color: var(--accent); }
@@ -1471,23 +1669,23 @@
     <section class="reveal">
       <div class="section-label">Cosa facciamo</div>
       <h2 class="section-title text-reveal">Tre modi per restituirti libertà di movimento</h2>
-      <div class="prodotti-grid">
+      <div class="prodotti-grid stagger-group">
         <div class="prodotto-card">
-          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1583905009587-681022839d3d?w=800&q=80&auto=format&fit=crop" alt="Scala interna con corrimano in legno" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1583905009587-681022839d3d?w=800&q=80&auto=format&fit=crop" alt="Scala interna con corrimano in legno" loading="lazy"></div>
           <div class="tag">Servoscala</div>
           <h3>Servoscala a poltroncina</h3>
           <p>[PLACEHOLDER] La soluzione più rapida per superare le scale in autonomia, senza opere murarie, adatta a scale dritte o curve.</p>
           <a data-view="servoscala" style="cursor:pointer;">Scopri i modelli →</a>
         </div>
         <div class="prodotto-card">
-          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?w=800&q=80&auto=format&fit=crop" alt="Porta di un ascensore in acciaio con pulsantiera" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?w=800&q=80&auto=format&fit=crop" alt="Porta di un ascensore in acciaio con pulsantiera" loading="lazy"></div>
           <div class="tag">Ascensori</div>
           <h3>Ascensori e impianti di sollevamento</h3>
           <p>[PLACEHOLDER] Installazione e manutenzione di ascensori per abitazioni private e condomini, in Basilicata e Puglia.</p>
           <a data-view="ascensori" style="cursor:pointer;">Scopri gli impianti →</a>
         </div>
         <div class="prodotto-card">
-          <div class="img-placeholder"><img src="https://images.unsplash.com/photo-1696361297650-94451ee6b0ca?w=800&q=80&auto=format&fit=crop" alt="Scala mobile in un edificio" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1696361297650-94451ee6b0ca?w=800&q=80&auto=format&fit=crop" alt="Scala mobile in un edificio" loading="lazy"></div>
           <div class="tag">Scale mobili</div>
           <h3>Scale mobili</h3>
           <p>[DA CONFERMARE] Installazione e manutenzione di scale mobili per attività commerciali e spazi pubblici. Contenuti in fase di definizione.</p>
@@ -1522,10 +1720,10 @@
     <section class="reveal">
       <div class="section-label">Perché scegliere LGM Elevator</div>
       <h2 class="section-title text-reveal">[PLACEHOLDER — titolo e numeri da confermare]</h2>
-      <div class="fiducia-grid">
-        <div class="fiducia-card">
+      <div class="fiducia-grid stagger-group">
+        <div class="fiducia-card fiducia-card--big">
           <div class="num" data-target="1988" data-prefix="">0</div>
-          <div class="label">L'anno in cui tutto è cominciato</div>
+          <div class="label">L'anno in cui tutto è cominciato. Tre generazioni della stessa famiglia, la stessa squadra che risponde ancora oggi.</div>
         </div>
         <div class="fiducia-card">
           <div class="num">—</div>
@@ -1542,12 +1740,71 @@
     <section class="reveal">
       <div class="section-label">I nostri partner</div>
       <h2 class="section-title text-reveal">Marchi che installiamo e manuteniamo ogni giorno</h2>
-      <div class="partner-badges">
+      <div class="partner-badges stagger-group">
         <span class="partner-badge">Orona</span>
         <span class="partner-badge">Handicare</span>
         <span class="partner-badge">Extrema</span>
       </div>
       <p class="partner-nota">[PLACEHOLDER] Qui andranno anche 2-3 recensioni reali dei clienti (da raccogliere: Google, passaparola, condomini seguiti da anni).</p>
+    </section>
+
+    <!-- Realizzazioni: griglia fotografica (TAPPA 3, 17/07/2026).
+         ⚠️ FOTO CASUALI PLACEHOLDER (Picsum) solo per collaudo layout —
+         da sostituire con le foto reali dei cantieri LGM (task 3j). -->
+    <section class="reveal">
+      <div class="section-label">Realizzazioni</div>
+      <h2 class="section-title text-reveal">Alcuni impianti che abbiamo curato</h2>
+      <div class="realizz-grid stagger-group">
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-1/1000/900" alt="[PLACEHOLDER] Foto realizzazione impianto" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Ascensore condominiale</span>
+            <div class="rz-titolo">[PLACEHOLDER] Palazzina anni '70, nuovo impianto</div>
+            <div class="rz-luogo">[DA CONFERMARE] Matera — centro</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-2/900/700" alt="[PLACEHOLDER] Foto realizzazione servoscala" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Servoscala curvilineo</span>
+            <div class="rz-titolo">[PLACEHOLDER] Villa privata su due piani</div>
+            <div class="rz-luogo">[DA CONFERMARE] Provincia di Matera</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-3/900/700" alt="[PLACEHOLDER] Foto realizzazione piattaforma" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Piattaforma elevatrice</span>
+            <div class="rz-titolo">[PLACEHOLDER] Attività commerciale accessibile</div>
+            <div class="rz-luogo">[DA CONFERMARE] Basilicata</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-4/800/700" alt="[PLACEHOLDER] Foto realizzazione modernizzazione" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Modernizzazione</span>
+            <div class="rz-titolo">[PLACEHOLDER] Ammodernamento cabina e quadro</div>
+            <div class="rz-luogo">[DA CONFERMARE] Puglia</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-5/800/700" alt="[PLACEHOLDER] Foto realizzazione manutenzione" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Manutenzione</span>
+            <div class="rz-titolo">[PLACEHOLDER] Impianto seguito da oltre 10 anni</div>
+            <div class="rz-luogo">[DA CONFERMARE] Matera</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-6/800/700" alt="[PLACEHOLDER] Foto realizzazione ascensore privato" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Ascensore privato</span>
+            <div class="rz-titolo">[PLACEHOLDER] Casa indipendente, vano nuovo</div>
+            <div class="rz-luogo">[DA CONFERMARE] Provincia di Matera</div>
+          </div>
+        </div>
+      </div>
+      <p class="realizz-nota">⚠️ Foto di esempio casuali, solo per collaudo del layout. Le immagini reali dei cantieri LGM verranno inserite in seguito (task 3j).</p>
     </section>
 
     <!-- CTA finale della home -->
@@ -1618,7 +1875,7 @@
     <section class="reveal">
       <div class="section-label">Le soluzioni</div>
       <h2 class="section-title text-reveal">Ogni scala è diversa. Anche la soluzione lo è.</h2>
-      <div class="svs-soluzioni">
+      <div class="svs-soluzioni stagger-group">
         <div class="svs-sol-card">
           <h3>Servoscala rettilineo</h3>
           <p>Per scale dritte, senza curve né pianerottoli intermedi. È la soluzione più rapida da installare e la meno invasiva.</p>
@@ -1650,7 +1907,7 @@
     <section class="reveal">
       <div class="section-label">Come funziona</div>
       <h2 class="section-title text-reveal">Dal primo contatto alla prima salita</h2>
-      <div class="svs-steps">
+      <div class="svs-steps stagger-group">
         <div class="svs-step">
           <div class="svs-dot">1</div>
           <h4>Ci contatti</h4>
@@ -1678,7 +1935,7 @@
     <section class="reveal">
       <div class="section-label">Domande frequenti</div>
       <h2 class="section-title text-reveal">Le domande che ci fanno più spesso</h2>
-      <div class="svs-faq">
+      <div class="svs-faq stagger-group">
 
         <div class="svs-faq-item" onclick="this.classList.toggle('open')">
           <div class="svs-faq-q">
@@ -1737,7 +1994,7 @@
       <h2 class="section-title text-reveal">Costa meno di quanto pensi</h2>
       <div class="svs-bonus">
         <h3>Cosa prevede la normativa nel 2026</h3>
-        <ul>
+        <ul class="stagger-group">
           <li><strong>Detrazione 50%</strong> sulle spese per la prima casa (36% per gli altri immobili), recuperabile in 10 anni.</li>
           <li><strong>IVA agevolata al 4%</strong> sui servoscala conformi alla normativa sull'abbattimento delle barriere architettoniche.</li>
           <li><strong>Contributo a fondo perduto</strong> previsto dalla Legge 13/1989, da richiedere al proprio Comune.</li>
@@ -1762,7 +2019,7 @@
     <section class="reveal">
       <div class="section-label">Ascensori</div>
       <h2 class="section-title text-reveal">Ascensori e impianti di sollevamento</h2>
-      <div class="ascensori-intro">
+      <div class="ascensori-intro stagger-group">
         <p>[PLACEHOLDER] Installiamo e manuteniamo ascensori Orona per abitazioni private, condomìni e attività commerciali: dal sopralluogo alla consegna, un solo referente che segue il cantiere dall'inizio alla fine.</p>
         <p>[PLACEHOLDER] Che si tratti di una nuova installazione, della sostituzione di un impianto datato o di un contratto di manutenzione programmata, il primo passo è sempre capire lo spazio a disposizione e le esigenze di chi userà l'ascensore ogni giorno.</p>
         <p>[PLACEHOLDER] Il configuratore 3D della cabina è diventato uno strumento riservato: lo usiamo insieme durante il sopralluogo, sulla foto del tuo edificio, per progettare la cabina dal vivo.</p>
@@ -1781,7 +2038,7 @@
     <section class="reveal">
       <div class="section-label">Scale mobili</div>
       <h2 class="section-title text-reveal">Scale mobili</h2>
-      <div class="ascensori-intro">
+      <div class="ascensori-intro stagger-group">
         <p>[DA CONFERMARE] LGM ha da poco avviato l'installazione e la manutenzione di scale mobili, affiancando questo servizio a servoscala e ascensori. Contenuti in fase di definizione.</p>
         <p>[DA CONFERMARE] Qui andranno i dettagli su tipologie di impianto, ambiti di applicazione (centri commerciali, stazioni, negozi) e modalità di intervento.</p>
       </div>
@@ -1793,7 +2050,7 @@
     <section class="reveal">
       <div class="section-label">Assistenza e manutenzione</div>
       <h2 class="section-title text-reveal">Il tuo impianto, seguito dalle stesse mani. Anno dopo anno.</h2>
-      <div class="ascensori-intro">
+      <div class="ascensori-intro stagger-group">
         <p>[PLACEHOLDER] Un servoscala o un ascensore non si "compra e basta": va tenuto in salute. La manutenzione è il cuore del nostro lavoro dal 1988 — ed è il motivo per cui i nostri clienti sanno sempre chi entra in casa loro.</p>
         <p><strong>Prendiamo in carico anche impianti installati da altri</strong>: dopo un primo controllo gratuito, ti proponiamo un piano di manutenzione su misura.</p>
       </div>
@@ -1802,7 +2059,7 @@
     <section class="reveal">
       <div class="section-label">Cosa comprende</div>
       <h2 class="section-title text-reveal">Quattro modi in cui ci prendiamo cura del tuo impianto</h2>
-      <div class="svs-soluzioni">
+      <div class="svs-soluzioni stagger-group">
         <div class="svs-sol-card">
           <h3>Manutenzione programmata</h3>
           <p>[PLACEHOLDER] Visite periodiche a calendario: controlli, pulizia, lubrificazione e regolazioni previste dalla normativa, con registro degli interventi sempre aggiornato.</p>
@@ -1856,7 +2113,7 @@
     <section class="reveal">
       <div class="section-label">Contatti</div>
       <h2 class="section-title text-reveal">Richiedi il tuo sopralluogo gratuito</h2>
-      <div class="contatti-grid">
+      <div class="contatti-grid stagger-group">
         <div>
           <div class="contatto-riga">📞 0835 381904</div>
           <div class="contatto-riga">✉️ info@lgmelevator.com</div>
@@ -2094,6 +2351,7 @@
       viewEl.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
       viewEl.querySelectorAll('.text-reveal').forEach(el => el.classList.add('in-view'));
       viewEl.querySelectorAll('.hero-fade').forEach(el => el.classList.add('in-view'));
+      viewEl.querySelectorAll('.stagger-group').forEach(el => el.classList.add('stg-in'));
       const tl = viewEl.querySelector('.storia-timeline');
       if (tl) tl.classList.add('in-view');
       viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
@@ -2109,6 +2367,7 @@
       ...viewEl.querySelectorAll('.hero-fade'),
       ...viewEl.querySelectorAll('.storia-timeline'),
       ...viewEl.querySelectorAll('.fiducia-card'),
+      ...viewEl.querySelectorAll('.stagger-group'),
     ];
 
     currentObserver = new IntersectionObserver((entries) => {
@@ -2137,6 +2396,14 @@
             animateCounter(num);
           }
         }
+        if (el.classList.contains('stagger-group')) {
+          // Reveal sfalsato: assegna l'indice progressivo ai figli, così
+          // ognuno entra con un piccolo ritardo crescente (--stg-i in CSS).
+          Array.prototype.forEach.call(el.children, (child, i) => {
+            child.style.setProperty('--stg-i', i);
+          });
+          el.classList.add('stg-in');
+        }
 
         // Smette di osservare dopo la prima attivazione —
         // il reset avviene in resetAnimations al cambio vista
@@ -2157,6 +2424,7 @@
     viewEl.querySelectorAll('.reveal').forEach(el => el.classList.remove('visible'));
     const tl = viewEl.querySelector('.storia-timeline');
     if (tl) tl.classList.remove('in-view');
+    viewEl.querySelectorAll('.stagger-group').forEach(el => el.classList.remove('stg-in'));
     // Reset contatori
     viewEl.querySelectorAll('.fiducia-card .num[data-target]').forEach(el => {
       el.textContent = (el.getAttribute('data-prefix') || '') + '0';
@@ -2198,6 +2466,10 @@
       } catch (e) { /* ambiente sandbox: hash non aggiornabile, non bloccante */ }
     }
     updateElevator();
+
+    // Notifica il cambio vista (usato dal parallax della Tappa 3 per
+    // riallineare le immagini della vista appena mostrata).
+    try { document.dispatchEvent(new CustomEvent('lgm:viewchanged')); } catch (e) {}
 
   }
 
@@ -2386,15 +2658,79 @@
   }
 
   // ============================================
-  // CARD PRODOTTO — riflettore che segue il mouse
+  // CARD PRODOTTO — riflettore che segue il mouse + tilt 3D
+  // (RESTYLING TAPPA 2, 17/07/2026: leggera rotazione prospettica che
+  // segue il cursore, ispirata alle card "vetro" dei riferimenti scelti
+  // dall'utente. Attiva solo su dispositivi con hover reale e disattivata
+  // con prefers-reduced-motion; su touch resta il comportamento attuale.)
   // ============================================
-  document.querySelectorAll('.prodotto-card').forEach(card => {
+  const tiltOk = window.matchMedia('(hover: hover)').matches
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.prodotto-card, .svs-sol-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mx', x + 'px');
+      card.style.setProperty('--my', y + 'px');
+      if (tiltOk) {
+        const rx = ((y / rect.height) - 0.5) * -6; // max ±3°
+        const ry = ((x / rect.width) - 0.5) * 6;
+        card.style.transform = 'perspective(700px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-3px)';
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      if (tiltOk) card.style.transform = '';
     });
   });
+
+  // ============================================
+  // PARALLAX LEGGERO SULLE IMMAGINI (RESTYLING TAPPA 3, 17/07/2026)
+  // Ogni immagine .parallax dentro un .px-wrap si sposta di pochi pixel
+  // in base alla sua posizione rispetto al centro del viewport, creando
+  // un leggero senso di profondità durante lo scroll. Solo desktop
+  // (hover reale), disattivato con prefers-reduced-motion. Throttlato
+  // con requestAnimationFrame per non pesare sullo scroll.
+  // ============================================
+  const parallaxOk = window.matchMedia('(hover: hover)').matches && !reduceMotion;
+  if (parallaxOk) {
+    const PX_FACTOR = 0.08;   // intensità
+    const PX_MAX = 14;        // spostamento massimo in px (resta coperto dal 122%)
+    let pxTicking = false;
+
+    function updateParallax() {
+      pxTicking = false;
+      const activeView = document.querySelector('.view.active');
+      if (!activeView) return;
+      const imgs = activeView.querySelectorAll('.px-wrap .parallax');
+      if (!imgs.length) return;
+      const vpCenter = window.innerHeight / 2;
+      imgs.forEach(img => {
+        const rect = img.getBoundingClientRect();
+        // Salta ciò che è ben fuori dallo schermo
+        if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return;
+        const elCenter = rect.top + rect.height / 2;
+        let py = (vpCenter - elCenter) * PX_FACTOR;
+        py = Math.max(-PX_MAX, Math.min(PX_MAX, py));
+        img.style.setProperty('--py', py.toFixed(1) + 'px');
+      });
+    }
+
+    function requestParallax() {
+      if (!pxTicking) {
+        pxTicking = true;
+        requestAnimationFrame(updateParallax);
+      }
+    }
+
+    window.addEventListener('scroll', requestParallax, { passive: true });
+    window.addEventListener('resize', requestParallax, { passive: true });
+    // Aggancio al cambio vista: showView riporta lo scroll in cima, ma
+    // riallineiamo comunque le immagini della nuova vista.
+    document.addEventListener('lgm:viewchanged', requestParallax);
+    // Primo allineamento
+    requestParallax();
+  }
 
   // ============================================
   // FORM CONTATTI — invio reale via Web3Forms

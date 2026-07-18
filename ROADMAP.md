@@ -69,6 +69,8 @@
 | 3g | ⬜ Completare i `[PLACEHOLDER]`/`[DA CONFERMARE]` della vista Assistenza (frequenza visite, cosa include il canone, tempo medio di intervento, dettagli verifiche di legge) — servono i dati da Marco e Giovanni | Sonnet | No | Minimo |
 | 3h | ⬜ Confermare i due nuovi numeri Fiducia in Home (impianti seguiti in manutenzione, tempo medio di intervento) — decisione/dato dell'utente, poi Sonnet aggiorna i contatori | — | — | Decisione utente |
 | 3e | Verificare coerenza stilistica tra tutte le viste (tema, colori, font, animazioni) | Sonnet | No | Minimo |
+| 3i | ⬜ **Scale mobili — sbloccata dal backlog (17/07/2026)**: nav, card Home e vista dedicata già create come collaudo layout, contenuti ancora `[DA CONFERMARE]`. Da decidere: taglio B2C/B2B (centri commerciali, stazioni, negozi), marchi installati, tipologie di impianto. Poi Sonnet scrive i contenuti reali al posto dei placeholder. | Opus (decisione contenuti) + Sonnet (build) | Sì | Medio |
+| 3j | ⬜ Sostituire le foto stock Unsplash (Servoscala/Ascensori/Scale mobili in Home) con foto reali dei cantieri LGM, quando disponibili | Sonnet | No | Minimo |
 
 ### STEP 4 — Rifinitura grafica e UX
 > Da fare dopo che i contenuti sono definitivi.
@@ -77,6 +79,10 @@
 |---|------|---------|--------------|---------|
 | 4a | Eventuali micro-aggiustamenti dopo primo test su dispositivi reali | Sonnet | No | Variabile |
 | 4b | Sostituire scritta ELEVATOR con font/vettoriale originale (se disponibile) — vale per la nav del sito; la stessa texture nel configuratore 3D (oggi fallback Trebuchet/Arial) va sistemata nel progetto LGM Studio | Sonnet | No | Medio |
+| 4c | ✅ Sfondo pagina automatico giorno/notte (07:00-20:00 chiaro, resto "Blu freddo pulito" `#9FB6D6`) | Sonnet | No | Medio |
+| 4d | ✅ **Restyling "Tappa 1"**: tipografia hero/titoli sezione più grande, numerazione di piano in ogni vista (stile studio di architettura, riusa `liftLabels`), barra "vetro" con micro-punti di forza in Home | Sonnet | No | Alto |
+| 4e | ✅ **Restyling "Tappa 2"**: card vetro smerigliato + tilt 3D al mouse su tutte le card prodotto/soluzioni del sito (Home, Servoscala, Assistenza), Bento Grid asimmetrica per la sezione Fiducia | Sonnet | No | Alto |
+| 4f | ⬜ **Restyling "Tappa 3"** (da fare): animazioni scroll raffinate (elementi sfalsati), parallax leggero sulle immagini, griglia realizzazioni fotografica stile go.arch — quest'ultima ha senso solo con foto vere dei cantieri (dipende da 3j) | Opus (struttura) + Sonnet (build) | Sì | Alto |
 
 ### STEP 5 — Pre-lancio
 > Ultima fase prima della pubblicazione definitiva.
@@ -194,6 +200,12 @@
 | 14/07/2026 | **Fix badge H24 su mobile**: sotto gli 800px il testo del badge (`.h24-widget__text-full`) veniva nascosto del tutto, lasciando visibile solo il pallino colorato — su mobile il badge non comunicava più nulla. Corretto: il testo completo ("🔴 Reperibilità H24 Attiva | Contatta l'assistenza" / "🟢 Uffici Aperti | Contatta l'assistenza") resta sempre visibile su ogni dimensione di schermo, solo font-size e padding si riducono progressivamente sotto 800px e 520px per stare bene nello spazio della nav mobile. | Sonnet | Minimo | ✅ |
 | 14/07/2026 | Creato il progetto Claude separato **"LGM Studio"**, con proprio `ROADMAP.md` e `CONTESTO_PROGETTO.md` dedicati. Questo progetto ("Sito LGM Elevator") resta la fonte solo per `index.html` e il repo `Lgm-sito`. | Opus | Minimo | — (nessuna pubblicazione, riguarda l'organizzazione dei progetti) |
 | 14/07/2026 | **Ristrutturazione Home per bisogno del visitatore + nuova vista Assistenza + nav riordinata a imbuto** (decisione presa insieme all'utente ragionando sui 4 profili di visitatore: chi ha l'impianto fermo, amministratore che valuta manutentore, chi installa ex novo, chi confronta aziende). Home: aggiunta riga area operativa sotto l'hero ("Matera, Basilicata e Puglia" — dato confermato in Fase 0), fascia Assistenza ("anche impianti non installati da noi") con link alla nuova vista, fascia rossa "Impianto fermo?" con bottone che apre la modale H24 esistente, numeri Fiducia ristrutturati (1988 + due card `[DA CONFERMARE]`: impianti seguiti e tempo medio di intervento — il dato commercialmente più forte da trovare), sezione partner (Orona/Handicare/Extrema) con placeholder recensioni, CTA finale. Nuova vista `#assistenza`: intro, 4 card servizio (manutenzione programmata, pronto intervento, verifiche di legge, modernizzazione — con `[PLACEHOLDER]`/`[DA CONFERMARE]`), fascia emergenza, CTA "controllo gratuito". Nav riordinata (orizzontale + pillola): `LGM · Servoscala · Ascensori · Assistenza · Chi siamo · Contatti` — Chi siamo spostata subito prima di Contatti (rimuove l'ultima obiezione prima del contatto). Piani ascensore e viste valide da hash aggiornati di conseguenza (6 piani). Scale mobili (nuovo ramo d'azienda, fresco) volutamente NON inserite: vedi Note. Pubblicato su GitHub Pages (commit `e0c6657`). | Opus | Alto | ✅ |
+| 16/07/2026 | **Sfondo pagina automatico giorno/notte**: variabile `--bg-notte` (#9FB6D6, "Blu freddo pulito", scelta dall'utente tra 3 opzioni visualizzate in anteprima) applicata via classe `.tema-notte` sul `<body>`, impostata da uno script che controlla l'ora ogni 60s (stesso pattern del widget H24): 07:00-20:00 tema chiaro, resto notte. Transizione morbida 0.8s. Solo lo sfondo pagina cambia, non card/testi/accent. | Sonnet | Medio | ✅ |
+| 16/07/2026 | **Scale mobili sbloccata dal backlog** (su richiesta esplicita dell'utente, in deroga alla decisione di standby del 14/07 — vedi Note): voce aggiunta in nav orizzontale e condensata (gap ridotto 32px→20px sotto i 1140px per fare spazio, badge H24 lasciato invariato su richiesta esplicita); terza card nella griglia prodotti Home (`.prodotti-grid` passata da 2 a 3 colonne); vista dedicata `#scalemobili` con contenuti `[DA CONFERMARE]`; `liftFloors`/`liftLabels`/`validViews` aggiornati (7 piani). Obiettivo dichiarato: collaudare come nav e layout si comportano con la nuova voce, non contenuti definitivi. | Sonnet | Medio-Alto | ✅ |
+| 16/07/2026 | **Foto stock nelle 3 card prodotto Home**: sostituiti i placeholder grigi con foto Unsplash (licenza libera, uso commerciale senza attribuzione obbligatoria) — scala interna in legno (Servoscala), porta ascensore in acciaio (Ascensori), scala mobile in un edificio (Scale mobili). Scelte al posto delle foto Google richieste dall'utente per il problema di licenza/copyright: ne è stata spiegata la ragione. Foto generiche, da sostituire con foto reali dei cantieri LGM (vedi STEP 3j). | Sonnet | Minimo | ✅ |
+| 16/07/2026 | Pubblicato su GitHub Pages (commit `f207504`, dopo correzione del messaggio con `git commit --amend`): sfondo giorno/notte, Scale mobili (nav/card/vista), foto Unsplash. | Sonnet | — | ✅ |
+| 17/07/2026 | **Restyling "Tappa 1"** — ispirato a 4 riferimenti visivi forniti dall'utente (go.arch, UrbanTech, Furniture Explorer, un layout SaaS minimale) più due descrizioni testuali di stile (Brightenway, Milkinside): tipografia hero portata da max 52px a max 76px con letter-spacing negativo, titoli di sezione fino a 46px; numerazione di piano ("PT/06", "01/06"…) in ogni vista, riusa `liftLabels` dell'animazione ascensore, creata automaticamente da `showView()` se la vista non ce l'ha nel markup; barra "vetro" (`backdrop-filter`, con fallback) a chiusura dell'hero Home con 3 micro-punti di forza (sopralluogo gratuito, un solo referente, dal 1988). Verificato con screenshot Playwright desktop e mobile prima della consegna. Palette invariata (l'utente ha chiesto di lavorare solo su layout/tipografia/animazioni, non colori). | Sonnet | Alto | ✅ |
+| 17/07/2026 | **Restyling "Tappa 2"**, poi esteso a tutto il sito su richiesta esplicita dell'utente (non solo Home): effetto vetro smerigliato + riflettore che segue il mouse + tilt 3D leggero (max ±3°, solo dispositivi con hover reale, disattivato con `prefers-reduced-motion`) su tutte le card prodotto/soluzioni — Home (3 card) **e** Servoscala/Assistenza (8 card `.svs-sol-card`), stesso listener JS unico. Sezione Fiducia in Home trasformata in Bento Grid asimmetrica: card "1988" grande (2 righe, numero fino a 104px) con testo narrativo ampliato, le altre due card impilate a fianco. Scelto di NON estendere l'effetto a Contatti (form: un tilt sulla superficie mentre si scrive è un problema, non un effetto) né agli step "Come funziona" (sequenza da leggere in ordine, non da esplorare col mouse). Verificato con screenshot Playwright su più viste. | Sonnet | Alto | ✅ |
 
 ---
 
@@ -221,13 +233,12 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Configuratore 3D: **trasferito il 14/07/2026** nel progetto separato
   "LGM Studio" (non online). I dati Orona restano dimostrativi lì; il
   catalogo reale va aggiunto in quel progetto, non in questo.
-- **Scale mobili (backlog, in standby — deciso 14/07/2026)**: LGM ha
-  iniziato da poco a installarle e manutenerle, ma è un ramo troppo fresco
-  per andare sul sito ora (niente card "prossimamente": comunica solo
-  incompletezza). La Home è però già predisposta: quando sarà il momento
-  basterà aggiungere una terza card nella griglia prodotti + eventuale
-  vista dedicata, senza rifare la struttura. Da valutare allora anche il
-  taglio B2B (centri commerciali, stazioni, negozi) nella vista Assistenza.
+- **Scale mobili (sbloccata dal backlog il 17/07/2026)**: LGM ha iniziato da
+  poco a installarle e manutenerle. Nav, card in Home e vista dedicata
+  `#scalemobili` sono già state create (16/07/2026) per collaudare come lo
+  spazio si comporta — contenuti ancora `[DA CONFERMARE]`, vedi STEP 3i.
+  Da valutare anche il taglio B2B (centri commerciali, stazioni, negozi)
+  nella vista Assistenza.
 
 ### Fase 0 — Analisi e contenuti (raccolta dati)
 > Obiettivo dichiarato dall'utente: sito al passo coi tempi, giovanile,
