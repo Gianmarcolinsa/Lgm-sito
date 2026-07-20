@@ -1669,10 +1669,37 @@
     cursor: pointer;
     font-family: inherit;
     text-align: left;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease;
+  }
+  /* Riflesso che attraversa il pad: banda di luce diagonale in loop lento,
+     è ciò che fa "sembrare metallo" invece di grigio piatto. */
+  .svc-hub::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -70%;
+    width: 45%;
+    height: 220%;
+    background: linear-gradient(100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.55) 45%,
+      rgba(255,255,255,0.75) 50%,
+      rgba(255,255,255,0.55) 55%,
+      rgba(255,255,255,0) 100%);
+    transform: rotate(14deg);
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: overlay;
+    animation: svcSheen 6.5s ease-in-out infinite;
+  }
+  @keyframes svcSheen {
+    0%        { left: -70%; opacity: 0; }
+    12%       { opacity: 0.9; }
+    38%       { opacity: 0.9; }
+    50%, 100% { left: 125%; opacity: 0; }
   }
   .svc-hub:hover {
-    transform: translate(-50%, -50%) translateZ(60px) scale(1.03);
     box-shadow:
       inset 0 0 0 1px rgba(255,255,255,0.45),
       0 18px 46px rgba(10,20,34,0.5),
@@ -1713,6 +1740,23 @@
   }
   .svc-hub__clock .sep { animation: svcBlink 2s step-end infinite; }
   @keyframes svcBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .svc-hub__barra {
+    display: block;
+    height: 2px;
+    margin: 8px auto 0;
+    width: 68%;
+    border-radius: 2px;
+    background: rgba(124,181,244,0.16);
+    overflow: hidden;
+  }
+  .svc-hub__barra-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(124,181,244,0.5), #7CB5F4);
+    transition: width 0.9s linear;
+  }
   .svc-hub__stato {
     display: flex;
     align-items: center;
@@ -1751,10 +1795,12 @@
     text-align: center;
   }
   @media (prefers-reduced-motion: reduce) {
-    .svc-hub, .svc-hub__clock .sep, .svc-hub--oncall .svc-hub__led {
+    .svc-hub, .svc-hub__clock .sep, .svc-hub--oncall .svc-hub__led,
+    .svc-hub::before, .svc-hub__barra-fill {
       transition: none;
       animation: none;
     }
+    .svc-hub::before { display: none; }
   }
   .ht-frames { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.25s ease-out; }
   .ht-f { position: absolute; inset: 0; border: 1px solid rgba(24,95,165,0.5); border-radius: 10px; }
@@ -2019,6 +2065,7 @@
               <span id="svcHubMini">--:--</span>
             </span>
             <span class="svc-hub__clock" id="svcHubClock">--<span class="sep">:</span>--</span>
+            <span class="svc-hub__barra"><span class="svc-hub__barra-fill" id="svcHubBarra"></span></span>
             <span class="svc-hub__stato">
               <span class="svc-hub__led"></span>
               <span id="svcHubStato">Caricamento…</span>
@@ -2682,6 +2729,42 @@
 
   updateH24Widget();
   setInterval(updateH24Widget, 60 * 1000); // ricontrolla ogni minuto (cambio fascia orario in tempo reale)
+
+  // Service Hub: le CIFRE dell'orologio si ridisegnano ogni secondo, così il
+  // minuto scatta puntuale invece di arrivare con un ritardo fino a 59s.
+  // Lo STATO (uffici aperti / reperibilità) resta calcolato solo da
+  // updateH24Widget: qui non si duplica nessuna logica, solo la resa a video.
+  (function () {
+    const clock = document.getElementById('svcHubClock');
+    if (!clock) return;
+    const mini = document.getElementById('svcHubMini');
+    const barra = document.getElementById('svcHubBarra');
+    const due = n => (n < 10 ? '0' + n : String(n));
+    function tick() {
+      const now = new Date();
+      const hh = due(now.getHours());
+      const mm = due(now.getMinutes());
+      clock.innerHTML = hh + '<span class="sep">:</span>' + mm;
+      if (mini) mini.textContent = hh + ':' + mm;
+      // La barra si riempie nell'arco del minuto: dà il senso del tempo che
+      // scorre senza mostrare i secondi in cifre (che distrarrebbero).
+      if (barra) {
+        const s = now.getSeconds();
+        // Allo scoccare del minuto torna a zero: senza questo, la transizione
+        // la farebbe scorrere all'indietro da destra a sinistra.
+        if (s === 0) {
+          barra.style.transition = 'none';
+          barra.style.width = '0%';
+          void barra.offsetWidth; // forza il ridisegno prima di riattivare
+          barra.style.transition = '';
+        } else {
+          barra.style.width = ((s / 60) * 100).toFixed(1) + '%';
+        }
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 
   // ============================================
   // MODALE "Reperibilità H24 attiva" — due opzioni dirette
@@ -3515,6 +3598,7 @@
   const hero = document.querySelector('#view-home .hero');
   const spot = document.getElementById('heroSpot');
   const frames = document.getElementById('htFrames');
+  const svcHubEl = document.getElementById('svcHub');
   if (hero && spot && !ridotto) {
     let raf = null, p = null;
     hero.addEventListener('mousemove', function (e) {
@@ -3525,13 +3609,21 @@
         spot.style.left = (p.x - 150) + 'px';
         spot.style.top = (p.y - 150) + 'px';
         spot.style.opacity = '1';
+        const rx = (0.5 - p.y / p.h) * 5;
+        const ry = (p.x / p.w - 0.5) * 7;
         if (frames) frames.style.transform =
-          'rotateX(' + ((0.5 - p.y / p.h) * 5).toFixed(2) + 'deg) rotateY(' + ((p.x / p.w - 0.5) * 7).toFixed(2) + 'deg)';
+          'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+        // Il widget ruota meno delle cornici (circa metà): la differenza di
+        // parallasse lo fa percepire più vicino all'osservatore.
+        if (svcHubEl) svcHubEl.style.transform =
+          'translate(-50%, -50%) translateZ(60px) rotateX(' + (rx * 0.55).toFixed(2) +
+          'deg) rotateY(' + (ry * 0.55).toFixed(2) + 'deg)';
       });
     });
     hero.addEventListener('mouseleave', function () {
       spot.style.opacity = '0';
       if (frames) frames.style.transform = '';
+      if (svcHubEl) svcHubEl.style.transform = '';
     });
   }
 })();
