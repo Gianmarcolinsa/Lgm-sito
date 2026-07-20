@@ -8,7 +8,7 @@
 <meta http-equiv="Expires" content="0">
 <title>LGM Elevator - Servoscala e Ascensori</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #BCC7D8; /* RESTYLING SCENICO 20/07: un passo verso il blu di "2a" */
@@ -1639,6 +1639,123 @@
     perspective: 800px;
     pointer-events: none;
   }
+
+  /* ============================================================
+     SERVICE HUB — widget nel riquadro dell'hero (20/07/2026).
+     Nato dal render Gemini fornito dall'utente, riportato ai colori
+     aziendali: pad argento spazzolato, nessun rosso (nel render il
+     bordo era rosso), LED e display in blu LGM.
+     ⚠️ NON ha logica propria: orario e stato arrivano da
+     updateH24Widget(), il click apre la modale H24 già esistente.
+     Una sola fonte di verità, un solo punto da aggiornare.
+     ============================================================ */
+  .svc-hub {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 270px;
+    transform: translate(-50%, -50%) translateZ(60px);
+    pointer-events: auto;
+    border: none;
+    border-radius: 16px;
+    padding: 4px;
+    background: linear-gradient(150deg,
+      #d7dce2 0%, #8e959d 18%, #5c636b 34%, #b6bdc5 52%,
+      #767d85 70%, #8e959d 86%, #d7dce2 100%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.35),
+      0 12px 34px rgba(10,20,34,0.45),
+      0 0 26px rgba(24,95,165,0.4);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .svc-hub:hover {
+    transform: translate(-50%, -50%) translateZ(60px) scale(1.03);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.45),
+      0 18px 46px rgba(10,20,34,0.5),
+      0 0 38px rgba(24,95,165,0.6);
+  }
+  .svc-hub:focus-visible { outline: 2px solid #7CB5F4; outline-offset: 4px; }
+  .svc-hub__screen {
+    display: block;
+    background: linear-gradient(180deg, #0d1522 0%, #0a1018 100%);
+    border-radius: 12px;
+    padding: 12px 14px 14px;
+    border: 1px solid rgba(124,181,244,0.2);
+  }
+  .svc-hub__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.09em;
+    color: rgba(124,181,244,0.75);
+    text-transform: uppercase;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgba(124,181,244,0.16);
+  }
+  .svc-hub__clock {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 40px;
+    font-weight: 700;
+    color: #7CB5F4;
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+    margin-top: 10px;
+    text-shadow: 0 0 20px rgba(61,141,232,0.45);
+    font-variant-numeric: tabular-nums;
+  }
+  .svc-hub__clock .sep { animation: svcBlink 2s step-end infinite; }
+  @keyframes svcBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .svc-hub__stato {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 8px 0 12px;
+  }
+  .svc-hub__led { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .svc-hub--oncall .svc-hub__stato { color: #7CB5F4; }
+  .svc-hub--oncall .svc-hub__led {
+    background: #7CB5F4;
+    animation: svcLed 1.7s ease-in-out infinite;
+  }
+  .svc-hub--open .svc-hub__stato { color: #5fd18a; }
+  .svc-hub--open .svc-hub__led {
+    background: #34c46b;
+    box-shadow: 0 0 8px rgba(52,196,107,0.5);
+  }
+  @keyframes svcLed {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(124,181,244,0.6), 0 0 10px rgba(124,181,244,0.55); }
+    50%      { box-shadow: 0 0 0 6px rgba(124,181,244,0), 0 0 14px rgba(124,181,244,0.55); }
+  }
+  .svc-hub__cta {
+    display: block;
+    background: rgba(124,181,244,0.12);
+    border: 1px solid rgba(124,181,244,0.4);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #d6e9ff;
+    text-align: center;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .svc-hub, .svc-hub__clock .sep, .svc-hub--oncall .svc-hub__led {
+      transition: none;
+      animation: none;
+    }
+  }
   .ht-frames { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.25s ease-out; }
   .ht-f { position: absolute; inset: 0; border: 1px solid rgba(24,95,165,0.5); border-radius: 10px; }
   .ht-glow {
@@ -1881,9 +1998,13 @@
     <section class="hero" style="border-top:none;">
       <div class="piano-num" id="pianoNum" aria-hidden="true">PT<small>/06</small></div>
       <!-- Vano ascensore 3D (RESTYLING VETRO): cornici in prospettiva, luce
-           che sale, tilt + spotlight che seguono il mouse (script in fondo). -->
-      <div class="hero-tunnel" aria-hidden="true">
-        <div class="ht-frames" id="htFrames">
+           che sale, tilt + spotlight che seguono il mouse (script in fondo).
+           Dentro il vano, il Service Hub (20/07/2026): riempie il riquadro
+           che era nato vuoto. aria-hidden sta sulle sole cornici decorative,
+           non sul contenitore, altrimenti il bottone sarebbe raggiungibile
+           col tab ma invisibile ai lettori di schermo. -->
+      <div class="hero-tunnel">
+        <div class="ht-frames" id="htFrames" aria-hidden="true">
           <div class="ht-f" style="transform:translateZ(0);"></div>
           <div class="ht-f" style="transform:translateZ(-85px); animation:htFramePulse 4s ease-in-out infinite;"></div>
           <div class="ht-f" style="transform:translateZ(-170px); opacity:.6;"></div>
@@ -1891,6 +2012,20 @@
           <div class="ht-f" style="transform:translateZ(-340px); opacity:.3; background:radial-gradient(circle at 50% 55%, rgba(24,95,165,.3), transparent 65%);"></div>
           <div class="ht-glow"></div>
         </div>
+        <button type="button" class="svc-hub" id="svcHub" aria-label="Stato assistenza, contatta LGM">
+          <span class="svc-hub__screen">
+            <span class="svc-hub__top">
+              <span>Service hub — LGM</span>
+              <span id="svcHubMini">--:--</span>
+            </span>
+            <span class="svc-hub__clock" id="svcHubClock">--<span class="sep">:</span>--</span>
+            <span class="svc-hub__stato">
+              <span class="svc-hub__led"></span>
+              <span id="svcHubStato">Caricamento…</span>
+            </span>
+            <span class="svc-hub__cta" id="svcHubCta">Contatta l'assistenza</span>
+          </span>
+        </button>
       </div>
       <div class="hero-spot" id="heroSpot" aria-hidden="true"></div>
       <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
@@ -2508,6 +2643,41 @@
       textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Contatta l\'assistenza</span>';
       widget.setAttribute('aria-label', 'Reperibilità H24 attiva, contatta l\'assistenza');
     }
+
+    // --- Service Hub nell'hero (20/07/2026) ---
+    // Riusa isOfficeOpen appena calcolato: nessun secondo orologio, nessun
+    // secondo calcolo di fascia oraria. Se il widget non c'è (altre viste)
+    // la funzione esce senza errori.
+    aggiornaServiceHub(now, isOfficeOpen);
+  }
+
+  function aggiornaServiceHub(now, isOfficeOpen) {
+    const hub = document.getElementById('svcHub');
+    if (!hub) return;
+    const due = n => (n < 10 ? '0' + n : String(n));
+    const hh = due(now.getHours());
+    const mm = due(now.getMinutes());
+
+    const clock = document.getElementById('svcHubClock');
+    const mini = document.getElementById('svcHubMini');
+    const stato = document.getElementById('svcHubStato');
+    const cta = document.getElementById('svcHubCta');
+
+    if (clock) clock.innerHTML = hh + '<span class="sep">:</span>' + mm;
+    if (mini) mini.textContent = hh + ':' + mm;
+
+    hub.classList.remove('svc-hub--open', 'svc-hub--oncall');
+    if (isOfficeOpen) {
+      hub.classList.add('svc-hub--open');
+      if (stato) stato.textContent = 'Uffici aperti';
+      if (cta) cta.textContent = 'Contatta l\'assistenza';
+      hub.setAttribute('aria-label', 'Uffici aperti, contatta l\'assistenza');
+    } else {
+      hub.classList.add('svc-hub--oncall');
+      if (stato) stato.textContent = 'Reperibilità H24 · attiva';
+      if (cta) cta.textContent = 'Chiama il tecnico di turno';
+      hub.setAttribute('aria-label', 'Reperibilità H24 attiva, chiama il tecnico di turno');
+    }
   }
 
   updateH24Widget();
@@ -2542,6 +2712,15 @@
 
     if (widget) {
       widget.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+      });
+    }
+
+    // Service Hub nell'hero: stessa modale, nessuna logica separata.
+    const svcHub = document.getElementById('svcHub');
+    if (svcHub) {
+      svcHub.addEventListener('click', function (e) {
         e.preventDefault();
         openModal();
       });

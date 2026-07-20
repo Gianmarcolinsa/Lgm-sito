@@ -566,6 +566,30 @@ Puglia nei contatti.
   fotografica costruita in Home con foto placeholder casuali (Picsum):
   resta da sostituire con le foto reali dei cantieri quando disponibili
   (vedi STEP 3j)
+- **Technical Hub** 🟡 prototipo pronto ma NON integrato (20/07/2026).
+  File separato `technical-hub.html`, nato da un render generato con
+  Gemini fornito dall'utente. Widget con pad argento + orologio reale che
+  si espande in un overlay sfocato con la vista tecnica del vano: hotspot
+  cliccabili sull'immagine, scheda componente, contatto mirato.
+  Tre nodi da sciogliere prima di portarlo nel sito:
+  1. **Gli stati dei componenti sono inventati** ("Stato: Verificato",
+     "Temperatura: Normale"). Non esiste telemetria dietro. Su un sito di
+     manutenzione ascensori un cliente può leggerli come dati reali del
+     PROPRIO impianto: o si riformulano come descrizioni generiche del
+     componente, o il pannello va etichettato come illustrativo.
+  2. **L'instradamento per specialista promette un centralino che non
+     c'è**: oggi esiste un solo numero reperibile (per giunta ancora
+     quello personale di test). Nel prototipo tutti i componenti puntano
+     allo stesso numero, ma il testo del pulsante indica cosa si sta
+     segnalando. I ruoli veri vanno riempiti in `COMPONENTI` quando
+     esisteranno.
+  3. **L'immagine di sfondo è un ritaglio a bassa risoluzione** (562×342)
+     con etichette in inglese "cotte" dentro (Counterweight, Guide Rails,
+     Wire Ropes, Safety Gears) e un widget H24 disegnato. Serve una
+     rigenerazione pulita: solo il vano, senza testi, fondo scuro,
+     risoluzione doppia. Le coordinate degli hotspot (oggetto `HOTSPOT`)
+     sono tarate a occhio sul segnaposto: c'è una modalità calibrazione
+     (tasto C) per riallinearle sull'immagine definitiva.
 
 ## File collegati
 - **ROADMAP.md** — elenco operativo di task, modifiche fatte/da fare.
