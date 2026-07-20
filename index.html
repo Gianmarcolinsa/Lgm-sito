@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #C7CDD6;
+    --bg: #BCC7D8; /* RESTYLING SCENICO 20/07: un passo verso il blu di "2a" */
     --surface: #FFFFFF;
     --surface-2: #EDEFF2;
     --text: #161B22;
@@ -35,7 +35,7 @@
        restano identici. Palette scelta con l'utente: "Blu freddo pulito". */
     --bg-notte: #9FB6D6;
   }
-  body { transition: background-color 0.8s ease; }
+  body { transition: background-color 0.8s ease, color 0.8s ease; }
   body.tema-notte { background-color: var(--bg-notte); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -122,6 +122,11 @@
     font-size: 14px;
     color: var(--text-muted);
     transition: color 0.2s ease;
+    /* FIX strutturale (18/07/2026, "Opzione A"): i link della nav non
+       vanno mai più a capo. Senza questa riga, qualunque riduzione di
+       spazio nell'header può far spezzare "Scale mobili"/"Chi siamo"
+       su due righe — bug già capitato una volta. */
+    white-space: nowrap;
   }
   .nav-links a:hover { color: var(--text); }
   @media (max-width: 1140px) {
@@ -1521,9 +1526,240 @@
     margin-bottom: 16px;
   }
 
+
+  /* ============================================================
+     RESTYLING "VETRO" (19/07/2026) — solo estetica, zero struttura.
+     Blocchi: barra frase, nav vetro, porte smerigliate, sheen card,
+     vano 3D hero + spotlight, banda CTA preventivo.
+     ============================================================ */
+
+  /* 1) Barra frase rotante (una frase alla volta, cambia ogni 10 min) */
+  .frase-bar {
+    text-align: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(24,95,165,0.06);
+    cursor: pointer;
+  }
+  .frase-bar span {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    transition: opacity 0.45s ease;
+  }
+
+  /* 2) Nav orizzontale -> pillola in vetro smerigliato allo scroll.
+     Su mobile resta la pillola verticale esistente (qui disattivata). */
+  .logo svg { transition: width 0.35s ease; }
+  nav.nav-vetro {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1080px, calc(100% - 32px));
+    padding: 8px 22px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.55);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 32px var(--ombra);
+    z-index: 2500;
+  }
+  nav.nav-vetro .logo svg { width: 120px; }
+  @media (max-width: 800px) {
+    nav.nav-vetro { position: static; transform: none; width: auto; padding: 28px 0; border-radius: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: none; box-shadow: none; }
+  }
+
+  /* 3) Porte di transizione: dal metallo scuro al vetro smerigliato
+     (demo 3c approvata): si vede la pagina dietro, sfocata e illeggibile. */
+  .lift-panel {
+    background: linear-gradient(180deg, rgba(24,95,165,0.22), rgba(24,95,165,0.13));
+    -webkit-backdrop-filter: blur(11px) saturate(1.3);
+    backdrop-filter: blur(11px) saturate(1.3);
+  }
+  .lift-panel::after { background: none; }
+  .lift-panel.lift-left { border-right: 1px solid rgba(255,255,255,0.4); box-shadow: inset -18px 0 34px -22px rgba(61,141,232,0.45); }
+  .lift-panel.lift-right { border-left: 1px solid rgba(255,255,255,0.4); box-shadow: inset 18px 0 34px -22px rgba(61,141,232,0.45); }
+  .lift-readout {
+    background: rgba(255,255,255,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 16px;
+    padding: 18px 28px;
+  }
+  .lift-readout .lift-num { color: var(--accent); text-shadow: 0 0 26px rgba(61,141,232,0.45); }
+  .lift-readout .lift-label { color: var(--text-muted); }
+
+  /* 4) Riflesso "vetro" che scorre sulle foto all'hover (card prodotto +
+     realizzazioni). Usa ::before di .px-wrap: ::after e i ::before delle
+     card sono gia' occupati da velatura/riflettore esistenti. */
+  .px-wrap { position: relative; }
+  .px-wrap::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    bottom: -30%;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,0.32), transparent);
+    transform: translateX(-160%) rotate(0.001deg);
+    transition: transform 1.7s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .prodotto-card:hover .px-wrap::before,
+  .realizz-card.px-wrap:hover::before { transform: translateX(420%) rotate(0.001deg); }
+
+  /* Didascalia Realizzazioni su lastra di vetro smerigliato */
+  .realizz-cap {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 12px 14px;
+    background: rgba(22,27,34,0.45);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
+    z-index: 3;
+  }
+
+  /* 5) Vano ascensore 3D nell'hero Home + spotlight che segue il mouse */
+  .hero-tunnel {
+    position: absolute;
+    right: 24px;
+    top: 120px;
+    width: 340px;
+    height: 340px;
+    perspective: 800px;
+    pointer-events: none;
+  }
+  .ht-frames { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.25s ease-out; }
+  .ht-f { position: absolute; inset: 0; border: 1px solid rgba(24,95,165,0.5); border-radius: 10px; }
+  .ht-glow {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 50%;
+    height: 70px;
+    margin-top: -35px;
+    transform: translateZ(-170px);
+    background: linear-gradient(180deg, rgba(24,95,165,0), rgba(24,95,165,0.4), rgba(24,95,165,0));
+    filter: blur(6px);
+    animation: htShaftGlow 5s ease-in-out infinite;
+  }
+  @keyframes htShaftGlow {
+    0%   { transform: translateZ(-170px) translateY(150px); opacity: 0; }
+    18%  { opacity: 1; }
+    82%  { opacity: 1; }
+    100% { transform: translateZ(-170px) translateY(-150px); opacity: 0; }
+  }
+  @keyframes htFramePulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.9; } }
+  .hero-spot {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(24,95,165,0.16), transparent 65%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #view-home .hero h1 { max-width: 660px; }
+  #view-home .hero > p { max-width: 560px; }
+  @media (max-width: 1100px) { .hero-tunnel { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .ht-glow, .ht-f { animation: none; }
+    .frase-bar span { transition: none; }
+  }
+
+  /* 6) Banda CTA preventivo a chiusura della Home */
+  .cta-band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    background: var(--accent);
+    border-radius: 14px;
+    padding: 22px 30px;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .cta-band:hover { transform: translateY(-2px); box-shadow: 0 16px 40px var(--ombra); }
+  .cta-band__testo { font-family: 'Sora', sans-serif; font-size: 21px; font-weight: 700; color: #FFFFFF; }
+  .cta-band__area { font-size: 11px; letter-spacing: 0.2em; color: #A8D4FF; text-transform: uppercase; font-weight: 600; }
+
+
+  /* ============================================================
+     NOTTE SCENICA + LUCE DIURNA (20/07/2026) — solo estetica.
+     Richiesta: via di mezzo tra la palette attuale e la demo "2a".
+     - GIORNO: resta chiaro, ma con sfondo leggermente più blu e
+       sfumature di luce (cielo in alto, profondità blu in basso).
+     - NOTTE: diventa una vera notte blu profonda stile "2a":
+       superfici scure, testo chiaro, bagliori. Tutto via variabili
+       + pochi override mirati: struttura e viste intatte.
+     ============================================================ */
+  body {
+    background-image:
+      radial-gradient(1200px 620px at 78% -120px, rgba(255,255,255,0.5), transparent 70%),
+      radial-gradient(1000px 760px at -12% 112%, rgba(12,68,124,0.16), transparent 65%);
+    background-attachment: fixed;
+  }
+  body.tema-notte {
+    --bg: #0B1626;
+    --surface: #111E33;
+    --surface-2: #182742;
+    --text: #E8EDF5;
+    --text-muted: #9DABC2;
+    --accent: #185FA5;
+    --accent-2: #3D8DE8;
+    --accent-deep: #123C6B;
+    --border: rgba(124,181,244,0.20);
+    --ombra: rgba(2,6,14,0.55);
+    --bagliore: rgba(124,181,244,0.4);
+    background-color: #0B1626;
+    color: var(--text);
+    background-image:
+      radial-gradient(1200px 620px at 78% -120px, rgba(61,141,232,0.13), transparent 70%),
+      radial-gradient(1000px 760px at -12% 112%, rgba(3,6,12,0.6), transparent 65%);
+  }
+  /* Vetri e bagliori declinati sulla notte */
+  body.tema-notte nav.nav-vetro { background: rgba(11,22,38,0.55); }
+  body.tema-notte .frase-bar { background: rgba(61,141,232,0.08); }
+  body.tema-notte .lift-readout { background: rgba(11,22,38,0.5); border-color: rgba(124,181,244,0.35); }
+  body.tema-notte .lift-panel { background: linear-gradient(180deg, rgba(24,95,165,0.28), rgba(11,22,38,0.35)); }
+  body.tema-notte .ht-f { border-color: rgba(124,181,244,0.5); }
+  body.tema-notte .hero-spot { background: radial-gradient(circle, rgba(124,181,244,0.2), transparent 65%); }
+  body.tema-notte .prodotto-card:hover,
+  body.tema-notte .fiducia-card:hover,
+  body.tema-notte .svs-sol-card:hover {
+    box-shadow: 0 16px 40px rgba(2,6,14,0.6), 0 0 30px rgba(61,141,232,0.16);
+  }
+  body.tema-notte .cta-band { box-shadow: 0 0 44px rgba(24,95,165,0.35); }
+  body.tema-notte .cta-band:hover { box-shadow: 0 0 60px rgba(61,141,232,0.45); }
+  body.tema-notte .btn-primary { box-shadow: 0 0 30px rgba(24,95,165,0.4); }
+  body.tema-notte .img-placeholder { background: #0E1A2E; }
+  /* Logo leggibile di notte senza toccare l'SVG: alone chiaro dietro le
+     lettere scure ("ELEVATOR") via drop-shadow sul contenitore. */
+  body.tema-notte .logo svg {
+    filter: drop-shadow(0 0 1px rgba(232,237,245,0.9)) drop-shadow(0 0 10px rgba(124,181,244,0.35));
+  }
 </style>
 </head>
 <body>
+
+<!-- Barra frase rotante (RESTYLING VETRO 19/07/2026): una frase alla volta,
+     cambia da sola ogni 10 minuti; click = frase successiva. Frasi e
+     intervallo nello <script id="restyle-vetro"> in fondo al body. -->
+<div class="frase-bar" id="fraseBar" title="Clicca per la frase successiva" aria-live="polite">
+  <span></span>
+</div>
 
 <div class="elevator-rail" aria-hidden="true">
   <div class="elevator-track"></div>
@@ -1644,6 +1880,19 @@
   <div class="view active" id="view-home">
     <section class="hero" style="border-top:none;">
       <div class="piano-num" id="pianoNum" aria-hidden="true">PT<small>/06</small></div>
+      <!-- Vano ascensore 3D (RESTYLING VETRO): cornici in prospettiva, luce
+           che sale, tilt + spotlight che seguono il mouse (script in fondo). -->
+      <div class="hero-tunnel" aria-hidden="true">
+        <div class="ht-frames" id="htFrames">
+          <div class="ht-f" style="transform:translateZ(0);"></div>
+          <div class="ht-f" style="transform:translateZ(-85px); animation:htFramePulse 4s ease-in-out infinite;"></div>
+          <div class="ht-f" style="transform:translateZ(-170px); opacity:.6;"></div>
+          <div class="ht-f" style="transform:translateZ(-255px); animation:htFramePulse 4s ease-in-out 1s infinite;"></div>
+          <div class="ht-f" style="transform:translateZ(-340px); opacity:.3; background:radial-gradient(circle at 50% 55%, rgba(24,95,165,.3), transparent 65%);"></div>
+          <div class="ht-glow"></div>
+        </div>
+      </div>
+      <div class="hero-spot" id="heroSpot" aria-hidden="true"></div>
       <div class="hero-eyebrow hero-fade">LGM Elevator — Matera</div>
       <h1 class="text-reveal">Chi entra in casa tua per l'ascensore? Con noi lo sai sempre.</h1>
       <p class="hero-fade" style="transition-delay:.9s;">Tre generazioni della stessa famiglia, un'unica squadra che segue ogni impianto dal sopralluogo alla manutenzione. Servoscala e ascensori a Matera e in Basilicata dal 1988.</p>
@@ -1671,21 +1920,21 @@
       <h2 class="section-title text-reveal">Tre modi per restituirti libertà di movimento</h2>
       <div class="prodotti-grid stagger-group">
         <div class="prodotto-card">
-          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1583905009587-681022839d3d?w=800&q=80&auto=format&fit=crop" alt="Scala interna con corrimano in legno" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1583905009587-681022839d3d?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="Scala interna con corrimano in legno" loading="lazy"></div>
           <div class="tag">Servoscala</div>
           <h3>Servoscala a poltroncina</h3>
           <p>[PLACEHOLDER] La soluzione più rapida per superare le scale in autonomia, senza opere murarie, adatta a scale dritte o curve.</p>
           <a data-view="servoscala" style="cursor:pointer;">Scopri i modelli →</a>
         </div>
         <div class="prodotto-card">
-          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?w=800&q=80&auto=format&fit=crop" alt="Porta di un ascensore in acciaio con pulsantiera" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="Porta di un ascensore in acciaio con pulsantiera" loading="lazy"></div>
           <div class="tag">Ascensori</div>
           <h3>Ascensori e impianti di sollevamento</h3>
           <p>[PLACEHOLDER] Installazione e manutenzione di ascensori per abitazioni private e condomini, in Basilicata e Puglia.</p>
           <a data-view="ascensori" style="cursor:pointer;">Scopri gli impianti →</a>
         </div>
         <div class="prodotto-card">
-          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1696361297650-94451ee6b0ca?w=800&q=80&auto=format&fit=crop" alt="Scala mobile in un edificio" loading="lazy"></div>
+          <div class="img-placeholder px-wrap"><img class="parallax" src="https://images.unsplash.com/photo-1696361297650-94451ee6b0ca?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="Scala mobile in un edificio" loading="lazy"></div>
           <div class="tag">Scale mobili</div>
           <h3>Scale mobili</h3>
           <p>[DA CONFERMARE] Installazione e manutenzione di scale mobili per attività commerciali e spazi pubblici. Contenuti in fase di definizione.</p>
@@ -1813,6 +2062,14 @@
         <h3>Un sopralluogo gratuito, nessun impegno.</h3>
         <p>Raccontaci la tua situazione: ti diciamo cosa si può fare e quanto costa, senza vincoli.</p>
         <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Contattaci</a>
+      </div>
+    </section>
+
+    <!-- Banda CTA preventivo (RESTYLING VETRO): porta a #contatti via goToView -->
+    <section class="reveal" style="padding-top:0; border-top:none;">
+      <div class="cta-band" data-view="contatti" role="button" tabindex="0">
+        <span class="cta-band__testo">Richiedi un preventivo gratuito &rarr;</span>
+        <span class="cta-band__area">Matera &middot; Basilicata &middot; Puglia</span>
       </div>
     </section>
   </div>
@@ -2116,7 +2373,7 @@
       <div class="contatti-grid stagger-group">
         <div>
           <div class="contatto-riga">📞 0835 381904</div>
-          <div class="contatto-riga">✉️ info@lgmelevator.com</div>
+          <div class="contatto-riga">✉️ <a href="mailto:info@lgmelevator.com">info@lgmelevator.com</a></div>
           <div class="contatto-riga">📍 Via dell'Agricoltura, 20 — 75100 Matera (MT)</div>
           <div class="contatto-riga">[PLACEHOLDER] Aggiungere menzione area operativa: Basilicata e Puglia?</div>
           <button type="button" class="contatti-h24-btn" id="contattiH24Btn">
@@ -3019,6 +3276,85 @@
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') check();
   });
+})();
+</script>
+
+<!-- ============================================================
+     RESTYLING VETRO (19/07/2026) — script estetico autonomo.
+     Non tocca showView/goToView ne' alcuna logica esistente.
+     ============================================================ -->
+<script id="restyle-vetro">
+(function () {
+  const ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1) Barra frase rotante — frasi modificabili qui.
+  const FRASI = [
+    'Salire \u00E8 libert\u00E0',
+    'Chi ti porta su, conta',
+    'Ogni piano \u00E8 una conquista',
+    'La tua casa, tutta, di nuovo tua',
+    'Dal 1988, la stessa stretta di mano'
+  ];
+  const INTERVALLO_MINUTI = 10;
+  const fraseBar = document.getElementById('fraseBar');
+  const fraseTxt = fraseBar ? fraseBar.querySelector('span') : null;
+  let fraseIdx = 0;
+  function setFrase() { fraseTxt.textContent = '\u2726 ' + FRASI[fraseIdx] + ' \u2726'; }
+  function nextFrase() {
+    if (!fraseTxt) return;
+    if (ridotto) { fraseIdx = (fraseIdx + 1) % FRASI.length; setFrase(); return; }
+    fraseTxt.style.opacity = '0';
+    setTimeout(function () { fraseIdx = (fraseIdx + 1) % FRASI.length; setFrase(); fraseTxt.style.opacity = '1'; }, 450);
+  }
+  if (fraseTxt) {
+    setFrase();
+    fraseBar.addEventListener('click', nextFrase);
+    setInterval(nextFrase, INTERVALLO_MINUTI * 60 * 1000);
+  }
+
+  // 2) Nav in vetro allo scroll (solo desktop; su mobile resta la pillola verticale).
+  const navEl = document.querySelector('.wrap > nav');
+  let navFloat = false;
+  let navAltezza = 0;
+  function aggiornaNav() {
+    const f = window.scrollY > 90;
+    if (f === navFloat || !navEl) return;
+    navFloat = f;
+    if (f) {
+      navAltezza = navEl.offsetHeight;
+      navEl.classList.add('nav-vetro');
+      if (window.innerWidth > 800) document.body.style.paddingTop = navAltezza + 'px';
+    } else {
+      navEl.classList.remove('nav-vetro');
+      document.body.style.paddingTop = '';
+    }
+  }
+  window.addEventListener('scroll', aggiornaNav, { passive: true });
+  aggiornaNav();
+
+  // 3) Spotlight + tilt del vano 3D nell'hero Home.
+  const hero = document.querySelector('#view-home .hero');
+  const spot = document.getElementById('heroSpot');
+  const frames = document.getElementById('htFrames');
+  if (hero && spot && !ridotto) {
+    let raf = null, p = null;
+    hero.addEventListener('mousemove', function (e) {
+      const r = hero.getBoundingClientRect();
+      p = { x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height };
+      if (!raf) raf = requestAnimationFrame(function () {
+        raf = null;
+        spot.style.left = (p.x - 150) + 'px';
+        spot.style.top = (p.y - 150) + 'px';
+        spot.style.opacity = '1';
+        if (frames) frames.style.transform =
+          'rotateX(' + ((0.5 - p.y / p.h) * 5).toFixed(2) + 'deg) rotateY(' + ((p.x / p.w - 0.5) * 7).toFixed(2) + 'deg)';
+      });
+    });
+    hero.addEventListener('mouseleave', function () {
+      spot.style.opacity = '0';
+      if (frames) frames.style.transform = '';
+    });
+  }
 })();
 </script>
 

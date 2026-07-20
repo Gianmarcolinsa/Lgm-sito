@@ -560,9 +560,12 @@ Puglia nei contatti.
   `[DA CONFERMARE]` (taglio B2C/B2B, marchi, tipologie impianto)
 - Sostituire le foto stock Unsplash (Servoscala/Ascensori/Scale mobili in
   Home) con foto reali dei cantieri LGM, quando disponibili
-- Restyling "Tappa 3" (da fare): animazioni scroll raffinate, parallax
-  leggero, griglia realizzazioni fotografica — quest'ultima dipende dalle
-  foto reali dei cantieri
+- Restyling "Tappa 3" ✅ completato (17/07/2026): animazioni scroll raffinate
+  (`.stagger-group`, estese a tutto il sito) e parallax leggero sulle
+  immagini (per ora solo Home, unica vista con foto). Griglia realizzazioni
+  fotografica costruita in Home con foto placeholder casuali (Picsum):
+  resta da sostituire con le foto reali dei cantieri quando disponibili
+  (vedi STEP 3j)
 
 ## File collegati
 - **ROADMAP.md** — elenco operativo di task, modifiche fatte/da fare.
@@ -583,8 +586,13 @@ Puglia nei contatti.
   sezione Fiducia, effetto vetro smerigliato + tilt 3D su tutte le card
   prodotto/soluzioni del sito (Home, Servoscala, Assistenza). Palette
   invariata su richiesta esplicita — solo layout/tipografia/animazioni.*
-- *Restyling "Tappa 3" (animazioni scroll raffinate, griglia realizzazioni
-  fotografica) resta da fare, vedi STEP 4f in ROADMAP.*
+- *Restyling "Tappa 3" completato: animazioni scroll a cascata
+  (`.stagger-group`) applicate a tutte le viste con gruppi ripetuti (card,
+  step, FAQ, agevolazioni, blocchi intro, contatti); parallax leggero sulle
+  immagini della Home (uniche presenti nel sito per ora); nuova sezione
+  Realizzazioni in Home con mosaico fotografico stile go.arch — foto
+  placeholder casuali (Picsum), da sostituire con le foto reali dei
+  cantieri LGM quando disponibili (vedi STEP 3j).*
 
 ---
 *Aggiornamento precedente: 13/07/2026 —*
