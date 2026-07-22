@@ -56,16 +56,33 @@
 
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-  /* NAV */
-  nav {
+  /* HEADER — logo separato dalla nav (23/07/2026): il logo vive fuori
+     dalla pillola di navigazione, ancorato a sinistra, sempre statico:
+     non fluttua né si ingrandisce/rimpicciolisce allo scroll. Anche il
+     widget Assistenza H24 resta statico. Solo i link di navigazione
+     (sezioni) diventano la pillola in vetro centrata allo scroll. */
+  .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
     padding: 28px 0;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
   .logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
   }
   .logo svg {
     width: 170px;
@@ -137,6 +154,7 @@
   }
   @media (max-width: 800px) {
     .nav-links { display: none; }
+    .site-header { padding: 20px 0; }
     .logo svg { width: 128px; }
   }
 
@@ -146,13 +164,13 @@
   .h24-widget {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 16px;
+    gap: 6px;
+    padding: 6px 12px;
     border-radius: 999px;
     border: 1px solid var(--border);
     background: var(--surface);
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--text);
     text-decoration: none;
@@ -163,29 +181,34 @@
     transform: translateY(-1px);
     border-color: var(--accent);
   }
-  .h24-widget__dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
+  /* Icona telefono al posto del pallino generico: il colore da solo non
+     basta a comunicare lo stato (accessibilità), quindi resta affiancato
+     dal testo "Aperto"/"Reperibilità" scritto nel widget. */
+  .h24-widget__icon {
+    width: 13px;
+    height: 13px;
     flex-shrink: 0;
+    fill: currentColor;
   }
-  .h24-widget--open .h24-widget__dot { background: #1a7a3c; }
-  .h24-widget--oncall .h24-widget__dot {
-    background: #b3261e;
+  .h24-widget--open .h24-widget__icon { color: #1a7a3c; }
+  .h24-widget--oncall .h24-widget__icon {
+    color: #b3261e;
     animation: h24Pulse 1.6s ease-in-out infinite;
   }
+  .h24-widget__status--open { color: #1a7a3c; }
+  .h24-widget__status--oncall { color: #b3261e; }
   @keyframes h24Pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(179,38,30,0.45); }
-    50%      { box-shadow: 0 0 0 5px rgba(179,38,30,0); }
+    0%, 100% { filter: drop-shadow(0 0 0 rgba(179,38,30,0.45)); }
+    50%      { filter: drop-shadow(0 0 3px rgba(179,38,30,0.55)); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .h24-widget--oncall .h24-widget__dot { animation: none; }
+    .h24-widget--oncall .h24-widget__icon { animation: none; }
   }
   @media (max-width: 800px) {
-    .h24-widget { font-size: 12px; padding: 7px 12px; gap: 6px; }
+    .h24-widget { font-size: 11px; padding: 5px 10px; gap: 5px; }
   }
   @media (max-width: 520px) {
-    .h24-widget { font-size: 11px; padding: 6px 10px; gap: 5px; white-space: normal; }
+    .h24-widget { font-size: 10.5px; padding: 5px 9px; gap: 5px; white-space: normal; }
   }
 
   /* POPUP "Contatta l'assistenza" — due opzioni dirette (tecnico reperibile
@@ -1552,14 +1575,17 @@
   }
 
   /* 2) Nav orizzontale -> pillola in vetro smerigliato allo scroll.
+     Contiene SOLO le sezioni di navigazione (link), mai il logo né il
+     widget Assistenza H24: questi restano statici nell'header e
+     scorrono via normalmente con la pagina.
      Su mobile resta la pillola verticale esistente (qui disattivata). */
-  .logo svg { transition: width 0.35s ease; }
   nav.nav-vetro {
     position: fixed;
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: min(1080px, calc(100% - 32px));
+    width: auto;
+    max-width: calc(100% - 32px);
     padding: 8px 22px;
     border-radius: 999px;
     background: rgba(255,255,255,0.55);
@@ -1568,8 +1594,8 @@
     border: 1px solid var(--border);
     box-shadow: 0 12px 32px var(--ombra);
     z-index: 2500;
+    justify-content: center;
   }
-  nav.nav-vetro .logo svg { width: 120px; }
   @media (max-width: 800px) {
     nav.nav-vetro { position: static; transform: none; width: auto; padding: 28px 0; border-radius: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: none; box-shadow: none; }
   }
@@ -2079,7 +2105,7 @@
 </div>
 
 <div class="wrap">
-  <nav>
+  <div class="site-header">
     <div class="logo" role="img" aria-label="LGM Elevator">
       <svg viewBox="-18 -18 596 300" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -2119,8 +2145,9 @@
         </g>
       </svg>
     </div>
+    <div class="header-actions">
     <a href="tel:" id="h24Widget" class="h24-widget" aria-live="polite">
-      <span class="h24-widget__dot" aria-hidden="true"></span>
+      <svg class="h24-widget__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1L6.6 10.8z"/></svg>
       <span class="h24-widget__text-full" id="h24WidgetText">—</span>
     </a>
 
@@ -2146,6 +2173,7 @@
       </div>
     </div>
 
+    <nav id="mainNav">
     <div class="nav-links-wrap">
       <ul class="nav-links">
         <li><a data-view="home">LGM</a></li>
@@ -2158,7 +2186,9 @@
       </ul>
       <span class="nav-underline" id="navUnderline"></span>
     </div>
-  </nav>
+    </nav>
+    </div>
+  </div>
 
   <nav class="nav-condensed" id="navCondensed" aria-label="Navigazione rapida">
     <a data-view="home" data-target="home" data-lbl="LGM" aria-label="LGM — Home"></a>
@@ -2850,7 +2880,7 @@
       widget.removeAttribute('target');
       widget.removeAttribute('rel');
       widget.classList.add('h24-widget--open');
-      textEl.innerHTML = '🟢 Uffici Aperti <span class="h24-widget__text-office">| Contatta l\'assistenza</span>';
+      textEl.innerHTML = 'Assistenza H24 <span class="h24-widget__status--open">\u00B7 Aperto</span>';
       widget.setAttribute('aria-label', 'Uffici aperti, contatta l\'assistenza');
     } else {
       // Reperibilità: il click apre sempre la modale con le due opzioni
@@ -2859,7 +2889,7 @@
       widget.removeAttribute('target');
       widget.removeAttribute('rel');
       widget.classList.add('h24-widget--oncall');
-      textEl.innerHTML = '🔴 Reperibilità H24 Attiva <span class="h24-widget__text-office">| Contatta l\'assistenza</span>';
+      textEl.innerHTML = 'Assistenza H24 <span class="h24-widget__status--oncall">\u00B7 Reperibilit\u00E0</span>';
       widget.setAttribute('aria-label', 'Reperibilità H24 attiva, contatta l\'assistenza');
     }
 
@@ -3747,20 +3777,19 @@
   }
 
   // 2) Nav in vetro allo scroll (solo desktop; su mobile resta la pillola verticale).
-  const navEl = document.querySelector('.wrap > nav');
+  // Solo i link di navigazione diventano la pillola in vetro (23/07/2026):
+  // logo e widget Assistenza H24 restano sempre statici nell'header e
+  // scorrono via normalmente con la pagina, mai fissi, mai dentro la pillola.
+  const navEl = document.getElementById('mainNav');
   let navFloat = false;
-  let navAltezza = 0;
   function aggiornaNav() {
     const f = window.scrollY > 90;
     if (f === navFloat || !navEl) return;
     navFloat = f;
     if (f) {
-      navAltezza = navEl.offsetHeight;
       navEl.classList.add('nav-vetro');
-      if (window.innerWidth > 800) document.body.style.paddingTop = navAltezza + 'px';
     } else {
       navEl.classList.remove('nav-vetro');
-      document.body.style.paddingTop = '';
     }
   }
   window.addEventListener('scroll', aggiornaNav, { passive: true });

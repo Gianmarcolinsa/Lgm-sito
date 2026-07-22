@@ -101,12 +101,20 @@
 
 ## Fase 1 — Contenuti definitivi (priorità attuale)
 - ⬜ Testo Hero definitivo
-- ⬜ Testo Storia definitivo
+- ✅ Testo Storia definitivo — sezione **Chi siamo** completata il 22/07/2026:
+  storia reale (Franco → Marco e Giovanni, 15 persone), citazione d'apertura
+  ripresa dal sito esistente, 1988 in timeline, statistiche animate 1988 · 15 · 4.
+  Fonte contenuti: lgmelevator.com, riscritta per il web.
 - ⬜ Titolo sezione Fiducia (oggi [PLACEHOLDER])
 - ⬜ Confermare/scrivere i 3 numeri della sezione Fiducia
 - ⬜ Decidere se/come menzionare l'area operativa Puglia nei contatti
 - ⬜ Sostituire le due immagini placeholder (Servoscala, Ascensori) nella Home
 - ⬜ Verificare correttezza contatti (telefono, email, indirizzo)
+  - ✅ **Indirizzo confermato dall'utente il 22/07/2026**: quello corretto è
+    **Via dell'Agricoltura, 20 — 75100 Matera (MT)**, già presente in Contatti.
+    Il vecchio sito riporta "Via Niccolò Paganini, 1": è **superato**, non
+    va riportato nel sito nuovo.
+  - ⬜ Restano da verificare telefono ed email
 
 ## Fase 2 — Rifinitura grafica/UX
 - ✅ Menu mobile: risolto con la nav verticale compatta (pillola a destra,
@@ -122,7 +130,14 @@
   transizione tra le viste, cabina al posto della freccia sul filo,
   nuovo tema chiaro "Acciaio spazzolato" (palette 1c) al posto dello
   scuro generico iniziale.
+- ✅ **Atmosfera 2026 (22/07/2026)**: sfondo animato a shader WebGL (rumore
+  simplex, reattivo al puntatore, palette separate chiaro/notte, fallback a
+  gradiente statico senza WebGL); vetro e glow potenziati sulle card; tema
+  notte arricchito. Varianti 2 e 3 archiviate in fondo a questo file.
 - ⬜ Eventuali micro-aggiustamenti dopo test su dispositivi reali
+- ⬜ **Da verificare su dispositivi reali**: resa dello shader WebGL su
+  telefoni datati e su Safari iOS; se emergessero problemi, il fallback è
+  già previsto (canvas nascosto → resta lo sfondo CSS).
 
 ## Fase 3 — Viste prodotto Servoscala e Ascensori
 - ⬜ Struttura e contenuti vista Servoscala
@@ -144,6 +159,11 @@
 | Data | Modifica | Modello | Effort | Stato |
 |------|----------|---------|--------|-------|
 | 04/07/2026 | Creazione CONTESTO_PROGETTO.md e ROADMAP.md | Sonnet | Minimo | ✅ |
+| 22/07/2026 | Sezione **Chi siamo** completata coi contenuti definitivi (storia Franco → Marco e Giovanni, 15 persone) presi dal sito esistente e riscritti; aggiunta citazione d'apertura, anno 1988 in timeline, riga statistiche animate (1988 · 15 · 4). | Sonnet | Alto | ✅ |
+| 22/07/2026 | Rimossa da Chi siamo la sezione "Cosa facciamo" (card ambiti + badge): duplicava quella già presente in Home. Ripulito CSS/JS rimasto inutilizzato. | Sonnet | Minimo | ✅ |
+| 22/07/2026 | **Atmosfera 2026**: mesh gradient animato + luce ambientale che segue il puntatore, vetro e glow potenziati su card, tema notte arricchito. | Sonnet | Alto | ✅ |
+| 22/07/2026 | **Sfondo animato — 3 varianti** realizzate e confrontate dal vivo; scelta e applicata la **Variante 1 (shader WebGL, rumore simplex, reattivo al mouse, palette separate chiaro/notte)**. Varianti 2 e 3 archiviate per intero in questo file. | Sonnet | Alto | ✅ |
+| 22/07/2026 | **Fix regressione**: la regola z-index degli strati atmosferici includeva `.lift-doors` e `.elevator-rail` (entrambi `fixed`), forzandoli a `relative; z-index:1` → l'animazione delle porte nel cambio vista non compariva più. Regola ristretta a `nav, .wrap, footer, .frase-bar`. | Sonnet | Minimo | ✅ |
 | 04/07/2026 | Nuova homepage `index.html`: struttura ibrida, tema scuro, animazioni scroll-reveal, hover card, timeline storia, mini-configuratore. Testi placeholder. | Sonnet | Medio | ✅ |
 | 04/07/2026 | Ripristino blocco CSS troncato (mancavano `</style>`, `</head>`, `<body>` e stile di quasi tutti i componenti). Nessun contenuto modificato. | Sonnet | Medio | ✅ |
 | 04/07/2026 | Prima pubblicazione riuscita su GitHub Pages. Configurata autenticazione git via PAT. Risolto blocco deploy temporaneo con commit vuoto. | Sonnet | Medio | ✅ |
@@ -270,3 +290,224 @@ Verifica esito: https://github.com/Gianmarcolinsa/Lgm-sito/actions
 - Anno fondazione in proprio di Franco: "Dal 1988" confermato dall'utente
 - Area operativa: Matera/Basilicata + Puglia (il sito attuale non lo comunica)
 - Nome "LGM": resta così, nessun significato da spiegare nel sito
+
+---
+
+## 🎨 Archivio varianti sfondo animato (22/07/2026)
+
+Il 22/07/2026 sono state realizzate e confrontate dal vivo **tre varianti**
+di sfondo animato per tutto il sito. È stata scelta e applicata la
+**Variante 1 (shader WebGL a rumore simplex)** — è quella attualmente in
+`index.html`.
+
+Le altre due restano archiviate **qui sotto per intero**, su richiesta
+esplicita dell'utente, per poterle riattivare in futuro senza doverle
+ricostruire da zero.
+
+### Perché è stata scelta la 1
+- **Pubblico**: movimento lentissimo, non compete col testo mentre si legge
+  (il pubblico LGM include anziani e famigliari che devono compilare il form).
+- **Prestazioni mobile**: gira sulla GPU, non sulla CPU → poca batteria,
+  fluida anche su telefoni datati. La 2 e la 3 ridisegnano centinaia di
+  elementi al secondo via Canvas 2D.
+- **Messaggio**: comunica solidità e cura, coerente con 38 anni di attività.
+  La 3 in particolare comunicava più "azienda tech" che impresa familiare.
+
+### Come sostituire la variante attiva
+1. In `index.html`, individuare il blocco `<script>` in fondo al `<body>`
+   che inizia con il commento della variante attiva e **rimuoverlo**.
+2. Incollare al suo posto il blocco `<script>` della variante desiderata,
+   copiandolo da qui sotto.
+3. Il CSS di supporto (`.atmo-canvas`, riportato sotto) e il tag
+   `<canvas id="atmoCanvas">` sono **comuni a tutte e tre**: NON vanno
+   toccati quando si cambia variante.
+4. Verificare in locale prima di pubblicare.
+
+⚠️ **Trappola già incontrata (22/07/2026)**: la regola CSS che tiene il
+contenuto sopra al canvas **non deve includere** `.lift-doors` (fixed,
+z-index 3000) né `.elevator-rail` (fixed, z-index 500). Forzarli a
+`position: relative; z-index: 1` **rompe l'animazione delle porte**
+dell'ascensore nel cambio vista. La regola corretta è:
+`nav, .wrap, footer, .frase-bar { position: relative; z-index: 1; }`
+
+---
+
+### CSS comune a tutte le varianti (già presente in `index.html`)
+
+```css
+  /* ============================================================
+     SFONDO ANIMATO (prova comparativa 22/07/2026)
+     Il canvas sta dietro a tutto e non intercetta il puntatore.
+     Sostituisce lo strato .atmo-mesh in CSS.
+     ============================================================ */
+  .atmo-mesh { display: none !important; }
+  .atmo-luce { display: none !important; }
+  .atmo-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .atmo-canvas { display: none; }
+  }
+```
+
+---
+
+### Tag HTML comune (già presente, subito dopo `<body>`)
+
+```html
+<canvas id="atmoCanvas" class="atmo-canvas" aria-hidden="true"></canvas>
+```
+
+---
+
+### VARIANTE 2 — Campo di flusso con cursore magnetico (archiviata)
+
+Particelle che seguono correnti invisibili e vengono attratte dal puntatore,
+lasciando una scia. Canvas 2D. Numero di particelle adattivo all'area dello
+schermo (max 700). Palette separate per tema chiaro e tema notte.
+
+**Costo**: medio — ridisegno su CPU a ogni frame.
+
+```html
+<script>
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cv = document.getElementById('atmoCanvas');
+  if (!cv) return;
+  var x = cv.getContext('2d');
+  if (!x) return;
+
+  var W, H, dpr = Math.min(window.devicePixelRatio || 1, 1.5), N, ps = [];
+  var mx = -9999, my = -9999;
+
+  function notte() { return document.body.classList.contains('tema-notte'); }
+  function sfondo() { return notte() ? '#05080F' : '#BCC7D8'; }
+
+  function rz() {
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    N = Math.min(Math.round(W * H / 2600), 700);
+    ps = [];
+    for (var i = 0; i < N; i++) ps.push({ x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0 });
+    x.fillStyle = sfondo(); x.fillRect(0, 0, W, H);
+  }
+  rz();
+  window.addEventListener('resize', rz);
+
+  window.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; }, { passive: true });
+  document.addEventListener('mouseleave', function () { mx = -9999; my = -9999; });
+
+  var t = 0;
+  function campo(px, py, tt) {
+    return Math.sin(px * .0048 + tt * .26) * 1.9 + Math.cos(py * .0068 - tt * .18) * 1.9;
+  }
+
+  (function loop() {
+    t += .016;
+    var dark = notte();
+    x.fillStyle = dark ? 'rgba(5,8,15,0.075)' : 'rgba(188,199,216,0.085)';
+    x.fillRect(0, 0, W, H);
+    for (var i = 0; i < N; i++) {
+      var p = ps[i], a = campo(p.x, p.y, t);
+      p.vx += Math.cos(a) * .1; p.vy += Math.sin(a) * .1;
+      var dx = mx - p.x, dy = my - p.y, d2 = dx * dx + dy * dy;
+      if (d2 < 26000 && d2 > 1) {
+        var d = Math.sqrt(d2), f = (1 - d / 161) * 1.4;
+        p.vx += (dx / d) * f; p.vy += (dy / d) * f;
+      }
+      p.vx *= .93; p.vy *= .93;
+      var ox = p.x, oy = p.y;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      var sp = Math.min(Math.sqrt(p.vx * p.vx + p.vy * p.vy) / 2.6, 1);
+      if (dark) {
+        x.strokeStyle = 'rgba(' + Math.round(70 + 130 * sp) + ',' + Math.round(140 + 90 * sp) + ',255,' + (.12 + .48 * sp) + ')';
+      } else {
+        x.strokeStyle = 'rgba(' + Math.round(30 + 40 * sp) + ',' + Math.round(70 + 60 * sp) + ',' + Math.round(130 + 60 * sp) + ',' + (.10 + .34 * sp) + ')';
+      }
+      x.lineWidth = .6 + sp * 1.0;
+      x.beginPath(); x.moveTo(ox, oy);
+      if (Math.abs(p.x - ox) < 40 && Math.abs(p.y - oy) < 40) x.lineTo(p.x, p.y);
+      x.stroke();
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+```
+
+---
+
+### VARIANTE 3 — Matrice di punti con onda reattiva (archiviata)
+
+Superficie di punti che respira e si increspa attorno al cursore, come acqua
+toccata. Canvas 2D. Passo griglia adattivo (26px sotto i 700px di larghezza,
+altrimenti 21px). Palette separate per tema chiaro e tema notte.
+
+**Costo**: medio-alto su schermi grandi — è la più pesante delle tre.
+
+```html
+<script>
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cv = document.getElementById('atmoCanvas');
+  if (!cv) return;
+  var x = cv.getContext('2d');
+  if (!x) return;
+
+  var W, H, dpr = Math.min(window.devicePixelRatio || 1, 1.5), G;
+  var mx = -9999, my = -9999;
+
+  function notte() { return document.body.classList.contains('tema-notte'); }
+
+  function rz() {
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    G = W < 700 ? 26 : 21;
+  }
+  rz();
+  window.addEventListener('resize', rz);
+
+  window.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; }, { passive: true });
+  document.addEventListener('mouseleave', function () { mx = -9999; my = -9999; });
+
+  var t = 0;
+  (function loop() {
+    t += .02;
+    var dark = notte();
+    x.fillStyle = dark ? '#05080F' : '#BCC7D8';
+    x.fillRect(0, 0, W, H);
+    for (var gy = 0; gy < H + G; gy += G) {
+      for (var gx = 0; gx < W + G; gx += G) {
+        var wv = Math.sin(gx * .018 + t * .95) * Math.cos(gy * .022 - t * .66);
+        var dx = gx - mx, dy = gy - my, d = Math.sqrt(dx * dx + dy * dy);
+        var rp = 0;
+        if (d < 190) rp = Math.cos(d * .05 - t * 3.2) * (1 - d / 190);
+        var v = wv * .5 + rp * 1.2;
+        var pos = Math.min(Math.max(v, 0), 1);
+        var rr = 1.0 + Math.max(v, -.9) * 1.7;
+        if (rr < .25) rr = .25;
+        if (dark) {
+          x.fillStyle = 'rgba(' + Math.round(48 + 120 * pos) + ',' + Math.round(120 + 80 * pos) + ',' + Math.round(150 + 95 * pos) + ',' + (.13 + pos * .68) + ')';
+        } else {
+          x.fillStyle = 'rgba(' + Math.round(28 + 30 * pos) + ',' + Math.round(62 + 55 * pos) + ',' + Math.round(115 + 60 * pos) + ',' + (.10 + pos * .42) + ')';
+        }
+        x.beginPath();
+        x.arc(gx + Math.cos(t * .5 + gy * .01) * 1.6, gy + v * 3.4, rr, 0, 6.283);
+        x.fill();
+      }
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+```

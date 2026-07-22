@@ -386,7 +386,7 @@ per performance):
     senza questa verifica. (Regola aggiunta 13/07/2026 su richiesta diretta
     dell'utente.)
 
-## Struttura attuale del sito — aggiornata 11/07/2026
+## Struttura attuale del sito — aggiornata 22/07/2026
 **Tema**: chiaro elegante "Acciaio spazzolato" (palette 1c) — grigio-blu
 (`#C7CDD6`) con texture spazzolata leggerissima sullo sfondo pagina, testo
 quasi nero (`#161B22`), accento **blu metallizzato del logo** (`#0C447C`
@@ -396,6 +396,33 @@ resta usato solo dove funziona meglio a prescindere dal tema pagina — porte
 dell'ascensore (transizione tra viste), sfondo del visualizzatore 3D del
 configuratore, notifiche/toast. Tutti gli altri colori del sito passano
 dalle variabili centralizzate in `:root`.
+
+**Sfondo animato — shader WebGL** (22/07/2026): dietro a tutto il sito gira un
+`<canvas id="atmoCanvas">` fisso (`z-index: 0`, `pointer-events: none`) che
+disegna un gradiente fluido generato con **rumore simplex in GLSL** (fbm a 5
+ottave), lo stesso approccio usato da Stripe. Non è un'animazione in loop: il
+movimento è calcolato in tempo reale sulla GPU e non si ripete mai. Reagisce
+al puntatore con un alone luminoso interpolato (smorzamento 0.05, così segue
+il mouse con dolcezza invece di inseguirlo). Ha **due palette separate**,
+scelte via uniform `dk` in base alla classe `tema-notte` sul `<body>`.
+Fallback: se WebGL non è disponibile o lo shader non compila, il canvas si
+nasconde e resta lo sfondo CSS. Disattivato con `prefers-reduced-motion`.
+Sostituisce gli strati CSS `.atmo-mesh` / `.atmo-luce` introdotti poche ore
+prima lo stesso giorno (restano nel CSS ma con `display: none`).
+Sono state realizzate **3 varianti** confrontate dal vivo dall'utente; le due
+scartate (campo di flusso con cursore magnetico; matrice di punti con onda
+reattiva) sono **archiviate per intero, codice compreso, in `ROADMAP.md`**
+nella sezione "Archivio varianti sfondo animato", con istruzioni per
+scambiarle.
+
+⚠️ **Trappola da non ripetere** (bug reale del 22/07/2026): la regola CSS che
+tiene il contenuto sopra al canvas **non deve includere elementi che hanno già
+una loro `position` e `z-index`**. Includendo `.lift-doors` (fixed, z-3000) e
+`.elevator-rail` (fixed, z-500) e forzandoli a `position: relative; z-index: 1`,
+**l'animazione delle porte dell'ascensore ha smesso di comparire** nel cambio
+vista (restava visibile solo il display dei piani, facendo sembrare che le
+porte fossero state sostituite da un contatore). La regola corretta è:
+`nav, .wrap, footer, .frase-bar { position: relative; z-index: 1; }`
 
 **Navigazione (riordinata 14/07/2026 — logica "a imbuto" per bisogno,
 non per organigramma aziendale)**:
@@ -431,8 +458,13 @@ non per organigramma aziendale)**:
   su richiesta esplicita del cliente. Nascosto su mobile.
 - Testi cinematici parola per parola (hero + tutti i titoli di sezione)
 - Timeline "Chi siamo" che si disegna da sola, voci a cascata
-- Numeri Fiducia che contano da 0 al valore finale
+- Numeri Fiducia che contano da 0 al valore finale — stesso meccanismo
+  (`animateCounter`, `.fiducia-card .num[data-target]`) riusato dal
+  22/07/2026 anche per le statistiche di **Chi siamo** (1988 · 15 · 4)
 - Card prodotto con riflettore che segue il mouse
+- Vetro potenziato su `.prodotto-card`, `.svs-sol-card`, `.fiducia-card`
+  (22/07/2026): `backdrop-filter: blur(14px) saturate(1.15)`, bordo
+  superiore schiarito, ombra hover più cinematografica con accenno di glow
 - Scroll-reveal su tutti gli elementi animabili via **IntersectionObserver**
   (ogni elemento si anima al suo ingresso nel viewport durante lo scroll; tutto riparte da capo
   ad ogni cambio di vista)
@@ -540,13 +572,18 @@ Puglia nei contatti.
 ⚠️ La vista Ascensori ha intro + CTA al configuratore, ma i contenuti reali sono da completare in Fase 3.
 
 ## Cose note da sistemare (backlog aperto)
-- Scrivere i testi definitivi al posto dei `[PLACEHOLDER]` residui (Storia, Fiducia)
+- Scrivere i testi definitivi al posto dei `[PLACEHOLDER]` residui (Fiducia,
+  Servoscala, Scale mobili, foto). ✅ **Storia completata il 22/07/2026** —
+  vedi "Chi siamo" più sotto
 - Inserire le immagini reali al posto dei placeholder
 - Completare i 6 placeholder `[DA CONFERMARE]` della vista Servoscala (dipende dalla scheda compilata da Marco e Giovanni)
 - Completare la vista Ascensori con contenuti reali
 - Aggiungere il catalogo Orona reale al configuratore 3D
 - Decidere titolo definitivo sezione Fiducia
-- Verificare correttezza contatti (telefono, email, indirizzo)
+- Verificare correttezza contatti: ✅ **indirizzo confermato dall'utente il
+  22/07/2026** = **Via dell'Agricoltura, 20 — 75100 Matera (MT)** (già in
+  Contatti). Il vecchio sito riporta "Via Niccolò Paganini, 1": è **superato**,
+  non va usato. ⬜ Restano da verificare telefono ed email
 - Decidere se/come menzionare area operativa Puglia nei contatti
 - SEO (meta description, Open Graph, favicon, alt text immagini)
 - Accessibilità: contrasto colori, focus keyboard, screen reader
@@ -596,6 +633,17 @@ Puglia nei contatti.
      risoluzione doppia. Le coordinate degli hotspot (oggetto `HOTSPOT`)
      sono tarate a occhio sul segnaposto: c'è una modalità calibrazione
      (tasto C) per riallinearle sull'immagine definitiva.
+
+- **Chi siamo** ✅ completata (22/07/2026): contenuti definitivi ripresi dal
+  sito esistente lgmelevator.com e **riscritti** per il web (non copiati parola
+  per parola, su richiesta dell'utente). Include: citazione d'apertura ("il
+  viaggio breve in ascensore"), storia Franco → Marco e Giovanni, 15 persone
+  in squadra, 1988 in timeline, statistiche animate. **Rimossa** una sezione
+  "Cosa facciamo" (card ambiti + badge categorie + badge sede) che era stata
+  aggiunta e poi tolta lo stesso giorno perché **duplicava** la sezione già
+  presente in Home — lezione: prima di aggiungere blocchi a una vista,
+  verificare che il contenuto non esista già altrove nel sito.
+  ⬜ Resta aperto: valutare se aggiungere una foto reale della squadra/sede.
 
 ## File collegati
 - **ROADMAP.md** — elenco operativo di task, modifiche fatte/da fare.
