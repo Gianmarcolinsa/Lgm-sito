@@ -566,12 +566,18 @@ Puglia nei contatti.
   fotografica costruita in Home con foto placeholder casuali (Picsum):
   resta da sostituire con le foto reali dei cantieri quando disponibili
   (vedi STEP 3j)
-- **Technical Hub** 🟡 prototipo pronto ma NON integrato (20/07/2026).
-  File separato `technical-hub.html`, nato da un render generato con
-  Gemini fornito dall'utente. Widget con pad argento + orologio reale che
-  si espande in un overlay sfocato con la vista tecnica del vano: hotspot
-  cliccabili sull'immagine, scheda componente, contatto mirato.
-  Tre nodi da sciogliere prima di portarlo nel sito:
+- **Service Hub** ✅ widget integrato in Home (20/07/2026), nel riquadro
+  dell'hero. Nato da un render generato con Gemini fornito dall'utente,
+  ricolorato senza rosso (colori aziendali), pad argento. Riusa la logica
+  H24 già esistente (`updateH24Widget()` e la modale con i due numeri):
+  nessuno stato duplicato. Tilt 3D, riflesso metallico animato e orologio
+  al secondo aggiunti su richiesta esplicita di renderlo "dinamico".
+  🟡 **Resta aperta solo la parte NON integrata**: il prototipo isolato
+  `technical-hub.html` contiene anche un pannello espanso con vista esplosa
+  del vano a hotspot (motore, funi, guide, freni) — scartato su richiesta
+  dell'utente ("elimina questa cosa e lascia solo il widget"), il file
+  resta com'è per un'eventuale ripresa futura. Se si riprende, questi nodi
+  erano ancora aperti quando è stato messo da parte:
   1. **Gli stati dei componenti sono inventati** ("Stato: Verificato",
      "Temperatura: Normale"). Non esiste telemetria dietro. Su un sito di
      manutenzione ascensori un cliente può leggerli come dati reali del
@@ -596,7 +602,7 @@ Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 17/07/2026 —*
+*Ultimo aggiornamento: 20/07/2026 —*
 - *Sfondo pagina automatico giorno/notte (07:00-20:00 chiaro, resto "Blu
   freddo pulito" #9FB6D6), stesso pattern di ricontrollo orario del widget H24.*
 - *Scale mobili sbloccata dal backlog (deroga esplicita alla decisione di
@@ -617,6 +623,20 @@ Puglia nei contatti.
   Realizzazioni in Home con mosaico fotografico stile go.arch — foto
   placeholder casuali (Picsum), da sostituire con le foto reali dei
   cantieri LGM quando disponibili (vedi STEP 3j).*
+- *Fix critico: email di contatto corrotta da Cloudflare (il file
+  restituito dopo il lavoro su Claude Design era stato salvato dal sito
+  live invece che dal sorgente) — ripristinato l'indirizzo vero come
+  mailto pulito. Ripristinata anche la protezione `white-space:nowrap`
+  sui link nav, persa nello stesso passaggio.*
+- *Service Hub nell'hero Home: il riquadro "vano ascensore", nato vuoto,
+  ora contiene un widget con orologio reale e stato di reperibilità, nato
+  da un render Gemini fornito dall'utente e ricolorato senza rosso. Riusa
+  la logica H24 già esistente in nav (stesso calcolo orario, stessa
+  modale con i due numeri) invece di duplicarla. Tilt 3D, riflesso
+  metallico animato e orologio al secondo aggiunti in un secondo momento
+  su richiesta di renderlo "dinamico". Il pannello espanso con vista
+  esplosa del vano (hotspot sui componenti) è stato scartato su richiesta
+  esplicita — resta come prototipo isolato non integrato, vedi backlog.*
 
 ---
 *Aggiornamento precedente: 13/07/2026 —*

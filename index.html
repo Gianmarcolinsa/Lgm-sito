@@ -1913,6 +1913,34 @@
   body.tema-notte .logo svg {
     filter: drop-shadow(0 0 1px rgba(232,237,245,0.9)) drop-shadow(0 0 10px rgba(124,181,244,0.35));
   }
+
+  /* ============================================================
+     ARRICCHIMENTO SEZIONE CHI SIAMO (22/07/2026) — citazione,
+     riga statistiche e card "ambiti di lavoro" con lo stesso
+     linguaggio vetro/riflettore già usato per le card prodotto.
+     ============================================================ */
+  .chisiamo-quote {
+    font-family: 'Sora', sans-serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.55;
+    color: var(--text);
+    max-width: 640px;
+    margin: 4px 0 36px;
+    padding-left: 20px;
+    border-left: 3px solid var(--accent-2);
+  }
+  .chisiamo-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  @media (max-width: 700px) {
+    .chisiamo-stats { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -2260,21 +2288,22 @@
   <div class="view" id="view-chisiamo">
     <section class="reveal">
       <div class="section-label">Chi siamo</div>
-      <h2 class="section-title text-reveal">[PLACEHOLDER] Una storia che parte da un tecnico in viaggio per l'Italia</h2>
+      <h2 class="section-title text-reveal">Da oltre trent'anni portiamo le persone in tutta sicurezza</h2>
+      <blockquote class="chisiamo-quote">Sappiamo che per voi quello in ascensore è un viaggio breve, ma dietro quei pochi secondi c'è tutto il nostro sapere e tutto il nostro lavoro.</blockquote>
       <div class="storia-grid">
         <div class="storia-testo">
-          <p>[PLACEHOLDER] Franco lavorava come tecnico di ascensori, spostandosi di città in città — da Bitonto a Torino, Roma, Bari — prima di stabilirsi a Matera per costruire una famiglia e, anni dopo, un'azienda tutta sua.</p>
-          <p>[PLACEHOLDER] Oggi LGM Elevator è guidata dai figli Marco e Giovanni, che portano avanti lo stesso lavoro con la stessa cura, affiancati da un team di quasi 15 persone tra ufficio e tecnici sul campo.</p>
+          <p>Tutto parte da Franco, tecnico di ascensori che per anni si è spostato di città in città — da Bitonto a Torino, Roma, Bari — prima di stabilirsi a Matera e mettersi in proprio, dando vita a quella che sarebbe diventata LGM Elevator.</p>
+          <p>Oggi l'azienda è guidata da Marco e Giovanni, i suoi figli, che portano avanti lo stesso impegno con la stessa cura. Con loro lavora un team di 15 persone tra ufficio e tecnici sul campo: un unico interlocutore per progettazione, installazione, manutenzione e assistenza di ascensori, piattaforme elevatrici e servoscala.</p>
         </div>
         <div class="storia-timeline">
           <div class="tl-line"></div>
           <div class="tl-item" onclick="this.classList.toggle('open')">
             <div class="tl-header">
               <div class="tl-year">1988</div>
-              <div class="tl-text"><strong>Le origini.</strong></div>
+              <div class="tl-text"><strong>Un tecnico in viaggio.</strong></div>
               <span class="tl-chevron">▾</span>
             </div>
-            <div class="tl-detail">[PLACEHOLDER] Franco, tecnico di ascensori girato per l'Italia — Bitonto, Torino, Roma, Bari — decide di mettersi in proprio a Matera, dopo anni di gavetta come dipendente. Parte con un solo aiutante.</div>
+            <div class="tl-detail">Franco lavora come tecnico di ascensori girando l'Italia — Bitonto, Torino, Roma, Bari — prima di stabilirsi a Matera e mettersi in proprio, gettando le basi di quella che diventerà LGM Elevator.</div>
           </div>
           <div class="tl-item" onclick="this.classList.toggle('open')">
             <div class="tl-header">
@@ -2282,7 +2311,7 @@
               <div class="tl-text"><strong>Il passaggio.</strong></div>
               <span class="tl-chevron">▾</span>
             </div>
-            <div class="tl-detail">[PLACEHOLDER] Marco e Giovanni entrano in azienda: Marco sul lato tecnico e operativo, Giovanni sulla gestione e la parte finanziaria. Due ruoli complementari, un'unica direzione.</div>
+            <div class="tl-detail">Marco e Giovanni entrano in azienda e ne prendono progressivamente la guida, portando avanti il lavoro del padre con la stessa dedizione.</div>
           </div>
           <div class="tl-item" onclick="this.classList.toggle('open')">
             <div class="tl-header">
@@ -2290,8 +2319,22 @@
               <div class="tl-text"><strong>LGM Elevator.</strong></div>
               <span class="tl-chevron">▾</span>
             </div>
-            <div class="tl-detail">[PLACEHOLDER] ~14 persone tra ufficio e tecnici, due titolari, un'azienda che cammina con le proprie gambe — e continua a crescere.</div>
+            <div class="tl-detail">15 persone tra ufficio e tecnici, guidate da Marco e Giovanni: un interlocutore unico per ogni aspetto del sollevamento di persone o cose — progettazione, installazione, manutenzione, assistenza.</div>
           </div>
+        </div>
+      </div>
+      <div class="chisiamo-stats stagger-group">
+        <div class="fiducia-card">
+          <div class="num" data-target="1988">0</div>
+          <div class="label">Anno di fondazione</div>
+        </div>
+        <div class="fiducia-card">
+          <div class="num" data-target="15">0</div>
+          <div class="label">Persone in squadra, tra ufficio e tecnici</div>
+        </div>
+        <div class="fiducia-card">
+          <div class="num" data-target="4">0</div>
+          <div class="label">Aree di intervento, dalla progettazione all'assistenza</div>
         </div>
       </div>
     </section>
