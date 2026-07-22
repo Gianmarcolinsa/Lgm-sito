@@ -320,10 +320,20 @@ per performance):
 6. **Claude non ha memoria tra chat diverse.** Ogni nuova sessione di lavoro
    deve iniziare allegando le versioni più aggiornate di `index.html`,
    `CONTESTO_PROGETTO.md` e `ROADMAP.md`.
-7. **L'aggiornamento di `ROADMAP.md` e `CONTESTO_PROGETTO.md` non è
-   automatico.** Claude li aggiorna solo se l'utente lo chiede esplicitamente.
-   Se la chat sta per chiudersi senza che sia stato richiesto, Claude può
-   proporre di aggiornare i file — ma è una proposta, non un'azione automatica.
+7. ⚠️ **AGGIORNATA 23/07/2026 — L'aggiornamento di `ROADMAP.md` e
+   `CONTESTO_PROGETTO.md` è ORA AUTOMATICO**, non più su richiesta. Ogni
+   volta che una modifica a `index.html` viene approvata e pubblicata,
+   Claude aggiorna **sempre**, senza doverlo sentirsi chiedere:
+   - una nuova riga nel log cronologia di `ROADMAP.md` (data, descrizione,
+     modello, effort, stato);
+   - le sezioni pertinenti di `CONTESTO_PROGETTO.md` (es. "Struttura
+     attuale del sito", descrizioni tecniche di componenti toccati) e il
+     blocco finale "Ultimo aggiornamento" (spostando il precedente sotto
+     come "Aggiornamento precedente").
+   Questo passaggio va fatto nella stessa risposta della consegna del file,
+   non rimandato né proposto: è parte fissa della consegna, come il comando
+   da terminale. (Regola precedente, che lo rendeva opzionale/su richiesta,
+   sostituita su istruzione esplicita dell'utente il 23/07/2026.)
 8. **Le modifiche fatte in sessioni precedenti non vanno mai toccate** senza
    ragione esplicita. Il file di base è sempre quello consegnato nell'ultima
    sessione approvata, mai una versione precedente del progetto.
@@ -386,7 +396,7 @@ per performance):
     senza questa verifica. (Regola aggiunta 13/07/2026 su richiesta diretta
     dell'utente.)
 
-## Struttura attuale del sito — aggiornata 22/07/2026
+## Struttura attuale del sito — aggiornata 23/07/2026
 **Tema**: chiaro elegante "Acciaio spazzolato" (palette 1c) — grigio-blu
 (`#C7CDD6`) con texture spazzolata leggerissima sullo sfondo pagina, testo
 quasi nero (`#161B22`), accento **blu metallizzato del logo** (`#0C447C`
@@ -425,7 +435,7 @@ porte fossero state sostituite da un contatore). La regola corretta è:
 `nav, .wrap, footer, .frase-bar { position: relative; z-index: 1; }`
 
 **Navigazione (riordinata 14/07/2026 — logica "a imbuto" per bisogno,
-non per organigramma aziendale)**:
+non per organigramma aziendale; header ristrutturato 22-23/07/2026)**:
 - Nav orizzontale in alto: voci `LGM` (→ Home), `Servoscala`, `Ascensori`,
   `Assistenza`, `Chi siamo`, `Contatti` — tutte cambiano vista via JS.
   `Chi siamo` spostata subito prima di `Contatti` (di proposito: rimuove
@@ -438,6 +448,19 @@ non per organigramma aziendale)**:
   nav orizzontale, etichetta al passaggio del mouse; voce "LGM" come primo
   puntino (sostituisce il vecchio bottone "L")
 - Il **logo SVG** in alto a sinistra è anch'esso cliccabile → torna alla Home
+- ⚠️ **Header ristrutturato (22-23/07/2026)**: `.site-header` ora contiene
+  tre elementi affiancati ma **indipendenti**: `.logo` (170px, invariato),
+  `.header-actions` (widget Assistenza H24) e `nav#mainNav` (solo
+  `.nav-links-wrap`, i 7 link). Allo scroll oltre 90px SOLO `#mainNav`
+  diventa la pillola in vetro smerigliato fissa e centrata
+  (`nav.nav-vetro`, `justify-content:center`) — **logo e widget Assistenza
+  H24 restano sempre statici**, non si fissano, non si ingrandiscono/
+  rimpiccioliscono, scorrono via con la pagina come qualunque altro
+  contenuto. Prima versione tentata (logo ingrandito a 220px + `position:
+  fixed` allo scroll) è stata scartata dall'utente dopo averla vista dal
+  vivo: causava sovrapposizione col contenuto sottostante e il widget
+  Assistenza finiva comunque dentro la pillola flottante, non voluto.
+  Vedi log dettagliato in `ROADMAP.md`.
 
 **Porte dell'ascensore — transizione tra le viste** (11/07/2026):
 - Ogni cambio vista (click su nav, card, bottoni con `data-view`) chiude le
@@ -496,14 +519,24 @@ foto della targa reale (blu metallizzato pulsante) + scritta "ELEVATOR"
   nello stesso istante, ovunque.
 
 **Widget H24 dinamico in nav** (13/07/2026, P2 Blocco 1 — comportamento al
-click riscritto il 14/07/2026): badge cliccabile sempre visibile in `<nav>`,
-accanto al logo, responsive su desktop e mobile. Cambia automaticamente
-testo/colore in base a giorno/ora (Lun-Ven 08:00-18:30 = orario ufficio,
-resto del tempo = reperibilità H24), ma **il click apre sempre la stessa
-modale**, in qualsiasi orario — verde/rosso sono solo indicatori visivi di
-stato, non cambiano più cosa succede al click:
-- **Orario ufficio**: badge verde "🟢 Uffici Aperti".
-- **Reperibilità H24**: badge rosso pulsante "🔴 Reperibilità H24 Attiva".
+click riscritto il 14/07/2026; aspetto ridisegnato 22-23/07/2026): badge
+cliccabile sempre visibile nell'header, accanto ai link di navigazione (dentro
+`.header-actions`, statico — vedi sopra), responsive su desktop e mobile.
+Cambia automaticamente testo/colore in base a giorno/ora (Lun-Ven 08:00-18:30
+= orario ufficio, resto del tempo = reperibilità H24), ma **il click apre
+sempre la stessa modale**, in qualsiasi orario — verde/rosso sono solo
+indicatori visivi di stato, non cambiano più cosa succede al click:
+- **Orario ufficio**: icona telefono verde + testo **"Assistenza H24 · Aperto"**.
+- **Reperibilità H24**: icona telefono rossa pulsante + testo **"Assistenza
+  H24 · Reperibilità"**.
+- ⚠️ Il vecchio pallino colorato generico (`.h24-widget__dot`) e la scritta
+  "🟢/🔴 Uffici Aperti/Reperibilità H24 Attiva \| Contatta l'assistenza" sono
+  stati sostituiti il 22-23/07/2026: pillola rimpicciolita, icona telefono
+  SVG inline colorata via `currentColor` (`.h24-widget__icon`) al posto del
+  pallino, testo "Aperto"/"Reperibilità" aggiunto **su richiesta esplicita
+  dell'utente** come secondo segnale di stato oltre al colore (non solo
+  verde/rosso — anche leggibile a parole). La vecchia sottoscritta "Contatta
+  l'assistenza" resta solo nell'`aria-label`, non più visibile nel testo.
 - Click sul badge (in entrambi i casi) → si apre la modale **"Reperibilità
   H24 attiva"** con due opzioni dirette: "Tecnico reperibile" e "Ufficio",
   entrambe link `tel:` con numero visibile. Da **smartphone** parte la
@@ -650,7 +683,31 @@ Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 20/07/2026 —*
+*Ultimo aggiornamento: 23/07/2026 —*
+- *Header ristrutturato: logo e widget Assistenza H24 separati dalla nav e
+  resi completamente statici (nessun `position:fixed`, nessun
+  ridimensionamento allo scroll) — scorrono via con la pagina come
+  qualunque altro contenuto. Solo i link di navigazione (`#mainNav`)
+  diventano la pillola in vetro smerigliato allo scroll, ora centrata
+  invece che allineata. Una prima versione (logo ingrandito e fissato in
+  alto a sinistra) è stata scartata dall'utente dopo averla vista dal vivo:
+  causava sovrapposizione col contenuto e includeva ancora il widget
+  Assistenza nella pillola flottante, non voluto.*
+- *Pillola Assistenza H24 ridisegnata: pallino generico e la vecchia
+  scritta "🟢/🔴 Uffici Aperti/Reperibilità H24 Attiva \| Contatta
+  l'assistenza" sostituiti con icona telefono SVG colorata per stato +
+  testo esplicito **"Assistenza H24 · Aperto"** / **"Assistenza H24 ·
+  Reperibilità"** — il testo di stato è stato aggiunto su richiesta
+  esplicita dell'utente come secondo segnale oltre al colore.*
+- *Falso allarme post-pubblicazione: l'utente vedeva ancora la vecchia
+  versione del sito dopo il push; verificato con `curl` sul raw file
+  GitHub che il repo conteneva già le modifiche corrette → era solo cache
+  del browser (confermato e risolto aprendo il sito in incognito). Nessuna
+  azione correttiva sul codice necessaria.*
+- *Pubblicato su GitHub Pages, commit `a50e5c7`.*
+
+---
+*Aggiornamento precedente: 20/07/2026 —*
 - *Sfondo pagina automatico giorno/notte (07:00-20:00 chiaro, resto "Blu
   freddo pulito" #9FB6D6), stesso pattern di ricontrollo orario del widget H24.*
 - *Scale mobili sbloccata dal backlog (deroga esplicita alla decisione di
