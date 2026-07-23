@@ -1894,22 +1894,8 @@
     .frase-bar span { transition: none; }
   }
 
-  /* 6) Banda CTA preventivo a chiusura della Home */
-  .cta-band {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
-    background: var(--accent);
-    border-radius: 14px;
-    padding: 22px 30px;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .cta-band:hover { transform: translateY(-2px); box-shadow: 0 16px 40px var(--ombra); }
-  .cta-band__testo { font-family: 'Sora', sans-serif; font-size: 21px; font-weight: 700; color: #FFFFFF; }
-  .cta-band__area { font-size: 11px; letter-spacing: 0.2em; color: #A8D4FF; text-transform: uppercase; font-weight: 600; }
+  /* 6) Banda CTA preventivo: RIMOSSA il 24/07/2026, sostituita dalla barra
+     fissa .dock in fondo alla finestra. CSS eliminato per non lasciare codice morto. */
 
 
   /* ============================================================
@@ -1957,8 +1943,7 @@
   body.tema-notte .svs-sol-card:hover {
     box-shadow: 0 16px 40px rgba(2,6,14,0.6), 0 0 30px rgba(61,141,232,0.16);
   }
-  body.tema-notte .cta-band { box-shadow: 0 0 44px rgba(24,95,165,0.35); }
-  body.tema-notte .cta-band:hover { box-shadow: 0 0 60px rgba(61,141,232,0.45); }
+  body.tema-notte .dock { box-shadow: 0 10px 34px rgba(2,6,14,0.55), 0 0 44px rgba(24,95,165,0.30), inset 0 1px 0 rgba(255,255,255,0.28); }
   body.tema-notte .btn-primary { box-shadow: 0 0 30px rgba(24,95,165,0.4); }
   body.tema-notte .img-placeholder { background: #0E1A2E; }
   /* Logo leggibile di notte senza toccare l'SVG: alone chiaro dietro le
@@ -2089,6 +2074,153 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .atmo-canvas { display: none; }
+  }
+
+  /* ==========================================================================
+     BARRA FISSA "PULSANTIERA DI CABINA" (24/07/2026)
+     Sostituisce la fascia CTA finale della Home, che era visibile solo a chi
+     arrivava in fondo. Tre moduli: display del piano (riusa liftLabels),
+     spia di stato (riusa la logica H24 esistente, nessun secondo orologio),
+     pulsante di chiamata (naviga a #contatti via data-view).
+     ========================================================================== */
+  .dock {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    padding: 5px;
+    max-width: calc(100% - 24px);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07));
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow: 0 10px 34px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.28);
+    overflow: hidden;
+    transition: padding 0.35s cubic-bezier(.2,.7,.2,1),
+                opacity 0.3s ease,
+                transform 0.35s cubic-bezier(.2,.7,.2,1);
+  }
+  /* Nascosta: in vista Contatti (CTA ridondante) e con la modale H24 aperta. */
+  .dock[hidden] { display: none; }
+  .dock.dock--via {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(18px);
+  }
+  /* Riflesso metallico, stesso linguaggio del logo in nav. */
+  .dock::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.22) 48%, transparent 58%);
+    transform: translateX(-120%);
+  }
+  .dock.dock--shine::after { animation: dockSweep 1.5s cubic-bezier(.3,.1,.2,1); }
+  @keyframes dockSweep { to { transform: translateX(120%); } }
+
+  .dk-piano,
+  .dk-stato {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-radius: 16px;
+    background: rgba(6,16,28,0.42);
+    border: 1px solid rgba(255,255,255,0.10);
+    white-space: nowrap;
+  }
+  .dk-piano { padding-left: 12px; }
+  .dk-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: #8FC0F0;
+    min-width: 26px;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 0 0 12px rgba(61,141,232,0.75);
+  }
+  .dk-testo { display: flex; flex-direction: column; line-height: 1.15; }
+  .dk-lab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.42);
+    font-weight: 700;
+  }
+  .dk-val {
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  .dk-led { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+  .dk-led--open { background: #37D67A; box-shadow: 0 0 10px rgba(55,214,122,0.9); }
+  .dk-led--oncall { background: #FF5A4D; box-shadow: 0 0 10px rgba(255,90,77,0.9); animation: dockPulse 2s infinite; }
+  @keyframes dockPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.42; } }
+  /* In reperibilità il modulo stato diventa cliccabile: apre la modale H24. */
+  .dock--oncall .dk-stato { cursor: pointer; }
+
+  .dk-cta {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 0;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: linear-gradient(180deg, var(--accent-2), var(--accent));
+    border-radius: 16px;
+    padding: 9px 20px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(24,95,165,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: transform 0.2s cubic-bezier(.2,.7,.2,1), box-shadow 0.2s;
+  }
+  .dk-cta:hover { transform: translateY(-1px); box-shadow: 0 7px 22px rgba(24,95,165,0.7), inset 0 1px 0 rgba(255,255,255,0.35); }
+  .dk-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+  .dk-cta svg { width: 15px; height: 15px; flex: 0 0 auto; }
+
+  /* Scroll verso il basso: la barra si ritira ai soli moduli essenziali. */
+  .dk-piano, .dk-stato .dk-testo {
+    transition: max-width 0.35s cubic-bezier(.2,.7,.2,1), opacity 0.22s, padding 0.35s;
+    max-width: 260px;
+  }
+  .dock.dock--compatta { padding: 4px; }
+  .dock.dock--compatta .dk-piano,
+  .dock.dock--compatta .dk-stato .dk-testo {
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+  .dock.dock--compatta .dk-stato { padding: 10px 11px; }
+
+  /* Spazio in fondo alla pagina: la barra non deve coprire il footer. */
+  body { padding-bottom: 92px; }
+
+  @media (max-width: 720px) {
+    .dock { width: calc(100% - 20px); border-radius: 22px; }
+    .dk-piano { display: none; }
+    .dk-cta { flex: 1; justify-content: center; }
+    .dk-stato { padding: 9px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dock, .dk-piano, .dk-stato .dk-testo, .dk-cta { transition: none; }
+    .dock::after { display: none; }
+    .dk-led--oncall { animation: none; }
   }
 
 </style>
@@ -2411,13 +2543,10 @@
       </div>
     </section>
 
-    <!-- Banda CTA preventivo (RESTYLING VETRO): porta a #contatti via goToView -->
-    <section class="reveal" style="padding-top:0; border-top:none;">
-      <div class="cta-band" data-view="contatti" role="button" tabindex="0">
-        <span class="cta-band__testo">Richiedi un preventivo gratuito &rarr;</span>
-        <span class="cta-band__area">Matera &middot; Basilicata &middot; Puglia</span>
-      </div>
-    </section>
+    <!-- Banda CTA preventivo RIMOSSA il 24/07/2026: la sua funzione è ora
+         svolta dalla barra fissa (.dock) in fondo alla finestra, visibile su
+         ogni vista e a ogni altezza di scroll, non solo a chi arrivava in
+         fondo alla Home. -->
   </div>
 
   <!-- ============ VISTA CHI SIAMO ============ -->
@@ -2842,6 +2971,33 @@
   <footer>© 2026 LGM Elevator. Tutti i diritti riservati. — BOZZA, non versione finale.</footer>
 </div>
 
+<!-- ==========================================================================
+     BARRA FISSA — "pulsantiera di cabina" (24/07/2026).
+     Fuori dal contenitore .wrap perché è fissa rispetto alla finestra.
+     Il pulsante usa data-view: viene agganciato dal router SPA esistente,
+     nessuna logica di navigazione duplicata.
+     ========================================================================== -->
+<div class="dock" id="dock">
+  <div class="dk-piano">
+    <div class="dk-num" id="dockNum">PT</div>
+    <div class="dk-testo">
+      <div class="dk-lab">Piano</div>
+      <div class="dk-val" id="dockVista">Home</div>
+    </div>
+  </div>
+  <div class="dk-stato" id="dockStato">
+    <span class="dk-led dk-led--open" id="dockLed"></span>
+    <div class="dk-testo">
+      <div class="dk-lab">Assistenza</div>
+      <div class="dk-val" id="dockStatoTxt">Uffici aperti</div>
+    </div>
+  </div>
+  <button type="button" class="dk-cta" id="dockCta" data-view="contatti">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Sopralluogo gratuito
+  </button>
+</div>
+
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -2966,6 +3122,29 @@
     // secondo calcolo di fascia oraria. Se il widget non c'è (altre viste)
     // la funzione esce senza errori.
     aggiornaServiceHub(now, isOfficeOpen);
+    aggiornaDock(isOfficeOpen);
+  }
+
+  // Spia della barra fissa: stesso stato del widget H24, calcolato una volta
+  // sola sopra. Se la barra non c'è, esce senza errori.
+  function aggiornaDock(isOfficeOpen) {
+    const dock = document.getElementById('dock');
+    const led = document.getElementById('dockLed');
+    const txt = document.getElementById('dockStatoTxt');
+    if (!dock || !led || !txt) return;
+
+    led.classList.remove('dk-led--open', 'dk-led--oncall');
+    dock.classList.toggle('dock--oncall', !isOfficeOpen);
+
+    if (isOfficeOpen) {
+      led.classList.add('dk-led--open');
+      txt.textContent = 'Uffici aperti';
+      dock.querySelector('.dk-stato').setAttribute('aria-label', 'Uffici aperti');
+    } else {
+      led.classList.add('dk-led--oncall');
+      txt.textContent = 'Reperibilità';
+      dock.querySelector('.dk-stato').setAttribute('aria-label', 'Reperibilità H24 attiva, tocca per chiamare');
+    }
   }
 
   function aggiornaServiceHub(now, isOfficeOpen) {
@@ -3656,6 +3835,87 @@
     window.addEventListener('hashchange', function () {
       if (location.hash === '#contatti') renderSummary();
     });
+  })();
+
+  // ============================================
+  // BARRA FISSA "PULSANTIERA DI CABINA" (24/07/2026)
+  // Non ha stato proprio: legge il piano da liftLabels e lo stato
+  // assistenza da updateH24Widget (che chiama aggiornaDock). Nessun
+  // secondo orologio, nessuna logica di navigazione duplicata.
+  // ============================================
+  (function () {
+    const dock = document.getElementById('dock');
+    if (!dock) return;
+
+    const numEl = document.getElementById('dockNum');
+    const vistaEl = document.getElementById('dockVista');
+    const statoEl = document.getElementById('dockStato');
+    const ctaEl = document.getElementById('dockCta');
+
+    const NOMI_VISTA = {
+      home: 'Home',
+      servoscala: 'Servoscala',
+      ascensori: 'Ascensori',
+      scalemobili: 'Scale mobili',
+      assistenza: 'Assistenza',
+      chisiamo: 'Chi siamo',
+      contatti: 'Contatti'
+    };
+
+    function vistaAttiva() {
+      const el = document.querySelector('.view.active');
+      return el ? el.id.replace('view-', '') : 'home';
+    }
+
+    // Aggiorna display del piano e nasconde la barra dove sarebbe ridondante
+    // (vista Contatti: il form è già lì).
+    function aggiornaVista() {
+      const nome = vistaAttiva();
+      const etichette = (typeof liftLabels !== 'undefined') ? liftLabels : {};
+      if (numEl) numEl.textContent = etichette[nome] || 'PT';
+      if (vistaEl) vistaEl.textContent = NOMI_VISTA[nome] || '';
+      dock.classList.toggle('dock--via', nome === 'contatti');
+    }
+
+    document.addEventListener('lgm:viewchanged', aggiornaVista);
+    aggiornaVista();
+
+    // Ritiro allo scroll verso il basso, riapertura risalendo.
+    if (!reduceMotion) {
+      let ultimo = 0;
+      window.addEventListener('scroll', function () {
+        const y = window.scrollY || window.pageYOffset;
+        if (y > ultimo + 6 && y > 80) dock.classList.add('dock--compatta');
+        else if (y < ultimo - 6) dock.classList.remove('dock--compatta');
+        ultimo = y;
+      }, { passive: true });
+    }
+
+    // In reperibilità il modulo stato apre la modale H24 già esistente.
+    if (statoEl) {
+      statoEl.addEventListener('click', function () {
+        if (dock.classList.contains('dock--oncall') && typeof window.lgmOpenH24Modal === 'function') {
+          window.lgmOpenH24Modal();
+        }
+      });
+    }
+
+    // Riflesso metallico al click sul pulsante (il click naviga già via data-view).
+    if (ctaEl && !reduceMotion) {
+      ctaEl.addEventListener('click', function () {
+        dock.classList.remove('dock--shine');
+        void dock.offsetWidth;
+        dock.classList.add('dock--shine');
+      });
+    }
+
+    // La barra si toglie di mezzo quando la modale H24 è aperta.
+    const overlay = document.getElementById('h24ModalOverlay');
+    if (overlay && typeof MutationObserver === 'function') {
+      new MutationObserver(function () {
+        dock.classList.toggle('dock--via', !overlay.hidden || vistaAttiva() === 'contatti');
+      }).observe(overlay, { attributes: true, attributeFilter: ['hidden'] });
+    }
   })();
 
 </script>

@@ -683,7 +683,34 @@ Puglia nei contatti.
   Questo file (CONTESTO_PROGETTO.md) resta la fotografia stabile del progetto.
 
 ---
-*Ultimo aggiornamento: 23/07/2026 —*
+*Ultimo aggiornamento: 24/07/2026 —*
+- *Sezione **Realizzazioni** ridistribuita: griglia Home ridotta da 6 a 3 card
+  (una per ramo: ascensore condominiale, servoscala, manutenzione), testi
+  invariati. Nuova fascia `.rz-duo` a 2 foto in fondo alle viste **Servoscala**
+  e **Ascensori**, subito prima della CTA finale — nel punto in cui il
+  visitatore decide se chiamare. Assistenza e Scale mobili volutamente non
+  toccate (vedi Note). Le didascalie con dettagli concreti ("quattro piani",
+  "tre gradini all'ingresso") sono `[PLACEHOLDER]` e **vanno verificate sugli
+  impianti reali prima della pubblicazione**: dettagli inventati su un sito
+  che vende continuità familiare sono l'errore peggiore possibile.*
+- *Nuova **barra fissa "pulsantiera di cabina"** (`.dock`), scelta dall'utente
+  tra 3 proposte mostrate dal vivo in un mockup interattivo. Fissa in fondo
+  alla finestra su tutte le viste. Non ha stato proprio: il display del piano
+  riusa `liftLabels` e l'evento `lgm:viewchanged`, la spia assistenza è
+  alimentata da `aggiornaDock()` chiamata dentro `updateH24Widget()` (stesso
+  orologio, nessuna logica duplicata), il pulsante naviga via `data-view`
+  agganciato dal router SPA esistente. In reperibilità il modulo stato apre
+  la modale H24 già esistente. Si ritira allo scroll in giù, si nasconde in
+  vista Contatti e con la modale aperta.*
+- *Rimossa la fascia CTA finale della Home (`.cta-band`): markup, CSS e regola
+  tema notte eliminati per non lasciare codice morto. Faceva lo stesso lavoro
+  della barra, ma solo per chi arrivava in fondo alla Home.*
+- *Ripulito il repo: `preview-2026.html` (snapshot vecchio del sito, 4318
+  righe, finito nel repo pubblico con un `git add -A`) rimosso da GitHub con
+  `git rm --cached` e aggiunto a `.gitignore`. Resta come backup locale sul Mac.*
+
+---
+*Aggiornamento precedente: 23/07/2026 —*
 - *Header ristrutturato: logo e widget Assistenza H24 separati dalla nav e
   resi completamente statici (nessun `position:fixed`, nessun
   ridimensionamento allo scroll) — scorrono via con la pagina come
