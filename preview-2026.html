@@ -691,33 +691,6 @@
     color: var(--text-muted);
   }
 
-  /* Fascia realizzazioni nelle viste prodotto (24/07/2026).
-     Classe separata da .realizz-grid apposta: il mosaico della Home ha
-     regole nth-child proprie che qui darebbero card di larghezza diversa. */
-  .rz-duo {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 300px;
-    gap: 14px;
-  }
-  .rz-fascia-cta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-  .rz-fascia-cta p {
-    margin: 0;
-    font-size: 15px;
-    color: var(--text-muted);
-    max-width: 52ch;
-  }
-  @media (max-width: 560px) {
-    .rz-duo { grid-template-columns: 1fr; grid-auto-rows: 230px; }
-  }
-
   @media (max-width: 900px) {
     .realizz-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 170px; }
     .realizz-grid .realizz-card:nth-child(n) { grid-column: span 1; grid-row: span 1; }
@@ -2091,6 +2064,397 @@
     .atmo-canvas { display: none; }
   }
 
+
+  /* ============================================================
+     RESTYLING 2026 — DARK-FIRST PREMIUM
+     Override layer completo: ridefinisce palette, tipografia,
+     componenti. Il logo SVG della nav NON viene toccato.
+     ============================================================ */
+
+  /* ---------- PALETTE DARK-FIRST ---------- */
+  :root {
+    --bg: #06090f !important;
+    --surface: #0c1221 !important;
+    --surface-2: #121c33 !important;
+    --text: #e4eaf6 !important;
+    --text-muted: #7b8fad !important;
+    --accent: #3b82f6 !important;
+    --accent-2: #60a5fa !important;
+    --accent-deep: #1d4ed8 !important;
+    --border: rgba(96, 165, 250, 0.10) !important;
+    --ombra: rgba(0, 2, 12, 0.7) !important;
+    --bagliore: rgba(96, 165, 250, 0.5) !important;
+    --pannello-scuro: #060910 !important;
+    --pannello-scuro-2: #0c1221 !important;
+    --su-scuro: #d4dff4 !important;
+    --bg-notte: #06090f !important;
+  }
+
+  body, body.tema-notte {
+    background-color: #06090f !important;
+    color: #e4eaf6 !important;
+    background-image:
+      radial-gradient(ellipse 1100px 500px at 75% -80px, rgba(59,130,246,0.07), transparent 65%),
+      radial-gradient(ellipse 900px 600px at -8% 105%, rgba(6,9,15,0.9), transparent 60%) !important;
+  }
+
+  /* ---------- NOISE TEXTURE ---------- */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: overlay;
+    opacity: 0.03;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- TIPOGRAFIA HERO — più grande, gradient ---------- */
+  .hero h1 {
+    font-size: clamp(46px, 7.8vw, 92px) !important;
+    letter-spacing: -0.045em !important;
+    line-height: 1.02 !important;
+    background: linear-gradient(160deg, #ffffff 0%, #c8dcf8 45%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 4.8vw, 56px) !important;
+    letter-spacing: -0.035em !important;
+    background: linear-gradient(160deg, #f0f4ff 10%, #8eb5e6 85%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-eyebrow, .section-label {
+    color: var(--accent-2) !important;
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.25);
+  }
+
+  /* Piano num — più visibile su scuro */
+  .piano-num {
+    -webkit-text-stroke: 1.5px rgba(96, 165, 250, 0.18) !important;
+  }
+  .piano-num small {
+    -webkit-text-stroke: 1px rgba(96, 165, 250, 0.25) !important;
+  }
+
+  /* ---------- BOTTONE CTA — gradient + glow + shimmer ---------- */
+  .btn-primary {
+    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #60a5fa 100%) !important;
+    border: 1px solid rgba(96, 165, 250, 0.35) !important;
+    border-radius: 14px !important;
+    padding: 16px 34px !important;
+    font-size: 16px !important;
+    letter-spacing: 0.01em;
+    box-shadow:
+      0 0 28px rgba(59, 130, 246, 0.35),
+      0 6px 20px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(.4,0,.2,1) !important;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow:
+      0 0 48px rgba(59, 130, 246, 0.55),
+      0 12px 32px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    opacity: 1 !important;
+  }
+
+  /* ---------- CARD — dark glass 2026 ---------- */
+  .prodotto-card,
+  .svs-sol-card,
+  .fiducia-card {
+    background: rgba(12, 18, 33, 0.55) !important;
+    backdrop-filter: blur(20px) saturate(1.25) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.25) !important;
+    border: 1px solid rgba(96, 165, 250, 0.10) !important;
+    border-top: 1px solid rgba(96, 165, 250, 0.22) !important;
+    transition: all 0.4s cubic-bezier(.4,0,.2,1) !important;
+  }
+  .prodotto-card:hover,
+  .svs-sol-card:hover,
+  .fiducia-card:hover {
+    border-color: rgba(96, 165, 250, 0.30) !important;
+    border-top-color: rgba(96, 165, 250, 0.50) !important;
+    box-shadow:
+      0 28px 68px rgba(0, 2, 12, 0.75),
+      0 0 44px rgba(59, 130, 246, 0.12) !important;
+    transform: translateY(-6px) !important;
+  }
+  /* Testo e tag nelle card */
+  .prodotto-card h3, .svs-sol-card h3 {
+    color: var(--text) !important;
+  }
+  .prodotto-card .tag, .svs-sol-card .svs-per {
+    color: var(--accent-2) !important;
+  }
+  .prodotto-card a {
+    color: var(--accent-2) !important;
+  }
+
+  /* ---------- FIDUCIA BIG CARD ---------- */
+  .fiducia-card--big {
+    background: linear-gradient(135deg, rgba(12,18,33,0.6) 0%, rgba(18,28,51,0.6) 100%) !important;
+  }
+
+  /* ---------- HERO GLASS BAR ---------- */
+  .hero-glass {
+    background: rgba(12, 18, 33, 0.45) !important;
+    backdrop-filter: blur(18px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.3) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+  .hero-glass__item {
+    color: var(--text) !important;
+  }
+  .hero-glass__item .hg-sub {
+    color: var(--text-muted) !important;
+  }
+  .hero-glass__item + .hero-glass__item {
+    border-left-color: rgba(96, 165, 250, 0.10) !important;
+  }
+
+  /* ---------- NAV — dark glass ---------- */
+  nav.nav-vetro {
+    background: rgba(6, 9, 15, 0.72) !important;
+    border-color: rgba(96, 165, 250, 0.14) !important;
+    box-shadow: 0 16px 40px rgba(0, 2, 12, 0.6) !important;
+  }
+
+  /* ---------- FRASE BAR ---------- */
+  .frase-bar {
+    background: rgba(59, 130, 246, 0.04) !important;
+    border-color: rgba(96, 165, 250, 0.08) !important;
+  }
+
+  /* ---------- NAV CONDENSED ---------- */
+  .nav-condensed {
+    background: rgba(6, 9, 15, 0.94) !important;
+    border-color: rgba(96, 165, 250, 0.14) !important;
+  }
+
+  /* ---------- CTA BAND — vivid gradient + glow ---------- */
+  .cta-band {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 45%, #3b82f6 100%) !important;
+    box-shadow: 0 0 56px rgba(37, 99, 235, 0.3), 0 12px 32px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(96, 165, 250, 0.25) !important;
+  }
+  .cta-band:hover {
+    box-shadow: 0 0 80px rgba(59, 130, 246, 0.45), 0 16px 40px rgba(0,0,0,0.4) !important;
+    transform: translateY(-3px) !important;
+  }
+  .cta-band__area {
+    color: rgba(165, 210, 255, 0.85) !important;
+  }
+
+  /* ---------- ASSIST EMERGENZA — softer ---------- */
+  .assist-emergenza {
+    background: rgba(12, 18, 33, 0.5) !important;
+    border: 1px solid rgba(220, 38, 38, 0.28) !important;
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.05);
+  }
+  .assist-emergenza__titolo {
+    color: var(--text) !important;
+  }
+  .assist-emergenza__sotto {
+    color: var(--text-muted) !important;
+  }
+  .assist-band {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-left: 4px solid var(--accent) !important;
+  }
+
+  /* ---------- TUTTI I SURFACES ---------- */
+  .cf-field input,
+  .cf-field textarea {
+    background: rgba(12, 18, 33, 0.7) !important;
+    border-color: rgba(96, 165, 250, 0.14) !important;
+    color: var(--text) !important;
+  }
+  .cf-field input:focus,
+  .cf-field textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+  }
+  .form-box {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+  .h24-widget {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.18) !important;
+    color: var(--text) !important;
+  }
+  .h24-modal {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.18) !important;
+  }
+  .h24-modal__title {
+    color: var(--text) !important;
+  }
+  .h24-modal__option {
+    background: var(--surface-2) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+  .h24-modal__option-label {
+    color: var(--text) !important;
+  }
+  .h24-modal-overlay {
+    background: rgba(2, 4, 10, 0.7) !important;
+  }
+  .img-placeholder {
+    background: #080e1e !important;
+  }
+  .tl-item {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+  .tl-item:hover {
+    border-color: var(--accent-2) !important;
+  }
+  .tl-year {
+    color: var(--accent-2) !important;
+  }
+  .partner-badge {
+    background: rgba(12, 18, 33, 0.5) !important;
+    border-color: rgba(96, 165, 250, 0.14) !important;
+    color: var(--text-muted) !important;
+  }
+  .svs-bonus {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+    border-left-color: var(--accent) !important;
+  }
+  .vista-costruzione {
+    background: var(--surface) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+  .cf-config-summary {
+    background: var(--surface-2) !important;
+    border-color: rgba(96, 165, 250, 0.12) !important;
+  }
+
+  /* ---------- SECTION BORDERS — sottili e luminescenti ---------- */
+  section:not(.hero) {
+    border-top: 1px solid rgba(96, 165, 250, 0.06) !important;
+  }
+  .hero {
+    border-top: none !important;
+  }
+
+  /* ---------- LIFT DOORS — deeper glass ---------- */
+  .lift-panel {
+    background: linear-gradient(180deg, rgba(30, 64, 175, 0.16), rgba(6, 9, 15, 0.22)) !important;
+  }
+  .lift-readout {
+    background: rgba(6, 9, 15, 0.55) !important;
+    border-color: rgba(96, 165, 250, 0.28) !important;
+  }
+  .lift-readout .lift-num {
+    color: var(--accent-2) !important;
+  }
+  .lift-readout .lift-label {
+    color: var(--text-muted) !important;
+  }
+
+  /* ---------- HERO TUNNEL ---------- */
+  .ht-f {
+    border-color: rgba(96, 165, 250, 0.40) !important;
+  }
+  .hero-spot {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.18), transparent 65%) !important;
+  }
+
+  /* ---------- FAQ ---------- */
+  .svs-faq-item {
+    border-color: rgba(96, 165, 250, 0.07) !important;
+  }
+  .svs-faq-q {
+    color: var(--text) !important;
+  }
+  .svs-faq-chevron {
+    color: var(--accent-2) !important;
+  }
+
+  /* ---------- CHISIAMO QUOTE ---------- */
+  .chisiamo-quote {
+    color: var(--text) !important;
+    border-left-color: var(--accent-2) !important;
+  }
+
+  /* ---------- LOGO — mantenuto identico ---------- */
+  /* Solo alone leggibilità su sfondo scuro, coerente col
+     trattamento tema-notte già esistente nel sito */
+  .logo svg {
+    filter: drop-shadow(0 0 1px rgba(232, 237, 245, 0.85)) drop-shadow(0 0 12px rgba(91, 154, 255, 0.3)) !important;
+  }
+  /* Logo glow animation preserved, just boosted for dark */
+  @keyframes logoGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 3px rgba(96,165,250,.35));
+    }
+    50% {
+      filter: drop-shadow(0 0 14px rgba(96,165,250,.65)) drop-shadow(0 1px 2px rgba(0,2,12,.4));
+    }
+  }
+
+  /* ---------- CONTATTI ---------- */
+  .contatto-riga {
+    color: var(--text-muted) !important;
+  }
+  .contatti-h24-btn {
+    background: var(--surface-2) !important;
+    border-color: rgba(96, 165, 250, 0.15) !important;
+    color: var(--text) !important;
+  }
+
+  /* ---------- CANVAS ATMOSFERICO — potenziato per dark ---------- */
+  /* Il canvas JS è già ottimizzato per sfondo scuro */
+
+  /* ---------- FOOTER — bordo luminoso ---------- */
+  footer {
+    border-top: 1px solid rgba(96, 165, 250, 0.08) !important;
+    padding: 52px 24px 48px !important;
+    color: var(--text-muted) !important;
+  }
+
+  /* ---------- SCROLLBAR DARK ---------- */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #06090f; }
+  ::-webkit-scrollbar-thumb { background: rgba(96, 165, 250, 0.18); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(96, 165, 250, 0.32); }
+
+  /* ---------- SELECTION COLOR ---------- */
+  ::selection { background: rgba(59, 130, 246, 0.35); color: #fff; }
+
+  /* ---------- SVS STEPS ---------- */
+  .svs-dot {
+    background: var(--accent) !important;
+    box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+  }
+
+  /* ---------- NAV LINKS ---------- */
+  .nav-links a {
+    color: var(--text-muted) !important;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text) !important;
+  }
+
+  /* ---------- FIDUCIA NUM ---------- */
+  .fiducia-card .num {
+    color: var(--accent-2) !important;
+  }
+
 </style>
 </head>
 <body>
@@ -2391,11 +2755,35 @@
           </div>
         </div>
         <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-3/900/700" alt="[PLACEHOLDER] Foto realizzazione piattaforma" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Piattaforma elevatrice</span>
+            <div class="rz-titolo">[PLACEHOLDER] Attività commerciale accessibile</div>
+            <div class="rz-luogo">[DA CONFERMARE] Basilicata</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-4/800/700" alt="[PLACEHOLDER] Foto realizzazione modernizzazione" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Modernizzazione</span>
+            <div class="rz-titolo">[PLACEHOLDER] Ammodernamento cabina e quadro</div>
+            <div class="rz-luogo">[DA CONFERMARE] Puglia</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
           <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-5/800/700" alt="[PLACEHOLDER] Foto realizzazione manutenzione" loading="lazy">
           <div class="realizz-cap">
             <span class="rz-tag">Manutenzione</span>
             <div class="rz-titolo">[PLACEHOLDER] Impianto seguito da oltre 10 anni</div>
             <div class="rz-luogo">[DA CONFERMARE] Matera</div>
+          </div>
+        </div>
+        <div class="realizz-card px-wrap">
+          <img class="realizz-zoom parallax" src="https://picsum.photos/seed/lgm-real-6/800/700" alt="[PLACEHOLDER] Foto realizzazione ascensore privato" loading="lazy">
+          <div class="realizz-cap">
+            <span class="rz-tag">Ascensore privato</span>
+            <div class="rz-titolo">[PLACEHOLDER] Casa indipendente, vano nuovo</div>
+            <div class="rz-luogo">[DA CONFERMARE] Provincia di Matera</div>
           </div>
         </div>
       </div>
@@ -2621,39 +3009,6 @@
       </div>
     </section>
 
-    <!-- Realizzazioni servoscala (24/07/2026): prova visiva subito prima
-         della CTA, cioè nel punto in cui il visitatore sta decidendo.
-         ⚠️ Foto Picsum di collaudo + titoli [PLACEHOLDER]: i dettagli
-         ("una curva stretta", "tre gradini") devono corrispondere agli
-         impianti veri prima della pubblicazione (task 3j). -->
-    <section class="reveal">
-      <div class="section-label">Realizzazioni</div>
-      <h2 class="section-title text-reveal">Case dove nessuno ha dovuto traslocare</h2>
-      <div class="rz-duo stagger-group">
-        <div class="realizz-card px-wrap">
-          <img class="realizz-zoom" src="https://picsum.photos/seed/lgm-real-2/900/700" alt="[PLACEHOLDER] Foto servoscala curvilineo installato" loading="lazy">
-          <div class="realizz-cap">
-            <span class="rz-tag">Servoscala curvilineo</span>
-            <div class="rz-titolo">[PLACEHOLDER] Una curva stretta e un pianerottolo. Si poteva fare</div>
-            <div class="rz-luogo">[DA CONFERMARE] Provincia di Matera</div>
-          </div>
-        </div>
-        <div class="realizz-card px-wrap">
-          <img class="realizz-zoom" src="https://picsum.photos/seed/lgm-real-3/900/700" alt="[PLACEHOLDER] Foto piattaforma elevatrice installata" loading="lazy">
-          <div class="realizz-cap">
-            <span class="rz-tag">Piattaforma elevatrice</span>
-            <div class="rz-titolo">[PLACEHOLDER] Tre gradini all'ingresso. Bastavano a tenere fuori qualcuno</div>
-            <div class="rz-luogo">[DA CONFERMARE] Basilicata</div>
-          </div>
-        </div>
-      </div>
-      <div class="rz-fascia-cta">
-        <p>La domanda è sempre la stessa: sulla mia scala ci sta? Mandaci una foto e ti rispondiamo noi.</p>
-        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Mandaci una foto della tua scala</a>
-      </div>
-      <p class="realizz-nota">⚠️ Foto di esempio casuali, solo per collaudo del layout (task 3j).</p>
-    </section>
-
     <!-- CTA finale -->
     <section class="reveal">
       <div class="svs-cta">
@@ -2676,38 +3031,6 @@
         <p>[PLACEHOLDER] Il configuratore 3D della cabina è diventato uno strumento riservato: lo usiamo insieme durante il sopralluogo, sulla foto del tuo edificio, per progettare la cabina dal vivo.</p>
       </div>
 
-    </section>
-
-    <!-- Realizzazioni ascensori (24/07/2026). Titolo volutamente più sobrio
-         di quello in Servoscala: qui spesso decide un amministratore, che
-         ragiona per fattibilità. L'aspetto umano resta nelle didascalie.
-         ⚠️ Foto Picsum + titoli [PLACEHOLDER] da verificare (task 3j). -->
-    <section class="reveal">
-      <div class="section-label">Realizzazioni</div>
-      <h2 class="section-title text-reveal">Palazzine come la tua, a pochi chilometri da qui</h2>
-      <div class="rz-duo stagger-group">
-        <div class="realizz-card px-wrap">
-          <img class="realizz-zoom" src="https://picsum.photos/seed/lgm-real-1/1000/900" alt="[PLACEHOLDER] Foto ascensore condominiale installato" loading="lazy">
-          <div class="realizz-cap">
-            <span class="rz-tag">Ascensore condominiale</span>
-            <div class="rz-titolo">[PLACEHOLDER] Quattro piani, nessun ascensore, e chi non usciva più</div>
-            <div class="rz-luogo">[DA CONFERMARE] Matera — centro</div>
-          </div>
-        </div>
-        <div class="realizz-card px-wrap">
-          <img class="realizz-zoom" src="https://picsum.photos/seed/lgm-real-6/800/700" alt="[PLACEHOLDER] Foto ascensore privato installato" loading="lazy">
-          <div class="realizz-cap">
-            <span class="rz-tag">Ascensore privato</span>
-            <div class="rz-titolo">[PLACEHOLDER] Il vano non c'era. Ora la casa si usa tutta</div>
-            <div class="rz-luogo">[DA CONFERMARE] Provincia di Matera</div>
-          </div>
-        </div>
-      </div>
-      <div class="rz-fascia-cta">
-        <p>Ogni palazzo ha i suoi vincoli: spazio, condominio, normativa. Veniamo a vedere il vano scala e ti diciamo cosa si può fare.</p>
-        <a data-view="contatti" class="btn-primary" style="cursor:pointer;">Chiedici se nel tuo palazzo si può fare</a>
-      </div>
-      <p class="realizz-nota">⚠️ Foto di esempio casuali, solo per collaudo del layout (task 3j).</p>
     </section>
   </div>
 
